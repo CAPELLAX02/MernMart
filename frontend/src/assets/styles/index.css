@@ -2,8 +2,8 @@ main {
   min-height: 80vh;
 }
 
-*::selection {
-  background-color: #ffc2604b;
+* {
+  font-family: 'Poppins', sans-serif;
 }
 
 .rating span {
