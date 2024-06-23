@@ -20,6 +20,7 @@ import { clearCartItems } from '../slices/cartSlice';
 const PlaceOrderScreen = () => {
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.auth.userInfo);
 
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
 
@@ -66,6 +67,14 @@ const PlaceOrderScreen = () => {
                 {cart.shippingAddress.address}, {cart.shippingAddress.city}{' '}
                 {cart.shippingAddress.postalCode},{' '}
                 {cart.shippingAddress.country}
+              </p>
+              <p>
+                <strong>Name: </strong>
+                {user.name}
+              </p>
+              <p>
+                <strong>Email: </strong>
+                {user.email}
               </p>
             </ListGroup.Item>
 

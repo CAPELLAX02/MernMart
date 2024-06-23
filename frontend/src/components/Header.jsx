@@ -41,7 +41,9 @@ const Header = () => {
           >
             <Navbar.Brand>
               <img src={logo} alt='' />
-              e-comMERNce
+              e-com
+              <span style={{ fontWeight: 'bold', color: '#99ebff' }}>MERN</span>
+              ce
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />

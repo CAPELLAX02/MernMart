@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
 dotenv.config();
 import connectDB from './config/db.js';
@@ -13,6 +14,8 @@ const port = process.env.PORT || 5000;
 connectDB(); // Connect to MongoDB
 
 const app = express();
+
+app.use(cors());
 
 // Body parse middleware
 app.use(express.json());
