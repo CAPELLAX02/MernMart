@@ -36,10 +36,10 @@ const CartScreen = () => {
   return (
     <Row className='my-4'>
       <Col md={8}>
-        <h1>Shopping Cart</h1>
+        <h1>Alışveriş Sepetim</h1>
         {cartItems.length === 0 ? (
           <Message>
-            Your cart is empty. <Link to='/'> Go Back</Link>
+            Sepetinizde henüz bir ürün yok. <Link to='/'> Geri Dön</Link>
           </Message>
         ) : (
           <ListGroup variant='flush'>
@@ -89,8 +89,8 @@ const CartScreen = () => {
           <ListGroup variant='flush'>
             <ListGroup.Item>
               <h2>
-                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
-                items
+                Toplam ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                Ürünler
               </h2>
               $
               {cartItems
@@ -105,7 +105,7 @@ const CartScreen = () => {
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >
-                Proceed to Checkout
+                Ödeme ile Devam Et
               </Button>
             </ListGroup.Item>
           </ListGroup>

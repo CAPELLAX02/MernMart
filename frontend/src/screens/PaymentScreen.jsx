@@ -32,18 +32,18 @@ const PaymentScreen = () => {
       <CheckoutSteps step1 step2 step3 />
 
       <FormContainer>
-        <h1>Payment Method</h1>
+        <h1>Ödeme Yöntemi</h1>
 
         <Form onSubmit={submitHandler}>
           <Form.Group>
             <Form.Label className='mb-4' as='legend'>
-              Select Payment Method
+              Ödeme Yönteminizi Seçin
             </Form.Label>
             <Col>
               <Form.Check
                 type='radio'
                 className='mb-4'
-                label='PayPal or Credit Card'
+                label='Kredi & Banka Kartı'
                 id='PayPal'
                 name='paymentMethod'
                 value='PayPal'
@@ -54,7 +54,7 @@ const PaymentScreen = () => {
           </Form.Group>
 
           <Button type='submit' variant='primary'>
-            Continue
+            Devam Et
           </Button>
         </Form>
       </FormContainer>

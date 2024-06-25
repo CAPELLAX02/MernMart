@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
   Row,
@@ -17,6 +17,7 @@ import {
   useGetOrderDetailsQuery,
   usePayOrderMutation,
 } from '../slices/ordersApiSlice';
+import CreditCardForm from '../components/CreditCardForm';
 
 const OrderScreen = () => {
   const { id: orderId } = useParams();
@@ -32,11 +33,13 @@ const OrderScreen = () => {
   const [payOrder, { isLoadingPay: isPaying, isPaySuccess: isPaid }] =
     usePayOrderMutation();
 
-  // Ödeme işlemi tetikleme fonksiyonu
-  const handlePayment = async () => {
-    const paymentDetails = {
-      // Ödeme detayları (kart bilgileri vb.)
-    };
+  const [showCardForm, setShowCardForm] = useState(false);
+
+  const handlePayment = () => {
+    setShowCardForm(true);
+  };
+
+  const processPayment = async (paymentDetails) => {
     await payOrder({ orderId, details: paymentDetails });
   };
 
@@ -46,49 +49,51 @@ const OrderScreen = () => {
     <Message variant='danger' />
   ) : (
     <>
-      <h1 className='mt-2 py-3'>Order {order._id}</h1>
+      <h1 className='mt-2 py-3'>Sipariş No: {order._id}</h1>
 
       <Row>
         <Col md={8}>
           <ListGroup variant='flush'>
             <ListGroup.Item>
-              <h2>Shipping</h2>
+              <h2>Kargo Bilgileri</h2>
               <p>
-                <strong>Name: </strong> {order.user.name}
+                <strong>İsim: </strong> {order.user.name}
               </p>
               <p>
                 <strong>Email: </strong> {order.user.email}
               </p>
               <p>
-                <strong>Address: </strong> {order.shippingAddress.address},{' '}
+                <strong>Adres: </strong> {order.shippingAddress.address},{' '}
                 {order.shippingAddress.city}, {order.shippingAddress.postalCode}
                 , {order.shippingAddress.country}
               </p>
 
               {order.isDelivered ? (
                 <Message variant='success'>
-                  Delivered on {order.deliveredAt}
+                  {order.deliveredAt} tarihinde kargoya verildi.
                 </Message>
               ) : (
-                <Message variant='danger'>Not Delivered</Message>
+                <Message variant='danger'>Henüz kargoya verilmedi.</Message>
               )}
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Payment Method</h2>
+              <h2>Ödeme Yöntemi</h2>
               <p>
-                <strong>Method: </strong> {order.paymentMethod}
+                <strong>Metod: </strong> {order.paymentMethod}
               </p>
 
               {order.isPaid ? (
-                <Message variant='success'>Paid on {order.paidAt}</Message>
+                <Message variant='success'>
+                  {order.paidAt} tarihinde ödeme alındı.
+                </Message>
               ) : (
-                <Message variant='danger'>Not Paid</Message>
+                <Message variant='danger'>Henüz ödeme yapılmadı.</Message>
               )}
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Order Items</h2>
+              <h2>Sipariş Ürünleri</h2>
               {order.orderItems.map((item, index) => (
                 <ListGroup.Item key={index}>
                   <Row>
@@ -112,25 +117,25 @@ const OrderScreen = () => {
           <Card>
             <ListGroup variant='flush'>
               <ListGroup.Item>
-                <h2>Order Summary</h2>
+                <h2>Sipariş Özeti</h2>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row className='py-2'>
-                  <Col>Items</Col>
+                  <Col>Ürünler</Col>
                   <Col>${order.itemsPrice}</Col>
                 </Row>
                 <Row className='py-2'>
-                  <Col>Shipping</Col>
+                  <Col>Kargo</Col>
                   <Col>${order.shippingPrice}</Col>
                 </Row>
                 <Row className='py-2'>
-                  <Col>Tax</Col>
+                  <Col>Vergi</Col>
                   <Col>${order.taxPrice}</Col>
                 </Row>
                 <Row className='py-2'>
                   <Col>
-                    <strong>TOTAL</strong>
+                    <strong>TOPLAM</strong>
                   </Col>
                   <Col>
                     <strong>${order.totalPrice}</strong>
@@ -141,7 +146,9 @@ const OrderScreen = () => {
               {/* PAY ORDER PLACEHOLDER */}
               <ListGroup.Item>
                 {order.isPaid ? (
-                  <Message variant='success'>Payment Successful</Message>
+                  <Message variant='success'>Ödeme Başarılı</Message>
+                ) : showCardForm ? (
+                  <CreditCardForm processPayment={processPayment} />
                 ) : (
                   <Button
                     type='button'
@@ -149,7 +156,7 @@ const OrderScreen = () => {
                     disabled={isPaying || order.isPaid}
                     onClick={handlePayment}
                   >
-                    {isPaying ? 'Processing...' : 'Pay Now'}
+                    {isPaying ? 'İşleniyor...' : 'Ödemeye Geç'}
                   </Button>
                 )}
               </ListGroup.Item>

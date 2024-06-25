@@ -38,7 +38,7 @@ const ProductScreen = () => {
   return (
     <>
       <Link className='btn btn-light my-3' to='/'>
-        Go Back
+        Geri Dön
       </Link>
 
       {isLoading ? (
@@ -62,12 +62,12 @@ const ProductScreen = () => {
                 <ListGroup.Item>
                   <Rating
                     value={product.rating}
-                    text={`${product.numReviews} reviews`}
+                    text={`${product.numReviews} yorum`}
                   />
                 </ListGroup.Item>
-                <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
+                <ListGroup.Item>Fiyat: ${product.price}</ListGroup.Item>
                 <ListGroup.Item>
-                  Description: {product.description}
+                  <b>Açıklama:</b> {product.description}
                 </ListGroup.Item>
               </ListGroup>
             </Col>
@@ -77,7 +77,7 @@ const ProductScreen = () => {
                 <ListGroup variant='flush'>
                   <ListGroup.Item>
                     <Row>
-                      <Col>Price: </Col>
+                      <Col>Fiyat: </Col>
                       <Col>
                         <strong>${product.price}</strong>
                       </Col>
@@ -85,12 +85,10 @@ const ProductScreen = () => {
                   </ListGroup.Item>
                   <ListGroup.Item>
                     <Row>
-                      <Col>Status: </Col>
+                      <Col>Durumu: </Col>
                       <Col>
                         <strong>
-                          {product.countInStock > 0
-                            ? 'In Stock'
-                            : 'Out of Stock'}
+                          {product.countInStock > 0 ? 'Stokta' : 'Stokta Değil'}
                         </strong>
                       </Col>
                     </Row>
@@ -99,7 +97,7 @@ const ProductScreen = () => {
                   {product.countInStock > 0 && (
                     <ListGroup.Item>
                       <Row>
-                        <Col>Qty</Col>
+                        <Col>Adet</Col>
                         <Col>
                           <Form.Control
                             as='select'
@@ -126,7 +124,7 @@ const ProductScreen = () => {
                       disabled={product.countInStock === 0}
                       onClick={addToCartHandler}
                     >
-                      Add to Cart
+                      Sepete Ekle
                     </Button>
                   </ListGroup.Item>
                 </ListGroup>

@@ -61,15 +61,15 @@ const PlaceOrderScreen = () => {
         <Col md={8}>
           <ListGroup variant='flush'>
             <ListGroup.Item>
-              <h2>Shipping</h2>
+              <h2>Adres & Alıcı Bilgileri</h2>
               <p>
-                <strong>Address: </strong>
+                <strong>Adres: </strong>
                 {cart.shippingAddress.address}, {cart.shippingAddress.city}{' '}
                 {cart.shippingAddress.postalCode},{' '}
                 {cart.shippingAddress.country}
               </p>
               <p>
-                <strong>Name: </strong>
+                <strong>İsim: </strong>
                 {user.name}
               </p>
               <p>
@@ -79,18 +79,18 @@ const PlaceOrderScreen = () => {
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Payment Method</h2>
+              <h2>Ödeme Yöntemi</h2>
               <p>
-                <strong>Method: </strong>
+                <strong>Metod: </strong>
                 {cart.paymentMethod}
               </p>
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Order Items</h2>
+              <h2>Sipariş Edilecek Ürünler</h2>
               <p>
                 {cart.cartItems.length === 0 ? (
-                  <Message>Your cart is empty</Message>
+                  <Message>Kartınızda bir ürün yok.</Message>
                 ) : (
                   <ListGroup>
                     {cart.cartItems.map((item, index) => (
@@ -135,26 +135,26 @@ const PlaceOrderScreen = () => {
           <Card>
             <ListGroup variant='flush'>
               <ListGroup.Item>
-                <h2>Order Summary</h2>
+                <h2>Sipariş Özeti</h2>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
-                  <Col>Items Cost: </Col>
+                  <Col>Ürün Fiyatı: </Col>
                   <Col>${cart.itemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
-                  <Col>Shipping Cost: </Col>
+                  <Col>Kargo Fiyatı: </Col>
                   <Col>${cart.shippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
-                  <Col>Tax Cost (15%): </Col>
+                  <Col>Vergi Fiyatı (15%): </Col>
                   <Col>${cart.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
@@ -162,7 +162,7 @@ const PlaceOrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>
-                    <strong>Total Cost: </strong>
+                    <strong>Toplam Fiyat: </strong>
                   </Col>
                   <Col>
                     <strong>${cart.totalPrice}</strong>
@@ -183,7 +183,7 @@ const PlaceOrderScreen = () => {
                   disabled={cart.cartItems.length === 0}
                   onClick={placeOrderHandler}
                 >
-                  Place Order
+                  Sipariş Ver
                 </Button>
 
                 {isLoading && <Loader />}

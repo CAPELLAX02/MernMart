@@ -32,11 +32,11 @@ const ShippingScreen = () => {
       <CheckoutSteps step1 step2 />
 
       <FormContainer>
-        <h1>Shipping</h1>
+        <h1>Sipariş Adresi</h1>
 
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='address' className='my-2'>
-            <Form.Label>Address</Form.Label>
+            <Form.Label>Adres</Form.Label>
             <Form.Control
               type='text'
               placeholder='Enter the address'
@@ -60,7 +60,7 @@ const ShippingScreen = () => {
 
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='postalCode' className='my-2'>
-            <Form.Label>Postal Code</Form.Label>
+            <Form.Label>Posta Kodu</Form.Label>
             <Form.Control
               type='text'
               placeholder='Enter the postalCode'
@@ -72,7 +72,7 @@ const ShippingScreen = () => {
 
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='country' className='my-2'>
-            <Form.Label>Country</Form.Label>
+            <Form.Label>Şehir</Form.Label>
             <Form.Control
               type='text'
               placeholder='Enter the country'
@@ -82,7 +82,7 @@ const ShippingScreen = () => {
           </Form.Group>
 
           <Button type='submit' variant='primary' className='my-2'>
-            Continue
+            Devam Et
           </Button>
         </Form>
       </FormContainer>

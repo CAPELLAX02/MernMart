@@ -27,7 +27,8 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
       query: (orderId, details) => ({
         url: `${ORDERS_URL}/${orderId}/pay`,
         method: 'PUT',
-        body: { ...details },
+        // body: { ...details },
+        body: details,
       }),
     }),
 
@@ -36,6 +37,31 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: IYZICO_URL,
       }),
+      keepUnusedDataFor: 5,
+    }),
+
+    // GET MY ORDERS ENDPOINT
+    getMyOrders: builder.query({
+      query: () => ({
+        url: `${ORDERS_URL}/mine`,
+      }),
+      keepUnusedDataFor: 5,
+    }),
+
+    // GET ORDERS ENDPOINT
+    getOrders: builder.query({
+      query: () => ({
+        url: ORDERS_URL,
+      }),
+      keepUnusedDataFor: 5,
+    }),
+
+    // DELIVER ORDER ENDPOINT
+    deliverOrder: builder.mutation({
+      query: (orderId) => ({
+        url: `${ORDERS_URL}/${orderId}/deliver`,
+        method: 'PUT',
+      }),
     }),
   }),
 });
@@ -43,6 +69,9 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
 export const {
   useCreateOrderMutation,
   useGetOrderDetailsQuery,
-  useGetIyzicoClientIdQuery,
   usePayOrderMutation,
+  useGetIyzicoClientIdQuery,
+  useGetMyOrdersQuery,
+  useGetOrdersQuery,
+  useDeliverOrderMutation,
 } = ordersApiSlice;

@@ -54,7 +54,7 @@ const Header = () => {
                 style={{ paddingLeft: 24, fontSize: 17 }}
               >
                 <Nav.Link>
-                  <FaShoppingCart /> Cart
+                  <FaShoppingCart /> Sepetim
                   {cartItems.length > 0 && (
                     <Badge
                       pill
@@ -74,11 +74,11 @@ const Header = () => {
                   id='username'
                 >
                   <LinkContainer to='/profile'>
-                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                    <NavDropdown.Item>Profilim</NavDropdown.Item>
                   </LinkContainer>
 
                   <NavDropdown.Item onClick={logoutHandler}>
-                    Log out
+                    Çıkış Yap
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
@@ -87,7 +87,7 @@ const Header = () => {
                   style={{ paddingLeft: 24, fontSize: 17 }}
                 >
                   <Nav.Link>
-                    <FaUser /> Sign In
+                    <FaUser /> Giriş Yap
                   </Nav.Link>
                 </LinkContainer>
               )}

@@ -16,10 +16,10 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
             }}
             to='/login'
           >
-            <Nav.Link>Sign In</Nav.Link>
+            <Nav.Link>Kayıt Ol</Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Sign In</Nav.Link>
+          <Nav.Link disabled>Kayıt Ol</Nav.Link>
         )}
       </Nav.Item>
 
@@ -33,10 +33,10 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
             }}
             to='/shipping'
           >
-            <Nav.Link>Shipping</Nav.Link>
+            <Nav.Link>Adres Bilgileri</Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Shipping</Nav.Link>
+          <Nav.Link disabled>Adres Bilgileri</Nav.Link>
         )}
       </Nav.Item>
 
@@ -50,10 +50,10 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
             }}
             to='/payment'
           >
-            <Nav.Link>Payment</Nav.Link>
+            <Nav.Link>Ödeme Yöntemi</Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Payment</Nav.Link>
+          <Nav.Link disabled>Ödeme Yöntemi</Nav.Link>
         )}
       </Nav.Item>
 
@@ -69,10 +69,10 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
             }}
             to='/placeorder'
           >
-            <Nav.Link>Place Order</Nav.Link>
+            <Nav.Link>Siparişi Tamamla</Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Place Order</Nav.Link>
+          <Nav.Link disabled>Siparişi Tamamla</Nav.Link>
         )}
       </Nav.Item>
     </Nav>

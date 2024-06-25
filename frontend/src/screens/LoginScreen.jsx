@@ -45,24 +45,24 @@ const LoginScreen = () => {
 
   return (
     <FormContainer>
-      <h1>Sign In</h1>
+      <h1>Giriş Yap</h1>
 
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='email' className='my-3'>
-          <Form.Label> Email Address</Form.Label>
+          <Form.Label> Email Adresi</Form.Label>
           <Form.Control
             type='email'
-            placeholder='Enter your e-mail'
+            placeholder='Email Adresiniz'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
         <Form.Group controlId='password' className='my-3'>
-          <Form.Label> Password</Form.Label>
+          <Form.Label> Şifre</Form.Label>
           <Form.Control
             type='password'
-            placeholder='Enter your password'
+            placeholder='Şifreniz'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
@@ -74,7 +74,7 @@ const LoginScreen = () => {
           className='mt-2'
           disabled={isLoading}
         >
-          Sign In
+          Giriş Yap
         </Button>
 
         {isLoading && <Loader />}
@@ -82,9 +82,9 @@ const LoginScreen = () => {
 
       <Row className='py-3'>
         <Col>
-          New Customer? {'  '}
+          Yeni bir müşteri misin? {'  '}
           <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
-            Register
+            Kayıt Ol
           </Link>
         </Col>
       </Row>
