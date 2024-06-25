@@ -1,15 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import {
-  Row,
-  Col,
-  ListGroup,
-  Image,
-  Card,
-  Form,
-  Button,
-  Cart,
-} from 'react-bootstrap';
+import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -17,7 +8,7 @@ import {
   useGetOrderDetailsQuery,
   usePayOrderMutation,
 } from '../slices/ordersApiSlice';
-import CreditCardForm from '../components/CreditCardForm';
+import PaymentModal from '../components/PaymentModal';
 
 const OrderScreen = () => {
   const { id: orderId } = useParams();
@@ -29,24 +20,37 @@ const OrderScreen = () => {
     error,
   } = useGetOrderDetailsQuery(orderId);
 
-  // Ödeme işlemi için mutation hook'unu kullan
-  const [payOrder, { isLoadingPay: isPaying, isPaySuccess: isPaid }] =
-    usePayOrderMutation();
+  const [payOrder, { isLoading: isPaying }] = usePayOrderMutation();
 
-  const [showCardForm, setShowCardForm] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handlePayment = () => {
-    setShowCardForm(true);
+    setShowModal(true);
   };
 
   const processPayment = async (paymentDetails) => {
-    await payOrder({ orderId, details: paymentDetails });
+    try {
+      const paymentResult = {
+        cardHolderName: paymentDetails.name,
+        cardNumber: paymentDetails.number,
+        expireMonth: paymentDetails.expiry.split('/')[0],
+        expireYear: paymentDetails.expiry.split('/')[1],
+        cvc: paymentDetails.cvc,
+      };
+      await payOrder({ orderId, paymentResult }).unwrap();
+      toast.success('Ödeme Başarılı');
+      refetch();
+      setShowModal(false);
+    } catch (error) {
+      toast.error('Ödeme Başarısız');
+      console.error(error);
+    }
   };
 
   return isLoading ? (
     <Loader />
   ) : error ? (
-    <Message variant='danger' />
+    <Message variant='danger'>{error}</Message>
   ) : (
     <>
       <h1 className='mt-2 py-3'>Sipariş No: {order._id}</h1>
@@ -143,12 +147,9 @@ const OrderScreen = () => {
                 </Row>
               </ListGroup.Item>
 
-              {/* PAY ORDER PLACEHOLDER */}
               <ListGroup.Item>
                 {order.isPaid ? (
                   <Message variant='success'>Ödeme Başarılı</Message>
-                ) : showCardForm ? (
-                  <CreditCardForm processPayment={processPayment} />
                 ) : (
                   <Button
                     type='button'
@@ -160,12 +161,16 @@ const OrderScreen = () => {
                   </Button>
                 )}
               </ListGroup.Item>
-
-              {/* MARK AS DELIVERED PLACEHOLDER */}
             </ListGroup>
           </Card>
         </Col>
       </Row>
+
+      <PaymentModal
+        show={showModal}
+        handleClose={() => setShowModal(false)}
+        processPayment={processPayment}
+      />
     </>
   );
 };

@@ -24,13 +24,20 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
 
     // PAY ORDER ENDPOINT
     payOrder: builder.mutation({
-      query: (orderId, details) => ({
-        url: `${ORDERS_URL}/${orderId}/pay`,
+      query: ({ orderId, paymentResult }) => ({
+        url: `/api/orders/${orderId}/pay`,
         method: 'PUT',
-        // body: { ...details },
-        body: details,
+        body: paymentResult,
       }),
     }),
+    // payOrder: builder.mutation({
+    //   query: (orderId, details) => ({
+    //     url: `${ORDERS_URL}/${orderId}/pay`,
+    //     method: 'PUT',
+    //     // body: { ...details },
+    //     body: details,
+    //   }),
+    // }),
 
     // GET IYZICO CLIENT ID (API KEY) ENDPOINT
     getIyzicoClientId: builder.query({

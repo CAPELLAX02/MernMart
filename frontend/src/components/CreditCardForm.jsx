@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 
-const CreditCardForm = ({ processPayment }) => {
+const CreditCardForm = ({ onSubmit }) => {
   const [state, setState] = useState({
     number: '',
     name: '',
@@ -13,7 +13,27 @@ const CreditCardForm = ({ processPayment }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setState((prev) => ({ ...prev, [name]: value }));
+
+    // Kart numarası formatlama
+    let formattedValue = value;
+    if (name === 'number') {
+      formattedValue = value
+        .replace(/\s?/g, '')
+        .replace(/(\d{4})/g, '$1 ')
+        .trim();
+    }
+
+    // Expiry date formatlama
+    if (name === 'expiry') {
+      formattedValue = value
+        .replace(/^([1-9]\/|[2-9])$/g, '0$1/')
+        .replace(/^(0[1-9]|1[0-2])$/g, '$1/')
+        .replace(/^([0-1])([3-9])$/g, '0$1/$2')
+        .replace(/^(0?[1-9]|1[0-2])([0-9]{1,4})$/g, '$1/$2')
+        .replace(/^(0[1-9]|1[0-2])\/([0-9]{2}).*/g, '$1/$2');
+    }
+
+    setState((prev) => ({ ...prev, [name]: formattedValue }));
   };
 
   const handleInputFocus = (e) => {
@@ -22,7 +42,7 @@ const CreditCardForm = ({ processPayment }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    processPayment(state);
+    onSubmit(state);
   };
 
   return (
@@ -41,8 +61,10 @@ const CreditCardForm = ({ processPayment }) => {
               type='text'
               name='number'
               className='form-control'
-              placeholder='Card Number'
+              placeholder='XXXX XXXX XXXX XXXX'
               value={state.number}
+              pattern='\d{4} \d{4} \d{4} \d{4}'
+              maxLength={19}
               onChange={handleInputChange}
               onFocus={handleInputFocus}
               required
@@ -53,7 +75,7 @@ const CreditCardForm = ({ processPayment }) => {
               type='text'
               name='name'
               className='form-control'
-              placeholder='Name'
+              placeholder='KART SAHİBİ'
               value={state.name}
               onChange={handleInputChange}
               onFocus={handleInputFocus}
@@ -66,8 +88,8 @@ const CreditCardForm = ({ processPayment }) => {
                 type='text'
                 name='expiry'
                 className='form-control'
-                placeholder='Valid Thru (MM/YY)'
-                pattern='\d\d/\d\d'
+                placeholder='MM/YY'
+                pattern='(0[1-9]|1[0-2])\/[0-9]{2}'
                 value={state.expiry}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus}
@@ -85,12 +107,13 @@ const CreditCardForm = ({ processPayment }) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus}
                 required
+                maxLength={3}
               />
             </div>
           </div>
           <div className='d-grid'>
-            <button type='submit' className='btn btn-primary text-white'>
-              Confirm
+            <button type='submit' className='btn btn-primary'>
+              Ödeme İşlemini Tamamla
             </button>
           </div>
         </form>
