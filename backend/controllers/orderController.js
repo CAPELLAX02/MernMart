@@ -95,7 +95,6 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   console.log('BUYER NAME:', order.user.name);
   console.log('BUYER EMAIL:', order.user.email);
 
-  // Sepet öğelerinin toplam fiyatını hesaplayın
   const basketTotalPrice = order.orderItems.reduce((total, item) => {
     return total + item.price * item.qty;
   }, 0);
@@ -105,8 +104,8 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   const paymentRequest = {
     locale: Iyzipay.LOCALE.TR,
     conversationId: order._id.toString(),
-    price: basketTotalPrice.toFixed(2), // Sepet toplam fiyatını kullanın
-    paidPrice: basketTotalPrice.toFixed(2), // Sepet toplam fiyatını kullanın
+    price: basketTotalPrice.toFixed(2),
+    paidPrice: basketTotalPrice.toFixed(2),
     currency: Iyzipay.CURRENCY.TRY,
     installment: '1',
     basketId: order._id.toString(),
@@ -115,8 +114,6 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
       cardNumber: cardNumber,
       expireMonth: expireDate.split('/')[0],
       expireYear: '20' + expireDate.split('/')[1],
-      // expireMonth: req.body.expireMonth,
-      // expireYear: req.body.expireYear,
       cvc: cvc,
       registerCard: '0',
     },
@@ -152,24 +149,9 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
       category1: 'General',
       category2: 'General',
       itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
-      price: (item.price * item.qty).toFixed(2), // Sepet öğesinin fiyatını ve miktarını kullanın
+      price: (item.price * item.qty).toFixed(2),
     })),
   };
-
-  // // Eksik alanları kontrol edin
-  // const requiredFields = [
-  //   'cardHolderName',
-  //   'cardNumber',
-  //   'expireMonth',
-  //   'expireYear',
-  //   'cvc',
-  // ];
-  // for (const field of requiredFields) {
-  //   if (!req.body[field]) {
-  //     res.status(400).json({ message: `${field} alanı zorunludur` });
-  //     return;
-  //   }
-  // }
 
   iyzipay.payment.create(paymentRequest, async (err, result) => {
     if (err) {
@@ -202,14 +184,25 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 // @route    PUT /api/orders/:id/deliver
 // @access   Private/Admin
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
-  res.send('update order to paid');
+  const order = await Order.findById(req.params.id);
+
+  if (order) {
+    order.isDelivered = true;
+    order.deliveredAt = Date.now();
+    const updatedOrder = await order.save();
+    res.status(200).json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
 });
 
 // @desc     Get all orders
 // @route    GET /api/orders
 // @access   Private/Admin
 const getAllOrders = asyncHandler(async (req, res) => {
-  res.send('get all orders');
+  const orders = await Order.find({}).populate('user', 'id name');
+  res.status(200).json(orders);
 });
 
 // @desc     Delete order

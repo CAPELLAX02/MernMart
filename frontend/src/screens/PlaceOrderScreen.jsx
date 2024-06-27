@@ -112,8 +112,8 @@ const PlaceOrderScreen = () => {
                           </Col>
 
                           <Col md={3}>
-                            {item.qty} x ${item.price} = $
-                            {(item.qty * (item.price * 100)) / 100}
+                            {item.qty} x {item.price} TL =
+                            {(item.qty * (item.price * 100)) / 100} TL
                           </Col>
 
                           {/* <Col md={1}>
@@ -141,21 +141,21 @@ const PlaceOrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Ürün Fiyatı: </Col>
-                  <Col>${cart.itemsPrice}</Col>
+                  <Col>{cart.itemsPrice} TL</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col>Kargo Fiyatı: </Col>
-                  <Col>${cart.shippingPrice}</Col>
+                  <Col>{cart.shippingPrice} TL</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col>Vergi Fiyatı (15%): </Col>
-                  <Col>${cart.taxPrice}</Col>
+                  <Col>{cart.taxPrice} TL</Col>
                 </Row>
               </ListGroup.Item>
 
@@ -165,7 +165,7 @@ const PlaceOrderScreen = () => {
                     <strong>Toplam Fiyat: </strong>
                   </Col>
                   <Col>
-                    <strong>${cart.totalPrice}</strong>
+                    <strong>{cart.totalPrice} TL</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>

@@ -4,11 +4,14 @@ import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import { useSelector } from 'react-redux';
 import {
   useGetOrderDetailsQuery,
   usePayOrderMutation,
+  useDeliverOrderMutation,
 } from '../slices/ordersApiSlice';
 import PaymentModal from '../components/PaymentModal';
+import { formatDate } from '../utils/formatDate';
 
 const OrderScreen = () => {
   const { id: orderId } = useParams();
@@ -21,6 +24,21 @@ const OrderScreen = () => {
   } = useGetOrderDetailsQuery(orderId);
 
   const [payOrder, { isLoading: isPaying }] = usePayOrderMutation();
+
+  const [deliverOrder, { isLoading: loadingDeliver }] =
+    useDeliverOrderMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const deliverOrderHandler = async () => {
+    try {
+      await deliverOrder(orderId);
+      refetch();
+      toast.success("Sipariş 'Teslim Edildi' olarak işaretlendi.");
+    } catch (err) {
+      toast.error(err?.data?.message || err.message);
+    }
+  };
 
   const [showModal, setShowModal] = useState(false);
 
@@ -74,7 +92,7 @@ const OrderScreen = () => {
 
               {order.isDelivered ? (
                 <Message variant='success'>
-                  {order.deliveredAt} tarihinde kargoya verildi.
+                  {formatDate(order.deliveredAt)} tarihinde teslim edildi.
                 </Message>
               ) : (
                 <Message variant='danger'>Henüz kargoya verilmedi.</Message>
@@ -89,7 +107,7 @@ const OrderScreen = () => {
 
               {order.isPaid ? (
                 <Message variant='success'>
-                  {order.paidAt} tarihinde ödeme alındı.
+                  {formatDate(order.paidAt)} tarihinde ödeme alındı.
                 </Message>
               ) : (
                 <Message variant='danger'>Henüz ödeme yapılmadı.</Message>
@@ -108,7 +126,7 @@ const OrderScreen = () => {
                       <Link to={`/product/${item.product}`}>{item.name}</Link>
                     </Col>
                     <Col md={3}>
-                      {item.qty} x ${item.price} = ${item.qty * item.price}
+                      {item.qty} x {item.price} TL = {item.qty * item.price} TL
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -127,40 +145,59 @@ const OrderScreen = () => {
               <ListGroup.Item>
                 <Row className='py-2'>
                   <Col>Ürünler</Col>
-                  <Col>${order.itemsPrice}</Col>
+                  <Col>{order.itemsPrice} TL</Col>
                 </Row>
                 <Row className='py-2'>
                   <Col>Kargo</Col>
-                  <Col>${order.shippingPrice}</Col>
+                  <Col>{order.shippingPrice} TL</Col>
                 </Row>
                 <Row className='py-2'>
                   <Col>Vergi</Col>
-                  <Col>${order.taxPrice}</Col>
+                  <Col>{order.taxPrice} TL</Col>
                 </Row>
                 <Row className='py-2'>
                   <Col>
                     <strong>TOPLAM</strong>
                   </Col>
                   <Col>
-                    <strong>${order.totalPrice}</strong>
+                    <strong>{order.totalPrice} TL</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
 
-              <ListGroup.Item>
-                {order.isPaid ? (
-                  <Message variant='success'>Ödeme Başarılı</Message>
-                ) : (
-                  <Button
-                    type='button'
-                    className='btn-block'
-                    disabled={isPaying || order.isPaid}
-                    onClick={handlePayment}
-                  >
-                    {isPaying ? 'İşleniyor...' : 'Ödemeye Geç'}
-                  </Button>
+              {userInfo && !userInfo.isAdmin && (
+                <ListGroup.Item>
+                  {order.isPaid ? (
+                    <Message variant='success'>Ödeme Başarılı</Message>
+                  ) : (
+                    <Button
+                      type='button'
+                      className='btn-block'
+                      disabled={isPaying || order.isPaid}
+                      onClick={handlePayment}
+                    >
+                      {isPaying ? 'İşleniyor...' : 'Ödemeye Geç'}
+                    </Button>
+                  )}
+                </ListGroup.Item>
+              )}
+
+              {loadingDeliver && <Loader />}
+
+              {userInfo &&
+                userInfo.isAdmin &&
+                order.isPaid &&
+                !order.isDelivered && (
+                  <ListGroup.Item>
+                    <Button
+                      type='button'
+                      className='btn btn-block'
+                      onClick={deliverOrderHandler}
+                    >
+                      "Teslim Edildi" olarak işaretle
+                    </Button>
+                  </ListGroup.Item>
                 )}
-              </ListGroup.Item>
             </ListGroup>
           </Card>
         </Col>

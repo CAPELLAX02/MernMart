@@ -1,0 +1,12 @@
+.social-icon {
+  margin: 5px;
+  padding: 12px;
+  transition: 0.25s;
+  border-radius: 50%;
+}
+
+.social-icon:hover {
+  color: #ccc; /* İstediğiniz rengi buraya ekleyin */
+  background-color: #2097d7;
+  transition: 0.25s;
+}

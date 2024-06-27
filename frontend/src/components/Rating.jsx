@@ -1,51 +1,52 @@
 import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
+// import { IoMdStar, IoMdStarHalf, IoMdStarOutline } from 'react-icons/io';
 
 const Rating = ({ value, text }) => {
   return (
     <div className='rating'>
       <span>
         {value >= 1 ? (
-          <FaStar />
+          <FaStar color='#ffc500' size={20} />
         ) : value >= 0.5 ? (
-          <FaStarHalfAlt />
+          <FaStarHalfAlt color='#ffc500' size={20} />
         ) : (
-          <FaRegStar />
+          <FaRegStar color='#ffc500' size={20} />
         )}
       </span>
       <span>
         {value >= 2 ? (
-          <FaStar />
+          <FaStar color='#ffc500' size={20} />
         ) : value >= 1.5 ? (
-          <FaStarHalfAlt />
+          <FaStarHalfAlt color='#ffc500' size={20} />
         ) : (
-          <FaRegStar />
+          <FaRegStar color='#ffc500' size={20} />
         )}
       </span>
       <span>
         {value >= 3 ? (
-          <FaStar />
+          <FaStar color='#ffc500' size={20} />
         ) : value >= 2.5 ? (
-          <FaStarHalfAlt />
+          <FaStarHalfAlt color='#ffc500' size={20} />
         ) : (
-          <FaRegStar />
+          <FaRegStar color='#ffc500' size={20} />
         )}
       </span>
       <span>
         {value >= 4 ? (
-          <FaStar />
+          <FaStar color='#ffc500' size={20} />
         ) : value >= 3.5 ? (
-          <FaStarHalfAlt />
+          <FaStarHalfAlt color='#ffc500' size={20} />
         ) : (
-          <FaRegStar />
+          <FaRegStar color='#ffc500' size={20} />
         )}
       </span>
       <span>
         {value >= 5 ? (
-          <FaStar />
+          <FaStar color='#ffc500' size={20} />
         ) : value >= 4.5 ? (
-          <FaStarHalfAlt />
+          <FaStarHalfAlt color='#ffc500' size={20} />
         ) : (
-          <FaRegStar />
+          <FaRegStar color='#ffc500' size={20} />
         )}
       </span>
 

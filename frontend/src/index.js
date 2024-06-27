@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+// import { HelmetProvider } from 'react-helmet-async';
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -14,6 +15,7 @@ import './assets/styles/bootstrap.custom.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
 import CartScreen from './screens/CartScreen';
@@ -24,11 +26,22 @@ import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import OrderListScreen from './screens/admin/OrderListScreen';
+import ProductListScreen from './screens/admin/ProductListScreen';
+import ProductEditScreen from './screens/admin/ProductEditScreen';
+import UserListScreen from './screens/admin/UserListScreen';
+import UserEditScreen from './screens/admin/UserEditScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index={true} path='/' element={<HomeScreen />} />
+      <Route path='/search/:keyword' element={<HomeScreen />} />
+      <Route path='/page/:pageNumber' element={<HomeScreen />} />
+      <Route
+        path='/search/:keyword/page/:pageNumber'
+        element={<HomeScreen />}
+      />
       <Route path='/product/:id' element={<ProductScreen />} />
       <Route path='/cart' element={<CartScreen />} />
       <Route path='/login' element={<LoginScreen />} />
@@ -41,6 +54,19 @@ const router = createBrowserRouter(
         <Route path='/placeorder' element={<PlaceOrderScreen />} />
         <Route path='/order/:id' element={<OrderScreen />} />
         <Route path='/profile' element={<ProfileScreen />} />
+      </Route>
+
+      {/* Admin Routes */}
+      <Route path='' element={<AdminRoute />}>
+        <Route path='/admin/orderlist' element={<OrderListScreen />} />
+        <Route path='/admin/productlist' element={<ProductListScreen />} />
+        <Route
+          path='/admin/productlist/page/:pageNumber'
+          element={<ProductListScreen />}
+        />
+        <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
+        <Route path='/admin/userlist' element={<UserListScreen />} />
+        <Route path='/admin/users/:id/edit' element={<UserEditScreen />} />
       </Route>
     </Route>
   )

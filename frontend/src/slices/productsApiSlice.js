@@ -1,13 +1,15 @@
 import { apiSlice } from './apiSlice';
-import { PRODUCTS_URL } from '../constants';
+import { PRODUCTS_URL, UPLOAD_URL } from '../constants';
 
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // GET PRODUCTS ENDPOINT
     getProducts: builder.query({
-      query: () => ({
+      query: ({ keyword, pageNumber }) => ({
         url: PRODUCTS_URL,
+        params: { keyword, pageNumber },
       }),
+      providesTags: ['Product'],
       keepUnusedDataFor: 5,
     }),
 
@@ -22,7 +24,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
     // CREATE PRODUCT ENDPOINT
     createProduct: builder.mutation({
       query: () => ({
-        url: `${PRODUCTS_URL}`,
+        url: PRODUCTS_URL,
         method: 'POST',
       }),
       invalidatesTags: ['Product'],
@@ -41,7 +43,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
     // UPLOAD PRODUCT IMAGE ENDPOINT
     uploadProductImage: builder.mutation({
       query: (data) => ({
-        url: `/api/upload`,
+        url: UPLOAD_URL,
         method: 'POST',
         body: data,
       }),
@@ -65,6 +67,8 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Product'],
     }),
+
+    // adminler için delete review yapılabilir uygunsuz yorumlar için.
 
     // GET TOP PRODUCTS ENDPOINT
     getTopProducts: builder.query({

@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice';
 import logo from '../assets/logo.png';
+import './Header.css';
 
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
@@ -69,7 +70,7 @@ const Header = () => {
 
               {userInfo ? (
                 <NavDropdown
-                  style={{ paddingLeft: 16, fontSize: 17 }}
+                  style={{ paddingLeft: 12, paddingRight: 12, fontSize: 17 }}
                   title={userInfo.name}
                   id='username'
                 >
@@ -91,10 +92,37 @@ const Header = () => {
                   </Nav.Link>
                 </LinkContainer>
               )}
+
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown
+                  style={{ fontSize: 17 }}
+                  title='Yönetici Paneli'
+                  id='adminmenu'
+                >
+                  <LinkContainer to='/admin/productlist'>
+                    <NavDropdown.Item>Ürünler</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to='/admin/userlist'>
+                    <NavDropdown.Item>Kullanıcılar</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to='/admin/orderlist'>
+                    <NavDropdown.Item>Siparişler</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
+      <div className='slider'>
+        <div className='slider-text'>
+          %50 İndirim! | Lorem ipsum dolor sit amet consectetur, adipisicing
+          elit. Neque, nulla cumque. Aliquam est asperiores delectus ex dolorem!
+          Repellendus natus ad tenetur! Laudantium esse excepturi obcaecati
+          repellendus sit sapiente quam dicta?
+        </div>
+      </div>
     </header>
   );
 };

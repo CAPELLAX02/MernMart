@@ -30,6 +30,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
         body: paymentResult,
       }),
     }),
+
     // payOrder: builder.mutation({
     //   query: (orderId, details) => ({
     //     url: `${ORDERS_URL}/${orderId}/pay`,
