@@ -25,7 +25,11 @@ const CartScreen = () => {
   };
 
   const removeFromCartHandler = async (id, qty) => {
-    dispatch(removeFromCart(id));
+    if (
+      window.confirm('Bu ürünü sepetten kaldırmak istediğinize emin misiniz?')
+    ) {
+      dispatch(removeFromCart(id));
+    }
   };
 
   const checkoutHandler = () => {
