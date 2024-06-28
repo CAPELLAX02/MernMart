@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,7 +7,6 @@ import Loader from '../components/Loader';
 import { useLoginMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
-import { useEffect } from 'react';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -37,6 +36,7 @@ const LoginScreen = () => {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
+      toast.success('Hoş Geldiniz!');
     } catch (error) {
       toast.error(error?.data?.message || error.error);
       console.log(error);
@@ -86,6 +86,12 @@ const LoginScreen = () => {
           <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
             Kayıt Ol
           </Link>
+        </Col>
+      </Row>
+
+      <Row className='py-3'>
+        <Col>
+          <Link to='/forgot-password'>Şifremi Unuttum</Link>
         </Col>
       </Row>
     </FormContainer>

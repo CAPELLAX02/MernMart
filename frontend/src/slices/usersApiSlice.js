@@ -15,7 +15,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     // REGISTER ENDPOINT
     register: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}`,
+        url: USERS_URL,
         method: 'POST',
         body: data,
       }),
@@ -72,6 +72,33 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
+
+    // SEND FORGOT PASSWORD EMAIL ENDPOINT
+    sendForgotPasswordEmail: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/forgot-password`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
+    // RESET PASSWORD ENDPOINT
+    resetPassword: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/reset-password`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
+    // VERIFY USER ENDPOINT
+    verifyUser: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/verify-email`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -84,4 +111,7 @@ export const {
   useDeleteUserMutation,
   useGetUserDetailsQuery,
   useUpdateUserMutation,
+  useSendForgotPasswordEmailMutation,
+  useResetPasswordMutation,
+  useVerifyUserMutation,
 } = usersApiSlice;

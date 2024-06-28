@@ -10,15 +10,17 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    // AUTH USER & KEEP COOKIE ENDPOINT
     setCredentials: (state, action) => {
       state.userInfo = action.payload;
       localStorage.setItem('userInfo', JSON.stringify(action.payload));
     },
 
+    // LOGOUT USER & CLEAR COOKIE ENDPOINT
     logout: (state, action) => {
       state.userInfo = null;
-      localStorage.removeItem('userInfo');
-      // localStorage.clear();
+      // localStorage.removeItem('userInfo');
+      localStorage.clear();
     },
   },
 });

@@ -6,6 +6,7 @@ import { useGetProductsQuery } from '../slices/productsApiSlice';
 import { Link, useParams } from 'react-router-dom';
 import Paginate from '../components/Paginate';
 import ProductCarousel from '../components/ProductCarousel';
+import Meta from '../components/Meta';
 
 const HomeScreen = () => {
   const { keyword, pageNumber } = useParams();
@@ -25,6 +26,7 @@ const HomeScreen = () => {
         </Message>
       ) : (
         <>
+          <Meta title='e-comMERNce | Your E-Commerce Website' />
           {keyword ? (
             <>
               <Link to='/' className='btn btn-light'>

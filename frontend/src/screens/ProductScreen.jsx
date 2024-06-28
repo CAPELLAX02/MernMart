@@ -21,6 +21,7 @@ import {
 import { addToCart } from '../slices/cartSlice';
 import { toast } from 'react-toastify';
 import { formatDate } from '../utils/formatDate';
+import Meta from '../components/Meta';
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
@@ -80,6 +81,7 @@ const ProductScreen = () => {
         </Message>
       ) : (
         <>
+          <Meta title={product.name} />
           <Row className='border-bottom pb-5'>
             <Col md={5}>
               <Image src={product.image} alt={product.name} fluid />

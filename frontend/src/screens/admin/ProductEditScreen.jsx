@@ -133,8 +133,8 @@ const ProductEditScreen = () => {
                 onChange={uploadFileHandler}
                 type='file'
               ></Form.Control>
-              {loadingProductImage && <Loader />}
             </Form.Group>
+            {loadingProductImage && <Loader />}
 
             <Form.Group className='mt-1 fw-bold' controlId='brand'>
               <Form.Label>Marka</Form.Label>
