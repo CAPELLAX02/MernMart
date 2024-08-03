@@ -39,7 +39,7 @@ const sendEmail = async (userEmail, code, type) => {
   }
 
   await transporter.sendMail({
-    from: '"BBB Mobil" <yourapp@example.com>',
+    from: '"e-comMERNce" <yourapp@example.com>',
     to: userEmail,
     subject: subject,
     html: htmlContent,
