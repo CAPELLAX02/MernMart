@@ -21,7 +21,7 @@ const PaymentModal = ({ show, handleClose, processPayment }) => {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Ödeme Bilgileri</Modal.Title>
+        <Modal.Title>Payment Credentials</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {isSubmitting ? (

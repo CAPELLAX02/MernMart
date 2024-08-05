@@ -6,7 +6,22 @@
 }
 
 .social-icon:hover {
-  color: #ccc; /* İstediğiniz rengi buraya ekleyin */
-  background-color: #2097d7;
+  color: #fff; /* İstediğiniz rengi buraya ekleyin */
+  background-color: #45beff;
   transition: 0.25s;
+}
+
+.slider {
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  box-sizing: border-box;
+  height: 5px;
+  background: linear-gradient(
+    to right,
+    rgb(255, 75, 141),
+    rgb(1, 179, 255),
+    rgb(255, 210, 28),
+    rgb(9, 182, 9)
+  );
 }

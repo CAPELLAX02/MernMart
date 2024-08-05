@@ -11,7 +11,7 @@ const Meta = ({ title, description, keywords }) => {
 };
 
 Meta.defaultProps = {
-  title: 'Welcome to e-comMERNce',
+  title: 'Welcome to Mernmart',
   description: 'We sell the best products for cheap',
   keywords: 'electronics, buy electronics, cheap electronics',
 };

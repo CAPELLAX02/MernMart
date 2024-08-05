@@ -93,10 +93,10 @@ const ProductScreen = () => {
                   <h3>{product.name}</h3>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Rating
-                    value={product.rating}
-                    text={`${product.numReviews} yorum`}
-                  />
+                  <Rating value={product.rating} text={`${product.rating}`} />
+                  <p className='ms-1 mt-2'>
+                    {product.numReviews} Değerlendirme
+                  </p>
                 </ListGroup.Item>
                 <ListGroup.Item>Fiyat: {product.price} TL</ListGroup.Item>
                 <ListGroup.Item>

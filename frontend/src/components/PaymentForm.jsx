@@ -17,7 +17,7 @@ function PaymentForm() {
   return (
     <form onSubmit={handleSubmit}>
       {/* Ödeme form alanları */}
-      <button type='submit'>Öde</button>
+      <button type='submit'>Pay</button>
     </form>
   );
 }

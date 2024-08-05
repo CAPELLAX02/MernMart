@@ -61,15 +61,15 @@ const PlaceOrderScreen = () => {
         <Col md={8}>
           <ListGroup variant='flush'>
             <ListGroup.Item>
-              <h2>Adres & Alıcı Bilgileri</h2>
+              <h2>Address & Custome Information</h2>
               <p>
-                <strong>Adres: </strong>
+                <strong>Address: </strong>
                 {cart.shippingAddress.address}, {cart.shippingAddress.city}{' '}
                 {cart.shippingAddress.postalCode},{' '}
                 {cart.shippingAddress.country}
               </p>
               <p>
-                <strong>İsim: </strong>
+                <strong>Name: </strong>
                 {user.name}
               </p>
               <p>
@@ -79,18 +79,18 @@ const PlaceOrderScreen = () => {
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Ödeme Yöntemi</h2>
+              <h2>Payment Method</h2>
               <p>
-                <strong>Metod: </strong>
+                <strong>Method: </strong>
                 {cart.paymentMethod}
               </p>
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Sipariş Edilecek Ürünler</h2>
+              <h2>Items to be ordered</h2>
               <p>
                 {cart.cartItems.length === 0 ? (
-                  <Message>Kartınızda bir ürün yok.</Message>
+                  <Message>Your cart is empty.</Message>
                 ) : (
                   <ListGroup>
                     {cart.cartItems.map((item, index) => (
@@ -112,8 +112,8 @@ const PlaceOrderScreen = () => {
                           </Col>
 
                           <Col md={3}>
-                            {item.qty} x {item.price} TL =
-                            {(item.qty * (item.price * 100)) / 100} TL
+                            {item.qty} x ${item.price} = $
+                            {(item.qty * (item.price * 100)) / 100}
                           </Col>
 
                           {/* <Col md={1}>
@@ -135,26 +135,26 @@ const PlaceOrderScreen = () => {
           <Card>
             <ListGroup variant='flush'>
               <ListGroup.Item>
-                <h2>Sipariş Özeti</h2>
+                <h2>Order Summary</h2>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
-                  <Col>Ürün Fiyatı: </Col>
+                  <Col>Item Cost: </Col>
                   <Col>{cart.itemsPrice} TL</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
-                  <Col>Kargo Fiyatı: </Col>
+                  <Col>Shipping Cost: </Col>
                   <Col>{cart.shippingPrice} TL</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
-                  <Col>Vergi Fiyatı (15%): </Col>
+                  <Col>Tax (15%): </Col>
                   <Col>{cart.taxPrice} TL</Col>
                 </Row>
               </ListGroup.Item>
@@ -162,10 +162,10 @@ const PlaceOrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>
-                    <strong>Toplam Fiyat: </strong>
+                    <strong>Total: </strong>
                   </Col>
                   <Col>
-                    <strong>{cart.totalPrice} TL</strong>
+                    <strong>${cart.totalPrice}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -183,7 +183,7 @@ const PlaceOrderScreen = () => {
                   disabled={cart.cartItems.length === 0}
                   onClick={placeOrderHandler}
                 >
-                  Sipariş Ver
+                  Order Now
                 </Button>
 
                 {isLoading && <Loader />}

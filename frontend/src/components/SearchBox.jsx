@@ -20,22 +20,39 @@ const SearchBox = () => {
   };
 
   return (
-    <Form onSubmit={submitHandler} className='d-flex'>
+    <Form
+      onSubmit={submitHandler}
+      className='d-flex position-relative'
+      style={{ width: '400px' }}
+    >
       <Form.Control
         type='text'
-        style={{ width: '300px' }}
+        style={{
+          paddingRight: '70px',
+          paddingTop: 8,
+          paddingBottom: 8,
+          borderColor: '#bbb',
+        }}
         name='q'
         onChange={(e) => setKeyword(e.target.value)}
         value={keyword}
-        placeholder='Ürün, kategori veya marka ara'
-        className='mr-sm-2 ml-sm-5'
+        placeholder='Search product, category or brand.'
+        className='mr-sm-2 ml-sm-5 ms-4 border-2'
       ></Form.Control>
       <Button
         type='submit'
-        style={{ backgroundColor: '#ffc500' }}
-        className='p-2 px-3 mx-2 text-black fw-medium'
+        style={{
+          position: 'absolute',
+          right: '0',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
+          borderColor: '#bbb',
+        }}
+        className='py-0 px-3 m-0 h-100 text-black fw-medium bg-danger text-white shadow-none'
       >
-        Ara
+        Search
       </Button>
     </Form>
   );

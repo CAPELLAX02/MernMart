@@ -57,57 +57,57 @@ const ProfileScreen = () => {
   return (
     <Row className='mt-2'>
       <Col md={3}>
-        <h2 className='my-3'>Profiliniz</h2>
+        <h2 className='my-3'>My Profile</h2>
 
         <Form onSubmit={submitHandler}>
           <Form.Group className='my-2' controlId='name'>
-            <Form.Label>İsim</Form.Label>
+            <Form.Label>Name</Form.Label>
             <Form.Control
               type='text'
-              placeholder='İsminiz'
+              placeholder='Name'
               value={name}
               onChange={(e) => setName(e.target.value)}
             ></Form.Control>
           </Form.Group>
 
           <Form.Group className='my-2' controlId='email'>
-            <Form.Label>Email Adresi</Form.Label>
+            <Form.Label>Email Address</Form.Label>
             <Form.Control
               type='email'
-              placeholder='Email Adresiniz'
+              placeholder='Email Address'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             ></Form.Control>
           </Form.Group>
 
           <Form.Group className='my-2' controlId='password'>
-            <Form.Label>Şifre</Form.Label>
+            <Form.Label>Password</Form.Label>
             <Form.Control
               type='password'
-              placeholder='Şifreniz'
+              placeholder='Password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             ></Form.Control>
           </Form.Group>
 
           <Form.Group className='my-2' controlId='confirmPassword'>
-            <Form.Label>Şifreyi Doğrula</Form.Label>
+            <Form.Label>Password (Again)</Form.Label>
             <Form.Control
               type='password'
-              placeholder='Şifreniz (Tekrar)'
+              placeholder='Password (Again)'
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             ></Form.Control>
           </Form.Group>
 
           <Button type='submit' variant='primary' className='my-3'>
-            Profili Güncelle
+            Update Profile
           </Button>
           {loadingUpdateProfile && <Loader />}
         </Form>
       </Col>
       <Col md={9}>
-        <h2 className='my-3'>Siparişlerim</h2>
+        <h2 className='my-3'>My Orders</h2>
         {isLoading ? (
           <Loader />
         ) : error ? (
@@ -119,10 +119,10 @@ const ProfileScreen = () => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>TARİH</th>
-                <th>FİYAT</th>
-                <th>ÖDEME</th>
-                <th>TESLİMAT</th>
+                <th>DATE</th>
+                <th>COST</th>
+                <th>PAYMENT</th>
+                <th>DELIVERY</th>
                 <th></th>
               </tr>
             </thead>

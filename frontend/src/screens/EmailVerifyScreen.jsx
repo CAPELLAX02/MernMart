@@ -28,13 +28,13 @@ const EmailVerifyScreen = () => {
 
   return (
     <FormContainer>
-      <h1>Email Doğrulama</h1>
+      <h1>Email Verification</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='verificationCode' className='my-3'>
-          <Form.Label>Doğrulama Kodu</Form.Label>
+          <Form.Label>Verification Code</Form.Label>
           <Form.Control
             type='text'
-            placeholder='6 Haneli Kodu Girin'
+            placeholder='Enter 6-Digit Vode'
             value={verificationCode}
             onChange={(e) => setVerificationCode(e.target.value)}
           ></Form.Control>
@@ -46,7 +46,7 @@ const EmailVerifyScreen = () => {
           className='mt-2'
           disabled={isLoading}
         >
-          Doğrula
+          Verify
         </Button>
 
         {isLoading && <Loader />}

@@ -73,20 +73,20 @@ const RegisterScreen = () => {
         </Form.Group>
 
         <Form.Group controlId='password' className='my-3'>
-          <Form.Label>Şifre</Form.Label>
+          <Form.Label>Password</Form.Label>
           <Form.Control
             type='password'
-            placeholder='Şifreniz'
+            placeholder='Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
         <Form.Group controlId='confirmPassword' className='my-3'>
-          <Form.Label>Şifre (Tekrar)</Form.Label>
+          <Form.Label>Password (Again)</Form.Label>
           <Form.Control
             type='password'
-            placeholder='Şifrenizi Doğrulayın'
+            placeholder='Verify Password'
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
@@ -98,7 +98,7 @@ const RegisterScreen = () => {
           className='mt-2'
           disabled={isLoading}
         >
-          Kayıt Ol
+          Sign Up
         </Button>
 
         {isLoading && <Loader />}
@@ -106,8 +106,8 @@ const RegisterScreen = () => {
 
       <Row className='py-3'>
         <Col>
-          Zaten bir hesabın var mı? {'  '}
-          <Link to='/login'>Giriş Yap</Link>
+          Already have an account? {'  '}
+          <Link to='/login'>Sign In</Link>
         </Col>
       </Row>
     </FormContainer>

@@ -17,14 +17,17 @@ const Product = ({ product }) => {
         </Link>
 
         <Card.Text as='div'>
-          <Rating value={product.rating} text={`${product.numReviews} Yorum`} />
+          <Rating
+            value={product.rating}
+            text={`${product.numReviews} Reviews`}
+          />
         </Card.Text>
 
-        <Card.Text className='pt-2' as='h3'>
-          {product.price} TL
+        <Card.Text className='pt-2 text-primary fw-normal' as='h3'>
+          ${product.price}
         </Card.Text>
 
-        <Button className='text-white btn-info'>Sepete Ekle</Button>
+        <Button className='text-white btn-danger py-2'>Add to Cart</Button>
       </Card.Body>
     </Card>
   );

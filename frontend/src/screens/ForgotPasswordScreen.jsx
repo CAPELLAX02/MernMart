@@ -16,26 +16,22 @@ const ForgotPasswordScreen = () => {
     e.preventDefault();
     try {
       await sendForgotPasswordEmail({ email }).unwrap();
-      toast.success(
-        `Şifre sıfırlama kodu ${email} e-posta adresine gönderildi`
-      );
+      toast.success(`Reset password code sen to ${email}.`);
       navigate('/reset-password', { state: { email } }); // E-posta adresini burada taşıyoruz
     } catch (err) {
-      toast.error(
-        `Bir hata meydana geldi. [${err?.data?.message || err.error}]`
-      );
+      toast.error(`Something went wrong. [${err?.data?.message || err.error}]`);
     }
   };
 
   return (
     <FormContainer>
-      <h1>Şifremi Unuttum</h1>
+      <h1>Forgot Password</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='email' className='my-3'>
-          <Form.Label>Email Adresinizi</Form.Label>
+          <Form.Label>Email Address</Form.Label>
           <Form.Control
             type='email'
-            placeholder='Email Adresinizi Girin'
+            placeholder='Enter your email address.'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
@@ -46,7 +42,7 @@ const ForgotPasswordScreen = () => {
           className='mt-2'
           disabled={isLoading}
         >
-          Şifre Sıfırlama Kodunu Gönder
+          Send Reset Code
         </Button>
         {isLoading && <Loader />}
       </Form>

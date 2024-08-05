@@ -25,9 +25,8 @@ const CartScreen = () => {
   };
 
   const removeFromCartHandler = async (id, qty) => {
-    if (
-      window.confirm('Bu ürünü sepetten kaldırmak istediğinize emin misiniz?')
-    ) {
+    if (window.confirm('Remove item?')) {
+      // add proper modal in places like this.
       dispatch(removeFromCart(id));
     }
   };
@@ -40,10 +39,10 @@ const CartScreen = () => {
   return (
     <Row className='my-4'>
       <Col md={8}>
-        <h1>Alışveriş Sepetim</h1>
+        <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (
           <Message>
-            Sepetinizde henüz bir ürün yok. <Link to='/'> Geri Dön</Link>
+            Your cart is empty for now. <Link to='/'> Go Back</Link>
           </Message>
         ) : (
           <ListGroup variant='flush'>
@@ -56,7 +55,7 @@ const CartScreen = () => {
                   <Col md={3}>
                     <Link to={`/product/${item._id}`}>{item.name}</Link>
                   </Col>
-                  <Col md={2}>{item.price} TL</Col>
+                  <Col md={2}>${item.price}</Col>
                   <Col md={2}>
                     <Form.Control
                       as='select'
@@ -93,8 +92,8 @@ const CartScreen = () => {
           <ListGroup variant='flush'>
             <ListGroup.Item>
               <h2>
-                Toplam ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
-                Ürünler
+                Total ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                Products
               </h2>
               {cartItems
                 .reduce((acc, item) => acc + item.qty * item.price, 0)
@@ -109,7 +108,7 @@ const CartScreen = () => {
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >
-                Ödeme ile Devam Et
+                Proceed Payment
               </Button>
             </ListGroup.Item>
           </ListGroup>

@@ -30,21 +30,15 @@ const UserEditScreen = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (
-      window.confirm(
-        'Bu kullanıcıdaki değişiklikleri kaydetmek istediğine emin misiniz?'
-      )
-    ) {
+    if (window.confirm('Save changes?')) {
       try {
         await updateUser({ userId, name, email, isAdmin });
-        toast.success('Kullanıcı bilgileri başarıyla güncellendi.');
+        toast.success('User updated successfully.');
         refetch();
         navigate('/admin/userlist');
       } catch (err) {
         toast.error(
-          `Beklenmedik bir hata meydana geldi. [${
-            err?.data?.message || err.error
-          }]`
+          `Something went wrong. [${err?.data?.message || err.error}]`
         );
       }
     }
@@ -61,10 +55,10 @@ const UserEditScreen = () => {
   return (
     <>
       <Link to='/admin/userlist' className='btn btn-light my-3'>
-        Geri Dön
+        Go Back
       </Link>
       <FormContainer>
-        <h1>Kullanıcıyı Güncelle</h1>
+        <h1>Update User</h1>
         {loadingUpdate && <Loader />}
         {isLoading ? (
           <Loader />
@@ -75,20 +69,20 @@ const UserEditScreen = () => {
         ) : (
           <Form onSubmit={submitHandler}>
             <Form.Group className='my-3' controlId='name'>
-              <Form.Label>İsim</Form.Label>
+              <Form.Label>Name</Form.Label>
               <Form.Control
                 type='name'
-                placeholder='Kullanıcı İsmi'
+                placeholder='Name'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
             <Form.Group className='my-3' controlId='email'>
-              <Form.Label>Email Adresi</Form.Label>
+              <Form.Label>Email Address</Form.Label>
               <Form.Control
                 type='email'
-                placeholder='Kullanıcı Email Adresi'
+                placeholder='Kullanıcı Email Address'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               ></Form.Control>
@@ -97,14 +91,14 @@ const UserEditScreen = () => {
             <Form.Group className='my-4' controlId='isadmin'>
               <Form.Check
                 type='checkbox'
-                label='Yöneticilik Yetkisi'
+                label='Is Admin'
                 checked={isAdmin}
                 onChange={(e) => setIsAdmin(e.target.checked)}
               ></Form.Check>
             </Form.Group>
 
             <Button type='submit' variant='primary'>
-              Değişiklikleri Kaydet
+              Save Changes
             </Button>
           </Form>
         )}

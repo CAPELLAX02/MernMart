@@ -52,11 +52,11 @@ const ProductListScreen = () => {
     <>
       <Row className='align-items-center mt-2'>
         <Col>
-          <h1>Ürünler</h1>
+          <h1>Products</h1>
         </Col>
         <Col className='text-end'>
           <Button className='my-3' onClick={createProductHandler}>
-            <FaPlus /> Ürün Ekle
+            <FaPlus /> New Product
           </Button>
         </Col>
       </Row>
@@ -68,18 +68,18 @@ const ProductListScreen = () => {
         <Loader />
       ) : error ? (
         <Message variant='danger'>
-          Beklenmedik bir sorun oluştu. [{error?.data?.message || error.error}]
+          Something went wrong. [{error?.data?.message || error.error}]
         </Message>
       ) : (
         <>
           <Table striped hover responsive className='table-sm'>
             <thead>
               <tr>
-                <th>ÜRÜN ID</th>
-                <th>ÜRÜN ADI</th>
-                <th>FİYAT</th>
-                <th>KATEGORİ</th>
-                <th>MARKA</th>
+                <th>PRODUCT ID</th>
+                <th>PRODUCT NAME</th>
+                <th>PRICE</th>
+                <th>CATEGORY</th>
+                <th>BRAND</th>
                 <th></th>
               </tr>
             </thead>

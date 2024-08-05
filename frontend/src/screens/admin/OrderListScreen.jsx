@@ -11,24 +11,24 @@ const OrderListScreen = () => {
 
   return (
     <>
-      <h1 className='mt-3'>Siparişler</h1>
+      <h1 className='mt-3'>Orders</h1>
       {isLoading ? (
         <Loader />
       ) : error ? (
         <Message variant='danger'>
-          Sipariş verileri çekilirken bir hata meydana geldi. [
+          Something went wrong while fetching the orders' data. [
           {error?.data?.message || error.error}]
         </Message>
       ) : (
         <Table striped hover responsive className='mt-2'>
           <thead>
             <tr>
-              <th>SİPARİŞ ID</th>
-              <th>MÜŞTERİ</th>
-              <th>TARİH</th>
-              <th>FİYAT</th>
-              <th>ÖDEME</th>
-              <th>TESLİMAT</th>
+              <th>ORDER ID</th>
+              <th>CUSTOMER</th>
+              <th>DATE</th>
+              <th>COST</th>
+              <th>PAYMEMT</th>
+              <th>DELIVERY</th>
               <th></th>
             </tr>
           </thead>
@@ -60,7 +60,7 @@ const OrderListScreen = () => {
                     variant='info'
                     className='btn-sm text-white'
                   >
-                    Detaylar
+                    Details
                   </Button>
                 </td>
               </tr>

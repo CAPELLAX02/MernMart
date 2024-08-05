@@ -36,7 +36,7 @@ const LoginScreen = () => {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
-      toast.success('Hoş Geldiniz!');
+      toast.success('Welcome');
     } catch (error) {
       toast.error(error?.data?.message || error.error);
       console.log(error);
@@ -45,24 +45,24 @@ const LoginScreen = () => {
 
   return (
     <FormContainer>
-      <h1>Giriş Yap</h1>
+      <h1>Sign In</h1>
 
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='email' className='my-3'>
-          <Form.Label> Email Adresi</Form.Label>
+          <Form.Label>Email Address</Form.Label>
           <Form.Control
             type='email'
-            placeholder='Email Adresiniz'
+            placeholder='Email Address'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
         <Form.Group controlId='password' className='my-3'>
-          <Form.Label> Şifre</Form.Label>
+          <Form.Label>Password</Form.Label>
           <Form.Control
             type='password'
-            placeholder='Şifreniz'
+            placeholder='Password' // Make it floating input later
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
@@ -74,7 +74,7 @@ const LoginScreen = () => {
           className='mt-2'
           disabled={isLoading}
         >
-          Giriş Yap
+          Sign In
         </Button>
 
         {isLoading && <Loader />}
@@ -82,16 +82,16 @@ const LoginScreen = () => {
 
       <Row className='py-3'>
         <Col>
-          Yeni bir müşteri misin? {'  '}
+          Are you new customer? {'  '}
           <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
-            Kayıt Ol
+            Sign Up
           </Link>
         </Col>
       </Row>
 
       <Row className='py-3'>
         <Col>
-          <Link to='/forgot-password'>Şifremi Unuttum</Link>
+          <Link to='/forgot-password'>Forgot Password</Link>
         </Col>
       </Row>
     </FormContainer>

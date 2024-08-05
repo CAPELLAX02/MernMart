@@ -113,7 +113,7 @@ const CreditCardForm = ({ onSubmit }) => {
           </div>
           <div className='d-grid'>
             <button type='submit' className='btn btn-primary'>
-              Ödeme İşlemini Tamamla
+              Pay $59.99
             </button>
           </div>
         </form>

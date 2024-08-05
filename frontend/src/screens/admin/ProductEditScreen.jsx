@@ -76,7 +76,7 @@ const ProductEditScreen = () => {
     formData.append('image', e.target.files[0]);
     try {
       const res = await uploadProductImage(formData).unwrap();
-      toast.success('Ürün fotoğrafı başarıyla yüklendi.', res.message);
+      toast.success('Product image uploaded successfully.', res.message);
       setImage(res.image);
     } catch (err) {
       toast.error(err?.data?.message || err.error);
@@ -86,50 +86,49 @@ const ProductEditScreen = () => {
   return (
     <>
       <Link to='/admin/productlist' className='btn btn-light mt-1'>
-        Geri Dön
+        Go Back
       </Link>
       <FormContainer>
-        <h1>Ürünü Güncelle</h1>
+        <h1>Edit Product</h1>
         {loadingUpdate && <Loader />}
         {isLoading ? (
           <Loader />
         ) : error ? (
           <Message variant='danger'>
-            Beklenmedik bir hata meydana geldi. [
-            {error?.data?.message || error.error}]
+            Something went wrong. [{error?.data?.message || error.error}]
           </Message>
         ) : (
           <Form onSubmit={submitHandler}>
             <Form.Group className='mt-1 fw-bold' controlId='name'>
-              <Form.Label>Ürünün Adı</Form.Label>
+              <Form.Label>Product Name</Form.Label>
               <Form.Control
                 type='name'
-                placeholder='Ürünün Adı'
+                placeholder='Product Name'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
             <Form.Group className='mt-1 fw-bold' controlId='price'>
-              <Form.Label>Fiyat</Form.Label>
+              <Form.Label>Price</Form.Label>
               <Form.Control
                 type='number'
-                placeholder='Fiyat'
+                placeholder='Price'
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
             <Form.Group className='mt-1 fw-bold' controlId='image'>
-              <Form.Label>Ürünün Fotoğrafı</Form.Label>
+              <Form.Label>Product Image</Form.Label>
               <Form.Control
                 type='text'
-                placeholder='Ürünün Fotoğrafı'
+                placeholder='Product Image'
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
               <Form.Control
-                label='Dosya Seç'
+                label='Upload File'
                 onChange={uploadFileHandler}
                 type='file'
               ></Form.Control>
@@ -137,49 +136,49 @@ const ProductEditScreen = () => {
             {loadingProductImage && <Loader />}
 
             <Form.Group className='mt-1 fw-bold' controlId='brand'>
-              <Form.Label>Marka</Form.Label>
+              <Form.Label>Brand</Form.Label>
               <Form.Control
                 type='text'
-                placeholder='Marka'
+                placeholder='Brand'
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
             <Form.Group className='mt-1 fw-bold' controlId='countInStock'>
-              <Form.Label>Stok Durumu</Form.Label>
+              <Form.Label>Stock</Form.Label>
               <Form.Control
                 type='number'
-                placeholder='Stok Durumu'
+                placeholder='Stock'
                 value={countInStock}
                 onChange={(e) => setCountInStock(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
             <Form.Group className='mt-1 fw-bold' controlId='category'>
-              <Form.Label>Kategori</Form.Label>
+              <Form.Label>Category</Form.Label>
               <Form.Control
                 type='text'
-                placeholder='Kategori'
+                placeholder='Category'
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
             <Form.Group className='mt-1 fw-bold' controlId='description'>
-              <Form.Label>Açıklama</Form.Label>
+              <Form.Label>Product Description</Form.Label>
               <Form.Control
                 as='textarea'
                 rows={5}
                 type='text'
-                placeholder='Açıklama'
+                placeholder='Product Description'
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
             <Button type='submit' variant='primary' className='mt-3'>
-              Güncelle
+              Update
             </Button>
           </Form>
         )}

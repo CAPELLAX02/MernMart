@@ -26,16 +26,16 @@ const HomeScreen = () => {
         </Message>
       ) : (
         <>
-          <Meta title='e-comMERNce | Your E-Commerce Website' />
+          <Meta title='Mernmart | Your eCommerce Website' />
           {keyword ? (
             <>
               <Link to='/' className='btn btn-light'>
-                Geri Dön
+                Go Back
               </Link>
-              <h1 className='mt-4'>"{keyword}" ile İlgili Arama Sonuçları</h1>
+              <h1 className='mt-4'>Results related to "{keyword}"</h1>
             </>
           ) : (
-            <h1 className='mt-4'>Öne Çıkan Ürünler</h1>
+            <h1 className='mt-4'>Featured Products</h1>
           )}
 
           <Row className='mb-5'>

@@ -10,26 +10,27 @@ const Footer = () => {
   // const googleMapSrc = `https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=Ankara+University+Gölbaşı+Campus&zoom=15`;
 
   return (
-    <footer>
-      <div className='bg-primary text-white py-5'>
+    <footer style={{ background: '#fef3e7' }}>
+      <div className='slider'></div>
+      <div className='py-5 text-black'>
         <Container>
           <Row>
             <Col
               md={4}
               className='text-center text-md-left px-5 border-end border-1 border-info pb-4 pt-3'
             >
-              <h5>Hakkımızda</h5>
+              <h5>About Us</h5>
               <p>
-                En iyi ürünleri en iyi fiyatlarla sunan lider bir e-ticaret
-                sitesiyiz. Güncel kalmak için sosyal medya kanallarımızı takip
-                edin.
+                We are a leading e-commerce site offering the best products at
+                the best prices. Follow our social media channels to stay up to
+                date.
               </p>
             </Col>
             <Col
               md={4}
               className='text-center my-3 my-md-0 px-5 border-end border-1 border-info'
             >
-              <h5>Bizi Takip Edin</h5>
+              <h5>Follow Us</h5>
               <div className='d-flex justify-content-center'>
                 <a
                   href='https://facebook.com'
@@ -37,7 +38,7 @@ const Footer = () => {
                   rel='noopener noreferrer'
                   className='mx-3 text-white social-icon'
                 >
-                  <FaFacebook size={30} />
+                  <FaFacebook size={30} color='#000' />
                 </a>
                 <a
                   href='https://twitter.com'
@@ -45,7 +46,7 @@ const Footer = () => {
                   rel='noopener noreferrer'
                   className='mx-3 text-white social-icon'
                 >
-                  <FaTwitter size={30} />
+                  <FaTwitter size={30} color='#000' />
                 </a>
                 <a
                   href='https://instagram.com'
@@ -53,7 +54,7 @@ const Footer = () => {
                   rel='noopener noreferrer'
                   className='mx-3 text-white social-icon'
                 >
-                  <FaInstagram size={30} />
+                  <FaInstagram size={30} color='#000' />
                 </a>
                 <a
                   href='https://linkedin.com'
@@ -61,25 +62,25 @@ const Footer = () => {
                   rel='noopener noreferrer'
                   className='mx-3 text-white social-icon'
                 >
-                  <FaLinkedin size={30} />
+                  <FaLinkedin size={30} color='#000' />
                 </a>
               </div>
             </Col>
             <Col md={4} className='text-center text-md-right px-5'>
-              <h5>İletişim</h5>
-              <p>Email: destek@e-comMERNce.com</p>
-              <p>Telefon: +90 123 456 7890</p>
+              <h5>Reach Us</h5>
+              <p>Email: support@mernmart.com</p>
+              <p>Phone: +90 123 456 7890</p>
             </Col>
           </Row>
           <Row className='pt-5'>
             <Col className='text-center'>
-              <p>&copy; {currentYear} e-comMERNce. Tüm Hakları Saklıdır.</p>
+              <p>Mernmart Inc. &copy; {currentYear} | All rights reserved</p>
             </Col>
           </Row>
           <Row className='d-flex justify-content-center align-items-center pt-3'>
             <Col className='d-flex justify-content-center align-items-center'>
-              <h3 className='mb-0 mr-2'>Powered by</h3>
-              <Image src={logo} className='w-25' />
+              {/* <h3 className='mb-0 mr-2'>Powered by</h3>
+              <Image src={logo} className='w-25' /> */}
             </Col>
           </Row>
         </Container>

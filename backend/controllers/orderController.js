@@ -87,18 +87,13 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   );
 
   if (!order) {
-    res.status(404).json({ message: 'Order not found' });
-    return;
+    return res.status(404).json({ message: 'Order not found' });
   }
 
-  console.log('BUYER ID:', order.user._id.toString());
-  console.log('BUYER NAME:', order.user.name);
-  console.log('BUYER EMAIL:', order.user.email);
-
-  const basketTotalPrice = order.orderItems.reduce((total, item) => {
-    return total + item.price * item.qty;
-  }, 0);
-
+  const basketTotalPrice = order.orderItems.reduce(
+    (total, item) => total + item.price * item.qty,
+    0
+  );
   const { cardUserName, cardNumber, expireDate, cvc } = req.body;
 
   const paymentRequest = {
@@ -153,31 +148,39 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     })),
   };
 
-  iyzipay.payment.create(paymentRequest, async (err, result) => {
-    if (err) {
-      console.error('IYZICO Payment Error:', err);
-      res
-        .status(500)
-        .json({ message: 'Payment processing failed', error: err });
-    } else if (result.status !== 'success') {
+  try {
+    const result = await new Promise((resolve, reject) => {
+      iyzipay.payment.create(paymentRequest, (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      });
+    });
+
+    if (result.status !== 'success') {
       console.error('IYZICO Payment Error:', result.errorMessage);
-      res.status(500).json({
+      return res.status(500).json({
         message: 'Payment processing failed',
         error: result.errorMessage,
       });
-    } else {
-      order.isPaid = true;
-      order.paidAt = Date.now();
-      order.paymentResult = {
-        id: result.paymentId,
-        status: result.status,
-        update_time: Date.now(),
-        email_address: order.user.email,
-      };
-      const updatedOrder = await order.save();
-      res.status(200).json(updatedOrder);
     }
-  });
+
+    order.isPaid = true;
+    order.paidAt = Date.now();
+    order.paymentResult = {
+      id: result.paymentId,
+      status: result.status,
+      update_time: Date.now(),
+      email_address: order.user.email,
+    };
+
+    const updatedOrder = await order.save();
+    return res.status(200).json(updatedOrder);
+  } catch (error) {
+    console.error('IYZICO Payment Error:', error);
+    return res
+      .status(500)
+      .json({ message: 'Payment processing failed', error });
+  }
 });
 
 // @desc     Update order to delivered
