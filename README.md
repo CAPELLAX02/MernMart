@@ -1,4 +1,4 @@
-# e-comMERNce Project
+# Mernmart Project
 
 > eCommerce platform built with the MERN stack & Redux.
 
