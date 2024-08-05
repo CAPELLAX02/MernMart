@@ -3,9 +3,9 @@
 > eCommerce platform built with the MERN stack & Redux.
 
 ### Click [here](https://proshopdemo.dev) to see live preview
-/*
-# <img src="./frontend/public/images/screens.png">
-*/
+
+# <img src="./frontend/public/images/screens.jpg">
+
 - [Technology Stack](#technology-stack)
 - [Features](#features)
 - [Usage](#usage)
