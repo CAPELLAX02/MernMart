@@ -1,10 +1,10 @@
-# e-comMERNce Project
+# Mernmart Project
 
 > eCommerce platform built with the MERN stack & Redux.
 
 ### Click [here](https://proshopdemo.dev) to see live preview
 
-# <img src="./frontend/public/images/screens.png">
+# <img src="./frontend/public/images/screens.jpg">
 
 - [Technology Stack](#technology-stack)
 - [Features](#features)
@@ -54,22 +54,6 @@
 - **Concurrently:** A utility that allows running multiple commands concurrently. It is useful for running both the frontend and backend servers simultaneously during development.
 
 With this setup, the project leverages the MERN stack (MongoDB, Express.js, React, and Node.js) to build a comprehensive e-commerce platform with various advanced features. These technologies collectively enhance the development process, providing tools for state management, client-server communication, authentication, file handling, and more, resulting in a robust and scalable application.
-
-## Features---------------------
-
-- Full featured shopping cart
-- Product reviews and ratings
-- Top products carousel
-- Product pagination
-- Product search feature
-- User profile with orders
-- Admin product management
-- Admin user management
-- Admin Order details page
-- Mark orders as delivered as admin
-- Checkout process (shipping, payment method, etc)
-- Iyzico payment integration
-- Database seeder (products & users)
 
 ## Features
 
