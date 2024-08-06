@@ -22,12 +22,10 @@ const OrderScreen = () => {
     error,
   } = useGetOrderDetailsQuery(orderId);
 
-  const [payOrder, { isLoading: isPaying }] = usePayOrderMutation();
+  // const [payOrder, { isLoading: isPaying }] = usePayOrderMutation();
   const [deliverOrder, { isLoading: loadingDeliver }] =
     useDeliverOrderMutation();
   const { userInfo } = useSelector((state) => state.auth);
-
-  const [checkoutFormContent, setCheckoutFormContent] = useState('');
 
   const deliverOrderHandler = async () => {
     try {
@@ -39,34 +37,7 @@ const OrderScreen = () => {
     }
   };
 
-  const handlePayment = async () => {
-    try {
-      const response = await fetch('/api/orders/iyzico/token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ orderId }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch Iyzico token');
-      }
-
-      const data = await response.json();
-      console.log(data);
-      setCheckoutFormContent(data.checkoutFormContent);
-    } catch (err) {
-      toast.error('Ödeme formu alınamadı.');
-    }
-  };
-
-  useEffect(() => {
-    if (checkoutFormContent) {
-      const iyzicoFormDiv = document.getElementById('iyzipay-checkout-form');
-      iyzicoFormDiv.innerHTML = checkoutFormContent;
-    }
-  }, [checkoutFormContent]);
+  const handlePayment = async () => {};
 
   return isLoading ? (
     <Loader />
@@ -178,7 +149,7 @@ const OrderScreen = () => {
                     <Button
                       type='button'
                       className='btn-block'
-                      disabled={isPaying || order.isPaid}
+                      // disabled={isPaying || order.isPaid}
                       onClick={handlePayment}
                     >
                       {isPaying ? 'İşleniyor...' : 'Ödemeye Geç'}

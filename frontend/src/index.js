@@ -47,8 +47,6 @@ const router = createBrowserRouter(
         element={<HomeScreen />}
       />
 
-      <Route path='/callback' element={<CallBackIyzicoScreen />} />
-
       <Route path='/product/:id' element={<ProductScreen />} />
       <Route path='/cart' element={<CartScreen />} />
       <Route path='/login' element={<LoginScreen />} />
