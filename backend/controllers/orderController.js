@@ -1,8 +1,5 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import Order from '../models/orderModel.js';
-import iyzipay from '../config/iyzico.js';
-import Iyzipay from 'iyzipay';
-import axios from 'axios';
 
 // @desc     Create new order
 // @route    POST /api/orders

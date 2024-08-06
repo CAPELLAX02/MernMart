@@ -22,7 +22,7 @@ const OrderScreen = () => {
     error,
   } = useGetOrderDetailsQuery(orderId);
 
-  // const [payOrder, { isLoading: isPaying }] = usePayOrderMutation();
+  const [payOrder, { isLoading: isPaying }] = usePayOrderMutation();
   const [deliverOrder, { isLoading: loadingDeliver }] =
     useDeliverOrderMutation();
   const { userInfo } = useSelector((state) => state.auth);
