@@ -2,15 +2,7 @@ import asyncHandler from '../middleware/asyncHandler.js';
 import Order from '../models/orderModel.js';
 import iyzipay from '../config/iyzico.js';
 import Iyzipay from 'iyzipay';
-
-/*
-    Request equivalents of CRUD (Create, Read, Update, and Delete):
-
-       POST : Create
-        GET : Read
-        PUT : Update
-     DELETE : Delete
-*/
+import axios from 'axios';
 
 // @desc     Create new order
 // @route    POST /api/orders
@@ -33,7 +25,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
     const order = new Order({
       orderItems: orderItems.map((order) => ({
         ...order,
-        // product: x._id,
         product: order._id,
         _id: undefined,
       })),
@@ -47,7 +38,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
     });
 
     const createdOrder = await order.save();
-
     res.status(200).json(createdOrder);
   }
 });
@@ -61,7 +51,7 @@ const getMyOrders = asyncHandler(async (req, res) => {
 });
 
 // @desc     Get order by ID
-// @route    GET /api/orders/myorders/:id
+// @route    GET /api/orders/:id
 // @access   Private
 const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id).populate(
@@ -72,114 +62,7 @@ const getOrderById = asyncHandler(async (req, res) => {
   if (order) {
     res.status(200).json(order);
   } else {
-    res.status(404);
-    throw new Error('Order not found');
-  }
-});
-
-// @desc     Update order to paid
-// @route    PUT /api/orders/:id/pay
-// @access   Private
-const updateOrderToPaid = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id).populate(
-    'user',
-    'name email'
-  );
-
-  if (!order) {
-    return res.status(404).json({ message: 'Order not found' });
-  }
-
-  const basketTotalPrice = order.orderItems.reduce(
-    (total, item) => total + item.price * item.qty,
-    0
-  );
-  const { cardUserName, cardNumber, expireDate, cvc } = req.body;
-
-  const paymentRequest = {
-    locale: Iyzipay.LOCALE.TR,
-    conversationId: order._id.toString(),
-    price: basketTotalPrice.toFixed(2),
-    paidPrice: basketTotalPrice.toFixed(2),
-    currency: Iyzipay.CURRENCY.TRY,
-    installment: '1',
-    basketId: order._id.toString(),
-    paymentCard: {
-      cardHolderName: cardUserName,
-      cardNumber: cardNumber,
-      expireMonth: expireDate.split('/')[0],
-      expireYear: '20' + expireDate.split('/')[1],
-      cvc: cvc,
-      registerCard: '0',
-    },
-    buyer: {
-      id: order.user._id.toString(),
-      name: order.user.name,
-      surname: order.user.name.split(' ').slice(1).join(' ') || 'NA',
-      email: order.user.email,
-      identityNumber: '11111111111',
-      registrationAddress: order.shippingAddress.address,
-      ip: req.ip,
-      city: order.shippingAddress.city,
-      country: order.shippingAddress.country,
-      zipCode: order.shippingAddress.postalCode,
-    },
-    shippingAddress: {
-      contactName: order.user.name,
-      city: order.shippingAddress.city,
-      country: order.shippingAddress.country,
-      address: order.shippingAddress.address,
-      zipCode: order.shippingAddress.postalCode,
-    },
-    billingAddress: {
-      contactName: order.user.name,
-      city: order.shippingAddress.city,
-      country: order.shippingAddress.country,
-      address: order.shippingAddress.address,
-      zipCode: order.shippingAddress.postalCode,
-    },
-    basketItems: order.orderItems.map((item) => ({
-      id: item.product.toString(),
-      name: item.name,
-      category1: 'General',
-      category2: 'General',
-      itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
-      price: (item.price * item.qty).toFixed(2),
-    })),
-  };
-
-  try {
-    const result = await new Promise((resolve, reject) => {
-      iyzipay.payment.create(paymentRequest, (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      });
-    });
-
-    if (result.status !== 'success') {
-      console.error('IYZICO Payment Error:', result.errorMessage);
-      return res.status(500).json({
-        message: 'Payment processing failed',
-        error: result.errorMessage,
-      });
-    }
-
-    order.isPaid = true;
-    order.paidAt = Date.now();
-    order.paymentResult = {
-      id: result.paymentId,
-      status: result.status,
-      update_time: Date.now(),
-      email_address: order.user.email,
-    };
-
-    const updatedOrder = await order.save();
-    return res.status(200).json(updatedOrder);
-  } catch (error) {
-    console.error('IYZICO Payment Error:', error);
-    return res
-      .status(500)
-      .json({ message: 'Payment processing failed', error });
+    res.status(404).throw(new Error('Order not found'));
   }
 });
 
@@ -195,8 +78,7 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
     const updatedOrder = await order.save();
     res.status(200).json(updatedOrder);
   } else {
-    res.status(404);
-    throw new Error('Order not found');
+    res.status(404).throw(new Error('Order not found'));
   }
 });
 
@@ -209,17 +91,23 @@ const getAllOrders = asyncHandler(async (req, res) => {
 });
 
 // @desc     Delete order
-// @route    DELETE /api/orders/:id/delete
+// @route    DELETE /api/orders/:id
 // @access   Private/Admin
 const deleteOrder = asyncHandler(async (req, res) => {
-  res.send('delete order');
+  const order = await Order.findById(req.params.id);
+
+  if (order) {
+    await order.remove();
+    res.status(200).json({ message: 'Order removed' });
+  } else {
+    res.status(404).throw(new Error('Order not found'));
+  }
 });
 
 export {
   addOrderItems,
   getMyOrders,
   getOrderById,
-  updateOrderToPaid,
   updateOrderToDelivered,
   getAllOrders,
   deleteOrder,

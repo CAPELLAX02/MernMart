@@ -4,7 +4,7 @@ import {
   addOrderItems,
   getMyOrders,
   getOrderById,
-  updateOrderToPaid,
+  // updateOrderToPaid,
   updateOrderToDelivered,
   getAllOrders,
   deleteOrder,
@@ -23,7 +23,7 @@ router
   .get(protect, getOrderById)
   .put(protect, admin, deleteOrder);
 
-router.route('/:id/pay').put(protect, updateOrderToPaid);
+// router.route('/:id/pay').put(protect, updateOrderToPaid);
 
 router.route('/:id/deliver').put(protect, admin, updateOrderToDelivered);
 

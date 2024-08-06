@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
@@ -10,7 +10,6 @@ import {
   usePayOrderMutation,
   useDeliverOrderMutation,
 } from '../slices/ordersApiSlice';
-import PaymentModal from '../components/PaymentModal';
 import { formatDate } from '../utils/formatDate';
 
 const OrderScreen = () => {
@@ -24,11 +23,11 @@ const OrderScreen = () => {
   } = useGetOrderDetailsQuery(orderId);
 
   const [payOrder, { isLoading: isPaying }] = usePayOrderMutation();
-
   const [deliverOrder, { isLoading: loadingDeliver }] =
     useDeliverOrderMutation();
-
   const { userInfo } = useSelector((state) => state.auth);
+
+  const [checkoutFormContent, setCheckoutFormContent] = useState('');
 
   const deliverOrderHandler = async () => {
     try {
@@ -40,30 +39,34 @@ const OrderScreen = () => {
     }
   };
 
-  const [showModal, setShowModal] = useState(false);
-
-  const handlePayment = () => {
-    setShowModal(true);
-  };
-
-  const processPayment = async (paymentDetails) => {
+  const handlePayment = async () => {
     try {
-      const paymentResult = {
-        cardHolderName: paymentDetails.name,
-        cardNumber: paymentDetails.number,
-        expireMonth: paymentDetails.expiry.split('/')[0],
-        expireYear: paymentDetails.expiry.split('/')[1],
-        cvc: paymentDetails.cvc,
-      };
-      await payOrder({ orderId, paymentResult }).unwrap();
-      toast.success('Payment Successfull!');
-      refetch();
-      setShowModal(false);
-    } catch (error) {
-      toast.error('Payment failed.');
-      console.error(error);
+      const response = await fetch('/api/orders/iyzico/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orderId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch Iyzico token');
+      }
+
+      const data = await response.json();
+      console.log(data);
+      setCheckoutFormContent(data.checkoutFormContent);
+    } catch (err) {
+      toast.error('Ödeme formu alınamadı.');
     }
   };
+
+  useEffect(() => {
+    if (checkoutFormContent) {
+      const iyzicoFormDiv = document.getElementById('iyzipay-checkout-form');
+      iyzicoFormDiv.innerHTML = checkoutFormContent;
+    }
+  }, [checkoutFormContent]);
 
   return isLoading ? (
     <Loader />
@@ -72,6 +75,8 @@ const OrderScreen = () => {
   ) : (
     <>
       <h1 className='mt-2 py-3'>Order ({order._id})</h1>
+
+      <div id='iyzipay-checkout-form' className='popup'></div>
 
       <Row>
         <Col md={8}>
@@ -107,7 +112,7 @@ const OrderScreen = () => {
 
               {order.isPaid ? (
                 <Message variant='success'>
-                  Paid at{formatDate(order.paidAt)}.
+                  Paid at {formatDate(order.paidAt)}.
                 </Message>
               ) : (
                 <Message variant='danger'>Not paid yet.</Message>
@@ -168,7 +173,7 @@ const OrderScreen = () => {
               {userInfo && !userInfo.isAdmin && (
                 <ListGroup.Item>
                   {order.isPaid ? (
-                    <Message variant='success'>Payment Successfull</Message>
+                    <Message variant='success'>Payment Successful</Message>
                   ) : (
                     <Button
                       type='button'
@@ -202,12 +207,6 @@ const OrderScreen = () => {
           </Card>
         </Col>
       </Row>
-
-      <PaymentModal
-        show={showModal}
-        handleClose={() => setShowModal(false)}
-        processPayment={processPayment}
-      />
     </>
   );
 };
