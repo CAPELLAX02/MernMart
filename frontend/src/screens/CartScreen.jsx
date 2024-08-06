@@ -32,8 +32,9 @@ const CartScreen = () => {
   };
 
   const checkoutHandler = () => {
-    // convenience for the unauthenticated users
-    navigate('/login?redirect=/shipping');
+    // convenience for the unauthenticated users (implement it again, after the stripe API integration)
+    // navigate('/login?redirect=/shipping');
+    navigate('/checkout');
   };
 
   return (

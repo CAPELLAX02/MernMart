@@ -1,5 +1,10 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import Order from '../models/orderModel.js';
+import Stripe from 'stripe';
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(
+  'sk_test_51PkqaLH9opOR77k1n9SVX2wpXcVoNy1ujaxKWIAGHHRvWeT9CXGo3TqXIkuVtL0UcjF9rnrBe37m18eI7LgHTZ6m00BTYSmt8s'
+);
 
 // @desc     Create new order
 // @route    POST /api/orders
@@ -101,6 +106,51 @@ const deleteOrder = asyncHandler(async (req, res) => {
   }
 });
 
+// POST /api/orders/create-checkout-session
+const createCheckoutSession = asyncHandler(async (req, res) => {
+  if (!req.body.cartItems) {
+    res.status(400).json({ message: 'Cart items are required' });
+    console.log('Cart Items Error!');
+    return;
+  }
+  const { cartItems } = req.body; // Frontend'den gelen sepet ürünleri
+
+  const lineItems = cartItems.map((item) => ({
+    price_data: {
+      currency: 'usd',
+      product_data: {
+        name: item.name,
+        // images: [item.image], // Ürün resmini de ekleyebilirsiniz.
+      },
+      unit_amount: Math.round(item.price * 100), // Fiyatı cent cinsinden.
+    },
+    quantity: item.qty,
+  }));
+
+  const session = await stripe.checkout.sessions.create({
+    ui_mode: 'embedded',
+    payment_method_types: ['card'],
+    line_items: lineItems,
+    mode: 'payment',
+    // success_url: `http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}`,
+    // success_url: `http://localhost:3000/success`,
+    // cancel_url: `http://localhost:3000/cancel`,
+    return_url: `http://localhost:3000/return?session_id={CHECKOUT_SESSION_ID}`,
+  });
+
+  res.json({ clientSecret: session.client_secret });
+});
+
+// GET /api/orders/session-status
+const getStripeSessionStatus = asyncHandler(async (req, res) => {
+  const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
+
+  res.send({
+    status: session.status,
+    customer_email: session.customer_details.email,
+  });
+});
+
 export {
   addOrderItems,
   getMyOrders,
@@ -108,4 +158,6 @@ export {
   updateOrderToDelivered,
   getAllOrders,
   deleteOrder,
+  createCheckoutSession,
+  getStripeSessionStatus,
 };

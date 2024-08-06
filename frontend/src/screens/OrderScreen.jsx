@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
@@ -7,12 +6,14 @@ import Loader from '../components/Loader';
 import { useSelector } from 'react-redux';
 import {
   useGetOrderDetailsQuery,
-  usePayOrderMutation,
+  // usePayOrderMutation,
   useDeliverOrderMutation,
 } from '../slices/ordersApiSlice';
 import { formatDate } from '../utils/formatDate';
+// import { useNavigate } from 'react-router-dom';
 
 const OrderScreen = () => {
+  // const navigate = useNavigate();
   const { id: orderId } = useParams();
 
   const {
@@ -22,7 +23,7 @@ const OrderScreen = () => {
     error,
   } = useGetOrderDetailsQuery(orderId);
 
-  const [payOrder, { isLoading: isPaying }] = usePayOrderMutation();
+  // const [payOrder, { isLoading: isPaying }] = usePayOrderMutation();
   const [deliverOrder, { isLoading: loadingDeliver }] =
     useDeliverOrderMutation();
   const { userInfo } = useSelector((state) => state.auth);
@@ -152,7 +153,7 @@ const OrderScreen = () => {
                       // disabled={isPaying || order.isPaid}
                       onClick={handlePayment}
                     >
-                      {isPaying ? 'İşleniyor...' : 'Ödemeye Geç'}
+                      {/* {isPaying ? 'İşleniyor...' : 'Ödemeye Geç'} */}
                     </Button>
                   )}
                 </ListGroup.Item>

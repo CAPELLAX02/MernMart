@@ -35,6 +35,7 @@ import ProductEditScreen from './screens/admin/ProductEditScreen';
 import UserListScreen from './screens/admin/UserListScreen';
 import UserEditScreen from './screens/admin/UserEditScreen';
 import CallBackIyzicoScreen from './screens/CallBackIyzicoScreen';
+import { CheckoutForm, Return } from './screens/StripePaymentScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,6 +47,11 @@ const router = createBrowserRouter(
         path='/search/:keyword/page/:pageNumber'
         element={<HomeScreen />}
       />
+
+      {/* Stripe Payment Routes */}
+      <Route path='/checkout' element={<CheckoutForm />} />
+      <Route path='/return' element={<Return />} />
+      {/* --------------------- */}
 
       <Route path='/product/:id' element={<ProductScreen />} />
       <Route path='/cart' element={<CartScreen />} />
