@@ -16,33 +16,60 @@ const EmailVerifyScreen = () => {
   const location = useLocation();
   const { name, email, password } = location.state || {};
 
-  console.log(email);
-  console.log(name);
-  console.log(password);
+  const [resendAttempts, setResendAttempts] = useState(0);
+
+  const resendVerificationCode = async () => {
+    if (resendAttempts < 3) {
+      try {
+        await register({ name, email, password }).unwrap();
+        setResendAttempts((prev) => prev + 1);
+        setTimer(180); // Süreyi tekrar başlat
+        localStorage.setItem('timer', '180'); // LocalStorage'da süreyi sıfırla
+        toast.info('A new verification code has been sent to your email.', {
+          theme: 'colored',
+          position: 'top-center',
+        });
+      } catch (error) {
+        toast.error('Failed to resend verification code.', {
+          theme: 'colored',
+          position: 'top-center',
+        });
+      }
+    } else {
+      toast.error('No more attempts left to resend verification code.', {
+        theme: 'colored',
+        position: 'top-center',
+      });
+    }
+  };
 
   const [verifyUser, { isLoading: verifyLoading }] = useVerifyUserMutation();
 
   const [register, { isLoading: resendCodeLoading }] = useRegisterMutation();
 
-  const resendVerificationCode = async () => {
-    await register({ name, email, password }).unwrap();
-  };
-
-  const initialTimer = localStorage.getItem('timer')
-    ? parseInt(localStorage.getItem('timer'))
-    : 180;
+  // LocalStorage'dan süreyi al veya varsayılan değer olarak 180 saniye ata
+  const initialTimer = parseInt(localStorage.getItem('timer')) || 180;
   const [timer, setTimer] = useState(initialTimer);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (timer > 0) {
-        setTimer(timer - 1);
-        localStorage.setItem('timer', timer - 1);
-      }
-    }, 1000);
+    if (!email) {
+      localStorage.removeItem('timer');
+      setTimer(180);
+    }
+  }, [email]);
 
-    return () => clearInterval(interval);
-  }, [timer]);
+  useEffect(() => {
+    if (timer > 0) {
+      const interval = setInterval(() => {
+        setTimer((prevTimer) => {
+          const newTimer = prevTimer - 1;
+          localStorage.setItem('timer', newTimer);
+          return newTimer;
+        });
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, []);
 
   const handleChange = (e, index) => {
     const value = e.target.value;
@@ -59,8 +86,21 @@ const EmailVerifyScreen = () => {
   };
 
   const handleKeyDown = (e, index) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
-      document.getElementById(`otp-input-${index - 1}`).focus();
+    if (e.key === 'Backspace') {
+      if (!otp[index] && index > 0) {
+        // Önceki inputa geç
+        const prevInput = document.getElementById(`otp-input-${index - 1}`);
+        prevInput.focus();
+        // Önceki inputun değerini temizle
+        const newOtp = [...otp];
+        newOtp[index - 1] = '';
+        setOtp(newOtp);
+      } else if (otp[index]) {
+        // Mevcut input değerini temizle
+        const newOtp = [...otp];
+        newOtp[index] = '';
+        setOtp(newOtp);
+      }
     }
   };
 
