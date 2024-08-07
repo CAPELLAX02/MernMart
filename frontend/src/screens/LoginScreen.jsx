@@ -36,9 +36,15 @@ const LoginScreen = () => {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
-      toast.success('Welcome');
+      toast.success('Welcome!', {
+        theme: 'colored',
+        position: 'top-center',
+      });
     } catch (error) {
-      toast.error(error?.data?.message || error.error);
+      toast.error(error?.data?.message || error.error, {
+        theme: 'colored',
+        position: 'top-center',
+      });
       console.log(error);
     }
   };

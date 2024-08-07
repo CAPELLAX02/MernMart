@@ -17,12 +17,18 @@ const UserListScreen = () => {
   const [deleteUser] = useDeleteUserMutation();
 
   const deleteHandler = async (id) => {
-    if (window.confirm('Bu kullanıcıyı silmek istediğinizden emin misiniz?')) {
+    if (window.confirm('Do you want to delete the user?')) {
       try {
         await deleteUser(id);
         refetch();
       } catch (err) {
-        toast.error(err?.data?.message || err.error);
+        toast.error(
+          `Someting went wrong. [${err?.data?.message || err.error}]`,
+          {
+            theme: 'colored',
+            position: 'top-center',
+          }
+        );
       }
     }
   };

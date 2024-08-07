@@ -32,9 +32,15 @@ const OrderScreen = () => {
     try {
       await deliverOrder(orderId);
       refetch();
-      toast.success("Sipariş 'Teslim Edildi' olarak işaretlendi.");
+      toast.success("Order marked as 'delivered'.", {
+        theme: 'colored',
+        position: 'top-center',
+      });
     } catch (err) {
-      toast.error(err?.data?.message || err.message);
+      toast.error(err?.data?.message || err.message, {
+        theme: 'colored',
+        position: 'top-center',
+      });
     }
   };
 

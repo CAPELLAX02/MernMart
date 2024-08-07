@@ -16,10 +16,19 @@ const ForgotPasswordScreen = () => {
     e.preventDefault();
     try {
       await sendForgotPasswordEmail({ email }).unwrap();
-      toast.success(`Reset password code sen to ${email}.`);
+      toast.success(`Reset password code sen to ${email}.`, {
+        theme: 'colored',
+        position: 'top-center',
+      });
       navigate('/reset-password', { state: { email } }); // E-posta adresini burada taşıyoruz
     } catch (err) {
-      toast.error(`Something went wrong. [${err?.data?.message || err.error}]`);
+      toast.error(
+        `Something went wrong. [${err?.data?.message || err.error}]`,
+        {
+          theme: 'colored',
+          position: 'top-center',
+        }
+      );
     }
   };
 

@@ -30,19 +30,31 @@ const RegisterScreen = () => {
     e.preventDefault();
 
     if (password.length < 6) {
-      toast.error('Şifreniz en az 6 karakterden oluşmalıdır.');
+      toast.warning('Password must be at least 6 characters.', {
+        theme: 'colored',
+        position: 'top-center',
+      });
       return;
     }
 
     if (password !== confirmPassword) {
-      toast.error('Şifreler eşleşmiyor.');
+      toast.error('Passwords do not match.', {
+        theme: 'colored',
+        position: 'top-center',
+      });
     } else {
       try {
         await register({ name, email, password }).unwrap();
         navigate('/verify', { state: { email } });
-        toast.success('Doğrulama kodu e-posta adresinize gönderildi.');
+        toast.success(`Verification code sen to ${email}.`, {
+          theme: 'colored',
+          position: 'top-center',
+        });
       } catch (error) {
-        toast.error(error?.data?.message || error.error);
+        toast.error(error?.data?.message || error.error, {
+          theme: 'colored',
+          position: 'top-center',
+        });
         console.log(error);
       }
     }

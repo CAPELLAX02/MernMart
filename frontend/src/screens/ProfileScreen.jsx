@@ -35,7 +35,10 @@ const ProfileScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error('Passwords do not match', {
+        theme: 'colored',
+        position: 'top-center',
+      });
     } else {
       try {
         const res = await updateProfile({
@@ -47,9 +50,15 @@ const ProfileScreen = () => {
           password,
         }).unwrap();
         dispatch(setCredentials({ ...res }));
-        toast.success('Profile updated successfully');
+        toast.success('Profile updated successfully', {
+          theme: 'colored',
+          position: 'top-center',
+        });
       } catch (err) {
-        toast.error(err?.data?.message || err.error);
+        toast.error(err?.data?.message || err.error, {
+          theme: 'colored',
+          position: 'top-center',
+        });
       }
     }
   };

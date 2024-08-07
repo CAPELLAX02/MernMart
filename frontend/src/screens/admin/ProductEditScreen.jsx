@@ -50,12 +50,20 @@ const ProductEditScreen = () => {
         description,
         countInStock,
       }).unwrap(); // NOTE: here we need to unwrap the Promise to catch any rejection in our catch block
-      toast.success('Ürün Güncellendi.');
+      toast.success('Product updated successfully.', {
+        theme: 'colored',
+        position: 'top-center',
+      });
       refetch();
       navigate('/admin/productlist');
     } catch (err) {
-      window.alert('YYY');
-      toast.error(err?.data?.message || err.err);
+      toast.error(
+        `Something went wrong. [${err?.data?.message || err.error}]`,
+        {
+          theme: 'colored',
+          position: 'top-center',
+        }
+      );
     }
   };
 
@@ -76,10 +84,19 @@ const ProductEditScreen = () => {
     formData.append('image', e.target.files[0]);
     try {
       const res = await uploadProductImage(formData).unwrap();
-      toast.success('Product image uploaded successfully.', res.message);
+      toast.success('Product image uploaded successfully.', {
+        theme: 'colored',
+        position: 'top-center',
+      });
       setImage(res.image);
     } catch (err) {
-      toast.error(err?.data?.message || err.error);
+      toast.error(
+        `Something went wrong. [${err?.data?.message || err.error}]`,
+        {
+          theme: 'colored',
+          position: 'top-center',
+        }
+      );
     }
   };
 

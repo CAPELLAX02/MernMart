@@ -16,7 +16,10 @@ const Product = ({ product }) => {
 
   const addToCartHandler = async (product, qty) => {
     dispatch(addToCart({ ...product, qty }));
-    toast.success('Item added to cart successfully.');
+    toast.success('Item added to cart successfully.', {
+      theme: 'colored',
+      position: 'top-center',
+    });
   };
 
   return (

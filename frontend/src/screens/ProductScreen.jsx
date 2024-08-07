@@ -59,10 +59,17 @@ const ProductScreen = () => {
         comment,
       }).unwrap();
       refetch();
-      toast.success('Yorumunuz başarılıyla kaydedildi.');
+      toast.success('Review added successfully.', {
+        theme: 'colored',
+        position: 'top-center',
+      });
     } catch (err) {
       toast.error(
-        `Bir hata meydana geldi. [${err?.data?.message || err.error}]`
+        `Something went wrong. [${err?.data?.message || err.error}]`,
+        {
+          theme: 'colored',
+          position: 'top-center',
+        }
       );
     }
   };

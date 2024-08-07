@@ -25,25 +25,51 @@ const ProductListScreen = () => {
     useDeleteProductMutation();
 
   const deleteHandler = async (id) => {
-    if (window.confirm('Bu ürünü silmek istediğinizden emin misiniz?')) {
+    if (
+      window.confirm(
+        'This action cannot be undone. Do you want to delete the product?'
+      )
+    ) {
       try {
         await deleteProduct(id);
-        toast.success('Ürün başarıyla kaldırıldı.');
+        toast.success(`Product (${id}) deleted successfully.`, {
+          theme: 'colored',
+          position: 'top-center',
+        });
         refetch();
       } catch (err) {
-        toast.error(err?.data?.message || err.error);
+        toast.error(
+          `Someting went wrong. [${err?.data?.message || err.error}]`,
+          {
+            theme: 'colored',
+            position: 'top-center',
+          }
+        );
         console.log(err);
       }
     }
   };
 
   const createProductHandler = async (id) => {
-    if (window.confirm('Yeni bir ürün oluşturmak istediğinize emin misiniz?')) {
+    if (window.confirm('Create a new product?')) {
       try {
         await createProduct(id);
         refetch();
+        toast.success(
+          'New product created successfully. You can edit the product now.',
+          {
+            theme: 'colored',
+            position: 'top-center',
+          }
+        );
       } catch (err) {
-        toast.error(err?.data?.message || err.error);
+        toast.error(
+          `Someting went wrong. [${err?.data?.message || err.error}]`,
+          {
+            theme: 'colored',
+            position: 'top-center',
+          }
+        );
       }
     }
   };

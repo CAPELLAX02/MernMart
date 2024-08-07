@@ -33,12 +33,19 @@ const UserEditScreen = () => {
     if (window.confirm('Save changes?')) {
       try {
         await updateUser({ userId, name, email, isAdmin });
-        toast.success('User updated successfully.');
+        toast.success('User updated successfully.', {
+          theme: 'colored',
+          position: 'top-center',
+        });
         refetch();
         navigate('/admin/userlist');
       } catch (err) {
         toast.error(
-          `Something went wrong. [${err?.data?.message || err.error}]`
+          `Something went wrong. [${err?.data?.message || err.error}]`,
+          {
+            theme: 'colored',
+            position: 'top-center',
+          }
         );
       }
     }

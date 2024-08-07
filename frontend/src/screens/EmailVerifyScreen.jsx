@@ -18,10 +18,16 @@ const EmailVerifyScreen = () => {
     e.preventDefault();
     try {
       await verifyUser({ email, verificationCode }).unwrap();
-      toast.success('E-posta başarıyla doğrulandı.');
+      toast.success('Email verified successfully, you can sign in.', {
+        theme: 'colored',
+        position: 'top-center',
+      });
       navigate('/login');
     } catch (error) {
-      toast.error(error?.data?.message || error.error);
+      toast.error(error?.data?.message || error.error, {
+        theme: 'colored',
+        position: 'top-center',
+      });
       console.log(error);
     }
   };

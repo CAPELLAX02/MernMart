@@ -20,7 +20,10 @@ const ResetPasswordScreen = () => {
 
   useEffect(() => {
     if (!email) {
-      toast.error('Email bilgisi eksik. Lütfen tekrar deneyin.');
+      toast.error('You must enter an email address.', {
+        theme: 'colored',
+        position: 'top-center',
+      });
       navigate('/forgot-password');
     }
   }, [email, navigate]);
@@ -28,11 +31,17 @@ const ResetPasswordScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmNewPassword) {
-      toast.error('Şifreler eşleşmiyor.');
+      toast.warning('New passwords do not match.', {
+        theme: 'colored',
+        position: 'top-center',
+      });
       return;
     }
     if (newPassword.length < 6) {
-      toast.error('Şifreniz en az 6 haneli olmalıdır.');
+      toast.warning('New password must be at least 6 characters.', {
+        theme: 'colored',
+        position: 'top-center',
+      });
       return;
     }
     try {
@@ -48,13 +57,18 @@ const ResetPasswordScreen = () => {
         newPassword,
       }).unwrap();
       toast.success(
-        'Şifreniz sıfırlandı. Yeni şifrenizle giriş yapabilirsiniz.'
+        'Password reset successfull! You can sign in with your new password.',
+        {
+          theme: 'colored',
+          position: 'top-center',
+        }
       );
       navigate('/login');
     } catch (err) {
-      toast.error(
-        `Bir hata meydana geldi. [${err?.data?.message || err.error}]`
-      );
+      toast.error(`Something wen wrong. [${err?.data?.message || err.error}]`, {
+        theme: 'colored',
+        position: 'top-center',
+      });
     }
   };
 
