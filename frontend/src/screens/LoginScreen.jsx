@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, FloatingLabel } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
 import Loader from '../components/Loader';
@@ -51,28 +51,32 @@ const LoginScreen = () => {
 
   return (
     <FormContainer>
-      <h1>Sign In</h1>
+      <h1 className='mb-4'>Sign In</h1>
 
       <Form onSubmit={submitHandler}>
-        <Form.Group controlId='email' className='my-3'>
-          <Form.Label>Email Address</Form.Label>
+        <FloatingLabel
+          controlId='floatingInput'
+          label='Email address'
+          className='mb-3'
+        >
           <Form.Control
             type='email'
-            placeholder='Email Address'
+            placeholder='name@example.com'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        <Form.Group controlId='password' className='my-3'>
-          <Form.Label>Password</Form.Label>
+            className='mb-3'
+          />
+        </FloatingLabel>
+        <FloatingLabel controlId='floatingPassword' label='Password'>
           <Form.Control
             type='password'
-            placeholder='Password' // Make it floating input later
+            placeholder='Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+            className='mb-3'
+            style={{ letterSpacing: 2 }}
+          />
+        </FloatingLabel>
 
         <Button
           type='submit'

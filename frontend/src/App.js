@@ -9,7 +9,7 @@ const App = () => {
   return (
     <>
       <Header />
-      <main className='py-3' style={{ zoom: '85%' }}>
+      <main className='py-3' style={{ zoom: '90%' }}>
         <Container>
           <Outlet />
         </Container>
