@@ -77,7 +77,7 @@ const ProductScreen = () => {
   return (
     <>
       <Link className='btn btn-light my-3' to='/'>
-        Geri Dön
+        Go Back
       </Link>
 
       {isLoading ? (
@@ -117,27 +117,26 @@ const ProductScreen = () => {
                 <ListGroup variant='flush'>
                   <ListGroup.Item>
                     <Row>
-                      <Col>Fiyat: </Col>
+                      <Col>Price:</Col>
                       <Col>
-                        <strong>{product.price} TL</strong>
+                        <strong>${product.price}</strong>
                       </Col>
                     </Row>
                   </ListGroup.Item>
                   <ListGroup.Item>
                     <Row>
-                      <Col>Durumu: </Col>
+                      <Col>Status:</Col>
                       <Col>
-                        <strong>
-                          {product.countInStock > 0 ? 'Stokta' : 'Stokta Değil'}
-                        </strong>
+                        {product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}
                       </Col>
                     </Row>
                   </ListGroup.Item>
 
+                  {/* Qty Select */}
                   {product.countInStock > 0 && (
                     <ListGroup.Item>
                       <Row>
-                        <Col>Adet</Col>
+                        <Col>Qty</Col>
                         <Col>
                           <Form.Control
                             as='select'
@@ -164,7 +163,7 @@ const ProductScreen = () => {
                       disabled={product.countInStock === 0}
                       onClick={addToCartHandler}
                     >
-                      Sepete Ekle
+                      Add To Cart
                     </Button>
                   </ListGroup.Item>
                 </ListGroup>

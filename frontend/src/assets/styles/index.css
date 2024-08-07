@@ -1,10 +1,11 @@
-main {
-  min-height: 80vh;
+* {
+  font-family: 'Inter', sans-serif;
+  /* font-family: 'Poppins', sans-serif; */
+  /* font-family: Arial, Helvetica, sans-serif; */
 }
 
-* {
-  font-family: 'Poppins', sans-serif;
-  /* font-family: Arial, Helvetica, sans-serif; */
+main {
+  min-height: 80vh;
 }
 
 .rating span {
@@ -16,17 +17,16 @@ main {
 }
 
 .rating-text {
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 600;
   padding-left: 0.5rem;
-  position: absolute;
 }
 
 .product-title {
-  height: 2.5em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  height: auto; /* Dinamik yükseklik */
+  overflow: hidden; /* Taşan içeriği gizle */
+  display: -webkit-box; /* Flexbox benzeri kutu modeli */
+  white-space: normal; /* Normal beyaz alan işle */
 }
 
 table td,
@@ -55,5 +55,5 @@ table th {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(41, 84, 255, 0.589);
+  background: rgba(0, 0, 0, 0.5);
 }

@@ -18,19 +18,19 @@ const Product = ({ product }) => {
     dispatch(addToCart({ ...product, qty }));
     toast.success('Item added to cart successfully.', {
       theme: 'colored',
-      position: 'top-center',
+      position: 'bottom-center',
     });
   };
 
   return (
-    <Card className='my-3 p-3 pb-2 rounded-3 border-0 shadow-lg border-info'>
+    <Card className='my-3 p-3 pb-2 rounded-3 shadow-lg'>
       <Link to={`/product/${product._id}`}>
         <Card.Img src={product.image} variant='top' />
       </Link>
 
       <Card.Body>
         <Link to={`/product/${product._id}`}>
-          <Card.Title as='div' className='product-title'>
+          <Card.Title as='div' className='product-title '>
             <strong>{product.name}</strong>
           </Card.Title>
         </Link>
