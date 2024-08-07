@@ -15,7 +15,6 @@ const ResetPasswordScreen = () => {
 
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
-  // E-posta adresini location state'den alıyoruz
   const email = location.state?.email;
 
   useEffect(() => {
