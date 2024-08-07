@@ -7,10 +7,13 @@ import Loader from '../components/Loader';
 import { useLoginMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
+import Message from '../components/Message';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [errorMessage, setErrorMessage] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,11 +44,11 @@ const LoginScreen = () => {
         position: 'top-center',
       });
     } catch (error) {
-      toast.error(error?.data?.message || error.error, {
-        theme: 'colored',
-        position: 'top-center',
-      });
-      console.log(error);
+      // toast.error(error?.data?.message || error.error, {
+      //   theme: 'colored',
+      //   position: 'top-center',
+      // });
+      setErrorMessage(error?.data?.message || error.error);
     }
   };
 
@@ -77,6 +80,8 @@ const LoginScreen = () => {
             style={{ letterSpacing: 2 }}
           />
         </FloatingLabel>
+
+        {errorMessage && <Message variant='danger'>{errorMessage}</Message>}
 
         <Button
           type='submit'

@@ -45,7 +45,7 @@ const RegisterScreen = () => {
     } else {
       try {
         await register({ name, email, password }).unwrap();
-        navigate('/verify', { state: { email } });
+        navigate('/verify', { state: { name, email, password } });
         toast.success(`Verification code sent to ${email}.`, {
           theme: 'colored',
           position: 'top-center',
@@ -65,12 +65,12 @@ const RegisterScreen = () => {
 
   return (
     <FormContainer>
-      <h1>Kayıt Ol</h1>
+      <h1>Sign Up</h1>
       <Form onSubmit={submitHandler}>
         <FloatingLabel
           controlId='floatingInput'
           label='Full Name'
-          className='mb-3'
+          className='mb-3 text-black'
         >
           <Form.Control
             type='text'

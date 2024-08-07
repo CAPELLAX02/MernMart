@@ -15,7 +15,7 @@ const authUser = asyncHandler(async (req, res) => {
   if (!user) {
     console.log('Kullanıcı bulunamadı:', email);
     res.status(401);
-    throw new Error('Geçersiz e-posta veya şifre!');
+    throw new Error('Invalid email or password.');
   }
 
   // Şifre eşleşmesini kontrol et
@@ -25,7 +25,7 @@ const authUser = asyncHandler(async (req, res) => {
   if (!isPasswordMatch) {
     console.log('Şifre yanlış:', email);
     res.status(401);
-    throw new Error('Geçersiz e-posta veya şifre!');
+    throw new Error('Invalid email or password.');
   }
 
   // E-posta doğrulamasını kontrol et

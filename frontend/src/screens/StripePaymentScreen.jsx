@@ -65,6 +65,8 @@ export const CheckoutForm = () => {
  *
  *  - Product componentindeki add to cart fonksiyonu stokta olmayan ürünler için farklı bir akış izleyecek. buton disabled olucak ve ürün kardında bu belirtilecek.
  *
+ *  - Email onaylama süresi bittikten sonra kullanıncı kaydı (isEmailVerified: false hali) veritabanından kalıcı olarak silinecek.
+ *
  *  + + + Düzenli her gün repositorylerini düzenle!
  *
  *  + + + Git/Github Eğitimi al.
