@@ -13,6 +13,9 @@ import {
 } from '../controllers/orderController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
+router.post('/create-checkout-session', createCheckoutSession);
+router.get('/session-status', getStripeSessionStatus);
+
 router
   .route('/')
   .post(protect, addOrderItems)
@@ -28,8 +31,5 @@ router
 // router.route('/:id/pay').put(protect, updateOrderToPaid);
 
 router.route('/:id/deliver').put(protect, admin, updateOrderToDelivered);
-
-router.post('/create-checkout-session', createCheckoutSession);
-router.get('/session-status', getStripeSessionStatus);
 
 export default router;

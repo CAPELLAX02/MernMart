@@ -5,7 +5,9 @@ import {
   EmbeddedCheckoutProvider,
 } from '@stripe/react-stripe-js';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearCartItems } from '../slices/cartSlice';
+import { useCreateOrderMutation } from '../slices/ordersApiSlice';
 
 // const stripePromise = loadStripe(`${process.env.STRIPE_PUBLISHABLE_KEY}`);
 const stripePromise = loadStripe(
@@ -15,7 +17,6 @@ const stripePromise = loadStripe(
 export const CheckoutForm = () => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
-  console.log(cartItems);
 
   const fetchClientSecret = useCallback(async () => {
     try {
@@ -50,7 +51,56 @@ export const CheckoutForm = () => {
   );
 };
 
+/**
+ *
+ *    YAPILACAKLAR:
+ *
+ *  - Ödeme zart diye olmayacak. Bir progress UI ı olacak ve bu UI ın son adımında olucak embedded Stripe Checkout Form. ondan önce kullanıcı adresini falan gircek.
+ *
+ *  - EJS ile mail gönderme eklenecek. Kayıt olurken gönderilen mail kesin olucak. Duruma göre sipariş sonrası da mail yollanabilir fatura hesabı.
+ *
+ *  - Şu anda sipariş ödemesi başarılı olduktan sonra success sayfasında sipariş edilen ürünlerin fotografları gözükmüyor çünkü bu arada cart ürünleri state ini boşaltıyoruz zaten biz, buraya bir UX logic i gerekiyor.
+ *
+ *  - Giriş/Çıkış Sayfalarındaki formlar güzelleştirilebilir. floating inputlar çok şık durabilir örneğin.
+ *
+ *  - Admin kullanıcı ürün ekleyip editlediğinde ürünü kaydetmeden önce bir preview sayfası olucak. AYRICA ÜRÜNÜ EDİTLEMEDEN HEMEN EKLİYOR ŞU ANKİ LOGICTE BUNU DEĞİŞTİRMEK LAZIM KESİNLİKLE.
+ *
+ */
+
 export const Return = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+  const cart = useSelector((state) => state.cart);
+  console.log(cart);
+  const {
+    cartItems,
+    // shippingAddress,
+    // paymentMethod,
+    itemsPrice,
+    shippingPrice,
+    taxPrice,
+    totalPrice,
+  } = cart;
+
+  const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+  const dispatch = useDispatch();
+  const placeOrderHandler = async () => {
+    try {
+      await createOrder({
+        orderItems: cartItems,
+        shippingAddress:
+          'example shipping address (address should be taken from the user before the payment actually.)',
+        paymentMethod: 'Credit & Debit Card',
+        itemsPrice,
+        shippingPrice: 5,
+        taxPrice,
+        totalPrice,
+      }).unwrap();
+      dispatch(clearCartItems());
+    } catch (err) {
+      console.log('Placing order error: ', err);
+    }
+  };
+
   const [status, setStatus] = useState(null);
   const [customerEmail, setCustomerEmail] = useState('');
 
@@ -59,13 +109,19 @@ export const Return = () => {
     const urlParams = new URLSearchParams(queryString);
     const sessionId = urlParams.get('session_id');
 
-    fetch(`/session-status?session_id=${sessionId}`)
+    fetch(`/api/orders/session-status?session_id=${sessionId}`)
       .then((res) => res.json())
       .then((data) => {
         setStatus(data.status);
         setCustomerEmail(data.customer_email);
+        if (data.status === 'complete') {
+          placeOrderHandler(); // Place the order only if the payment was successful
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching session status:', error);
       });
-  }, []);
+  }, [dispatch, createOrder]);
 
   if (status === 'open') {
     return <Navigate to='/checkout' />;
@@ -73,12 +129,80 @@ export const Return = () => {
 
   if (status === 'complete') {
     return (
-      <section id='success'>
-        <p>
-          We appreciate your business! A confirmation email will be sent to{' '}
-          {customerEmail}. If you have any questions, please email{' '}
-          <a href='mailto:support@mernmart.com'>support@mernmart.com</a>.
-        </p>
+      <section id='success' className='container mt-4 mb-5'>
+        <div className='card text-black'>
+          <div className='card-header bg-success text-white'>
+            <h1 className='text-center my-auto'>Order Confirmation</h1>
+          </div>
+          <div className='card-body'>
+            <h5 className='card-title ps-4'>
+              Thank you for your purchase, {userInfo.name.split(' ')[0]}!
+            </h5>
+            <p className='card-text ps-4 mb-4'>
+              We have successfully received your order and a confirmation email
+              has been sent to your email address.
+            </p>
+
+            {/* Displaying product images and details */}
+            <div className='row border-top pt-4'>
+              <div className='col-md-8'>
+                <h5 className='ps-4 mb-1'>Order Details:</h5>
+                <ul className='list-group list-group-flush'>
+                  {cartItems.map((item, index) => (
+                    <li key={index} className='list-group-item'>
+                      <div className='row'>
+                        <div className='col-6 col-md-4'>
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className='img-thumbnail'
+                          />
+                        </div>
+                        <div className='col-6 col-md-8'>
+                          <div>{item.name}</div>
+                          <div>
+                            {item.qty} x ${item.price}
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className='col-md-4 border-start ps-4 pt-2'>
+                <h5>Order Summary:</h5>
+                <div className='mb-2'>
+                  <span className='text-muted'>Items Total: </span>
+                  <p className='float-right'>${itemsPrice}</p>
+                </div>
+                <div className='mb-2'>
+                  <span className='text-muted'>Shipping: </span>
+                  <p className='float-right'>${shippingPrice}</p>
+                </div>
+                <div className='mb-2'>
+                  <span className='text-muted'>Tax: </span>
+                  <p className='float-right'>${taxPrice}</p>
+                </div>
+                <div className='mb-4 border-top pt-2'>
+                  <span className='text-muted'>Total: </span>
+                  <p className='float-right'>${totalPrice}</p>
+                </div>
+                <div className='text-center'>
+                  <a href='/' className='btn btn-primary'>
+                    Continue Shopping
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className='card-footer mt-3'>
+              <p>
+                If you have any questions, please email{' '}
+                <a href='mailto:support@mernmart.com'>support@mernmart.com</a>.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
     );
   }
