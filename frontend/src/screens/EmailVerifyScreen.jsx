@@ -48,7 +48,8 @@ const EmailVerifyScreen = () => {
   const [register, { isLoading: resendCodeLoading }] = useRegisterMutation();
 
   // LocalStorage'dan süreyi al veya varsayılan değer olarak 180 saniye ata
-  const initialTimer = parseInt(localStorage.getItem('timer')) || 180;
+  // const initialTimer = parseInt(localStorage.getItem('timer')) || 180;
+  const initialTimer = 180;
   const [timer, setTimer] = useState(initialTimer);
 
   useEffect(() => {
@@ -73,7 +74,8 @@ const EmailVerifyScreen = () => {
 
   const handleChange = (e, index) => {
     const value = e.target.value;
-    if (value.match(/^[0-9a-zA-Z]$/)) {
+    // Accept only numbers
+    if (value.match(/^\d$/)) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
@@ -141,7 +143,7 @@ const EmailVerifyScreen = () => {
             </h6>
             <div>
               <p>
-                A code has been sent to{' '}
+                The code has been sent to{' '}
                 <span className='text-white bg-primary py-1 px-2 rounded-5'>
                   {email}
                 </span>
