@@ -23,7 +23,7 @@ const SearchBox = () => {
     <Form
       onSubmit={submitHandler}
       className='d-flex position-relative'
-      style={{ width: '400px' }}
+      style={{ width: '440px' }}
     >
       <Form.Control
         type='text'

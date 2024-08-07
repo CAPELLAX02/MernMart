@@ -30,8 +30,8 @@ const Header = () => {
   };
 
   return (
-    <header style={{ zoom: '90%', backgroundColor: '#fef3e7' }}>
-      <Navbar expand='md' collapseOnSelect className='custom-navbar'>
+    <header style={{ zoom: '85%', backgroundColor: '#fef3e7' }}>
+      <Navbar expand='md' collapseOnSelect>
         <Container>
           <LinkContainer
             to='/'
