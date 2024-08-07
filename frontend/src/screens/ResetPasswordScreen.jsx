@@ -30,7 +30,7 @@ const ResetPasswordScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmNewPassword) {
-      toast.warning('New passwords do not match.', {
+      toast.warn('New passwords do not match.', {
         theme: 'colored',
         position: 'top-center',
       });

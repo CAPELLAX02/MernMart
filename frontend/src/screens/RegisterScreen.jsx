@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, FloatingLabel } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
 import Loader from '../components/Loader';
@@ -38,7 +38,7 @@ const RegisterScreen = () => {
     }
 
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match.', {
+      toast.warn('Passwords do not match.', {
         theme: 'colored',
         position: 'top-center',
       });
@@ -46,15 +46,18 @@ const RegisterScreen = () => {
       try {
         await register({ name, email, password }).unwrap();
         navigate('/verify', { state: { email } });
-        toast.success(`Verification code sen to ${email}.`, {
+        toast.success(`Verification code sent to ${email}.`, {
           theme: 'colored',
           position: 'top-center',
         });
       } catch (error) {
-        toast.error(error?.data?.message || error.error, {
-          theme: 'colored',
-          position: 'top-center',
-        });
+        toast.error(
+          `Something went wrong. [${error?.data?.message || error.error}]`,
+          {
+            theme: 'colored',
+            position: 'top-center',
+          }
+        );
         console.log(error);
       }
     }
@@ -64,45 +67,56 @@ const RegisterScreen = () => {
     <FormContainer>
       <h1>Kayıt Ol</h1>
       <Form onSubmit={submitHandler}>
-        <Form.Group controlId='name' className='my-3'>
-          <Form.Label>İsim</Form.Label>
+        <FloatingLabel
+          controlId='floatingInput'
+          label='Full Name'
+          className='mb-3'
+        >
           <Form.Control
             type='text'
-            placeholder='İsminiz'
+            placeholder='your name'
             value={name}
             onChange={(e) => setName(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        <Form.Group controlId='email' className='my-3'>
-          <Form.Label>Email Adresi</Form.Label>
+            className='mb-3'
+          />
+        </FloatingLabel>
+        <FloatingLabel
+          controlId='floatingInput'
+          label='Email Address'
+          className='mb-3'
+        >
           <Form.Control
             type='email'
-            placeholder='Email Adresiniz'
+            placeholder='name@example.com'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        <Form.Group controlId='password' className='my-3'>
-          <Form.Label>Password</Form.Label>
+            className='mb-3'
+          />
+        </FloatingLabel>
+        <FloatingLabel controlId='floatingPassword' label='Password'>
           <Form.Control
             type='password'
             placeholder='Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        <Form.Group controlId='confirmPassword' className='my-3'>
-          <Form.Label>Password (Again)</Form.Label>
+            className='mb-3'
+            style={{ letterSpacing: 2 }}
+          />
+        </FloatingLabel>
+        <FloatingLabel
+          controlId='floatingInput'
+          label='Confirm Password'
+          className='mb-3'
+        >
           <Form.Control
             type='password'
-            placeholder='Verify Password'
+            placeholder='Confirm Password'
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+            className='mb-3'
+            style={{ letterSpacing: 2 }}
+          />
+        </FloatingLabel>
 
         <Button
           type='submit'

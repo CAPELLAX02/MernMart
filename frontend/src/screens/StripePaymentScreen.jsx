@@ -63,6 +63,8 @@ export const CheckoutForm = () => {
  *
  *  - Admin kullanıcı ürün ekleyip editlediğinde ürünü kaydetmeden önce bir preview sayfası olucak. AYRICA ÜRÜNÜ EDİTLEMEDEN HEMEN EKLİYOR ŞU ANKİ LOGICTE BUNU DEĞİŞTİRMEK LAZIM KESİNLİKLE.
  *
+ *  - Product componentindeki add to cart fonksiyonu stokta olmayan ürünler için farklı bir akış izleyecek. buton disabled olucak ve ürün kardında bu belirtilecek.
+ *
  *  + + + Düzenli her gün repositorylerini düzenle!
  *
  *  + + + Git/Github Eğitimi al.
@@ -97,7 +99,7 @@ export const Return = () => {
         taxPrice,
         totalPrice,
       }).unwrap();
-      dispatch(clearCartItems());
+      // dispatch(clearCartItems());
     } catch (err) {
       console.log('Placing order error: ', err);
     }
