@@ -2,7 +2,23 @@ import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Rating from './Rating';
 
+import { useNavigate } from 'react-router-dom';
+import { addToCart } from '../slices/cartSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+
 const Product = ({ product }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
+
+  const addToCartHandler = async (product, qty) => {
+    dispatch(addToCart({ ...product, qty }));
+    toast.success('Item added to cart successfully.');
+  };
+
   return (
     <Card className='my-3 p-3 pb-2 rounded-3 border-0 shadow-lg border-info'>
       <Link to={`/product/${product._id}`}>
@@ -27,7 +43,12 @@ const Product = ({ product }) => {
           ${product.price}
         </Card.Text>
 
-        <Button className='text-white btn-danger py-2'>Add to Cart</Button>
+        <Button
+          className='text-white btn-danger py-2'
+          onClick={(e) => addToCartHandler(product, 1)}
+        >
+          Add to Cart
+        </Button>
       </Card.Body>
     </Card>
   );
