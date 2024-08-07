@@ -59,11 +59,13 @@ export const CheckoutForm = () => {
  *
  *  - EJS ile mail gönderme eklenecek. Kayıt olurken gönderilen mail kesin olucak. Duruma göre sipariş sonrası da mail yollanabilir fatura hesabı.
  *
- *  - Şu anda sipariş ödemesi başarılı olduktan sonra success sayfasında sipariş edilen ürünlerin fotografları gözükmüyor çünkü bu arada cart ürünleri state ini boşaltıyoruz zaten biz, buraya bir UX logic i gerekiyor.
- *
  *  - Giriş/Çıkış Sayfalarındaki formlar güzelleştirilebilir. floating inputlar çok şık durabilir örneğin.
  *
  *  - Admin kullanıcı ürün ekleyip editlediğinde ürünü kaydetmeden önce bir preview sayfası olucak. AYRICA ÜRÜNÜ EDİTLEMEDEN HEMEN EKLİYOR ŞU ANKİ LOGICTE BUNU DEĞİŞTİRMEK LAZIM KESİNLİKLE.
+ *
+ *  + + + Düzenli her gün repositorylerini düzenle!
+ *
+ *  + + + Git/Github Eğitimi al.
  *
  */
 

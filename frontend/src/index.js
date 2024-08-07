@@ -48,11 +48,6 @@ const router = createBrowserRouter(
         element={<HomeScreen />}
       />
 
-      {/* Stripe Payment Routes */}
-      <Route path='/checkout' element={<CheckoutForm />} />
-      <Route path='/return' element={<Return />} />
-      {/* --------------------- */}
-
       <Route path='/product/:id' element={<ProductScreen />} />
       <Route path='/cart' element={<CartScreen />} />
       <Route path='/login' element={<LoginScreen />} />
@@ -68,6 +63,8 @@ const router = createBrowserRouter(
         <Route path='/placeorder' element={<PlaceOrderScreen />} />
         <Route path='/order/:id' element={<OrderScreen />} />
         <Route path='/profile' element={<ProfileScreen />} />
+        <Route path='/checkout' element={<CheckoutForm />} />
+        <Route path='/return' element={<Return />} />
       </Route>
 
       {/* Admin Routes */}
