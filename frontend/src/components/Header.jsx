@@ -7,6 +7,7 @@ import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice';
 // import logo from '../assets/logo.png';
 import logo from '../assets/mernmart-bg.png';
+import logoOutline from '../assets/logo-outline.png';
 import './Header.css';
 import SearchBox from './SearchBox';
 
@@ -30,7 +31,7 @@ const Header = () => {
   };
 
   return (
-    <header style={{ zoom: '85%', backgroundColor: '#fef3e7' }}>
+    <header style={{ zoom: '85%' }} className='bg-primary'>
       <Navbar expand='md' collapseOnSelect>
         <Container>
           <LinkContainer
@@ -43,8 +44,9 @@ const Header = () => {
             }}
           >
             <Navbar.Brand className='d-flex flex-row'>
-              <img src={logo} alt='logo' style={{ width: 100 }} />
-              <div className='my-auto'>
+              {/* <img src={logo} alt='logo' style={{ width: 100 }} /> */}
+              <img src={logoOutline} alt='logo' style={{ width: 280 }} />
+              {/* <div className='my-auto'>
                 <span
                   style={{
                     fontFamily: 'Poppins',
@@ -65,7 +67,7 @@ const Header = () => {
                 >
                   MART
                 </span>
-              </div>
+              </div> */}
 
               {/* e-com */}
               {/* <span style={{ fontWeight: 'bold', color: '#99ebff' }}>MERN</span> */}
@@ -76,16 +78,15 @@ const Header = () => {
 
           <Navbar.Collapse id='basic-navbar-nav'>
             <SearchBox />
-            <Nav className='ms-auto'>
+            <Nav className='ms-auto gap-3'>
               <LinkContainer
                 to='/cart'
                 style={{ paddingLeft: 24, fontSize: 17, marginRight: 12 }}
               >
-                <Nav.Link>
+                <Nav.Link className='bg-success rounded-1 fw-semibold p-2 px-4'>
                   <FaShoppingCart size={22} style={{ paddingRight: 4 }} /> Cart
                   {cartItems.length > 0 && (
                     <Badge
-                      bg='danger'
                       style={{
                         zoom: '120%',
                         marginLeft: '7px',
@@ -100,6 +101,7 @@ const Header = () => {
 
               {userInfo ? (
                 <NavDropdown
+                  className='bg-warning rounded-1 fw-semibold'
                   style={{ paddingLeft: 12, paddingRight: 12, fontSize: 17 }}
                   title={userInfo.name}
                   id='username'
@@ -115,7 +117,7 @@ const Header = () => {
               ) : (
                 <LinkContainer
                   to='/login'
-                  style={{ paddingLeft: 24, fontSize: 17 }}
+                  className='bg-warning rounded-1 fw-semibold p-2 px-4'
                 >
                   <Nav.Link>
                     <FaUser size={20} style={{ paddingRight: 5 }} /> Sign In
@@ -146,12 +148,12 @@ const Header = () => {
       </Navbar>
 
       <div className='slider'>
-        <div className='slider-text'>
+        {/* <div className='slider-text'>
           %50 Discount! | Lorem ipsum dolor sit amet consectetur, adipisicing
           elit. Neque, nulla cumque. Aliquam est asperiores delectus ex dolorem!
           Repellendus natus ad tenetur! Laudantium esse excepturi obcaecati
           repellendus sit sapiente quam dicta?
-        </div>
+        </div> */}
       </div>
     </header>
   );

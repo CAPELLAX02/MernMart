@@ -1,91 +1,177 @@
-import React from 'react';
-import { Container, Row, Col, Image } from 'react-bootstrap';
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
-// import { Parallax } from 'react-parallax';
-import './Footer.css'; // CSS dosyasını içe aktarın
-import logo from '../assets/intechreate-logo-white.png';
+import { useState, useEffect } from 'react';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import {
+  AiFillFacebook,
+  AiFillInstagram,
+  AiFillYoutube,
+  AiOutlineTwitter,
+} from 'react-icons/ai';
+import { Link } from 'react-router-dom';
+import logoOutline from '../assets/logo-outline.png';
+import { toast } from 'react-toastify';
+
+const footerCompanyLinks = [
+  { name: 'About Us', link: '/about' },
+  { name: 'Careers', link: '/careers' },
+  { name: 'Store Locations', link: '/store-locations' },
+  { name: 'Our Blog', link: '/blog' },
+  { name: 'Reviews', link: '/reviews' },
+];
+
+const footerProductLinks = [
+  { name: 'Game & Video', link: '/shop/game-video' },
+  { name: 'Phone & Tablets', link: '/shop/phone-tablets' },
+  { name: 'Computers & Laptop', link: '/shop/computers-laptop' },
+  { name: 'Sport Watches', link: '/shop/sport-watches' },
+  { name: 'Events', link: '/shop/events' },
+];
+
+const footerSupportLinks = [
+  { name: 'FAQ', link: '/support/faq' },
+  { name: 'Reviews', link: '/support/reviews' },
+  { name: 'Contact Us', link: '/support/contact' },
+  { name: 'Shipping', link: '/support/shipping' },
+  { name: 'Live Chat', link: '/support/live-chat' },
+];
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
-  // const googleMapSrc = `https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=Ankara+University+Gölbaşı+Campus&zoom=15`;
+  const [email, setEmail] = useState('');
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const submitHandler = () => {
+    if (email.length === 0) {
+      toast.warn('Please enter your email address.', {
+        theme: 'colored',
+        position: 'top-right',
+        style: {
+          color: '#000',
+          fontWeight: 500,
+        },
+      });
+    } else if (!validateEmail(email)) {
+      toast.warn('Please enter a valid email address.', {
+        theme: 'colored',
+        position: 'top-right',
+        style: {
+          color: '#000',
+          fontWeight: 500,
+        },
+      });
+    } else {
+      toast.success(`We have received your email! (${email})`, {
+        theme: 'colored',
+        position: 'top-right',
+        style: {
+          padding: 16,
+        },
+      });
+      setEmail('');
+    }
+  };
 
   return (
-    <footer style={{ background: '#fef3e7' }}>
-      <div className='slider'></div>
-      <div className='py-5 text-black'>
-        <Container>
-          <Row>
-            <Col
-              md={4}
-              className='text-center text-md-left px-5 border-end border-1 border-info pb-4 pt-3'
-            >
-              <h5>About Us</h5>
-              <p>
-                We are a leading e-commerce site offering the best products at
-                the best prices. Follow our social media channels to stay up to
-                date.
-              </p>
-            </Col>
-            <Col
-              md={4}
-              className='text-center my-3 my-md-0 px-5 border-end border-1 border-info'
-            >
-              <h5>Follow Us</h5>
-              <div className='d-flex justify-content-center'>
-                <a
-                  href='https://facebook.com'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='mx-3 text-white social-icon'
-                >
-                  <FaFacebook size={30} color='#000' />
-                </a>
-                <a
-                  href='https://twitter.com'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='mx-3 text-white social-icon'
-                >
-                  <FaTwitter size={30} color='#000' />
-                </a>
-                <a
-                  href='https://instagram.com'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='mx-3 text-white social-icon'
-                >
-                  <FaInstagram size={30} color='#000' />
-                </a>
-                <a
-                  href='https://linkedin.com'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='mx-3 text-white social-icon'
-                >
-                  <FaLinkedin size={30} color='#000' />
-                </a>
-              </div>
-            </Col>
-            <Col md={4} className='text-center text-md-right px-5'>
-              <h5>Reach Us</h5>
-              <p>Email: support@mernmart.com</p>
-              <p>Phone: +90 123 456 7890</p>
-            </Col>
-          </Row>
-          <Row className='pt-5'>
-            <Col className='text-center'>
-              <p>Mernmart Inc. &copy; {currentYear} | All rights reserved</p>
-            </Col>
-          </Row>
-          <Row className='d-flex justify-content-center align-items-center pt-3'>
-            <Col className='d-flex justify-content-center align-items-center'>
-              {/* <h3 className='mb-0 mr-2'>Powered by</h3>
-              <Image src={logo} className='w-25' /> */}
-            </Col>
-          </Row>
+    <footer className='bg-primary text-white'>
+      <div className='py-5 bg-warning text-center text-white'>
+        <Container className='d-md-flex justify-content-between align-items-center'>
+          <div>
+            <h2 className='mb-4 mb-md-0 text-primary fw-semibold pb-4'>
+              <span
+                className='py-1 px-3 rounded-5 fw-bold'
+                style={{ backgroundColor: '#fff', color: '#3d3df5' }}
+              >
+                Subscribe us
+              </span>{' '}
+              to get news, events,
+            </h2>
+            <h2 className='mb-4 mb-md-0 text-primary fw-semibold pb-4'>
+              and special{' '}
+              <span
+                className='py-1 px-3 rounded-5 fw-bold'
+                style={{ backgroundColor: '#3d3df5', color: '#fff' }}
+              >
+                discount
+              </span>{' '}
+              coupons.
+            </h2>
+          </div>
+          <div className='d-flex'>
+            <Form.Control
+              type='email'
+              placeholder='Your Email Address'
+              className='me-2 border-2'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={{ width: 320 }}
+            />
+            <Button className='text-white bg-primary' onClick={submitHandler}>
+              Submit
+            </Button>
+          </div>
         </Container>
       </div>
-      {/* GOOGLE MAPS EKLENEBİLİR */}
+      <Container className='pt-5 pb-4'>
+        <Row className='text-center text-md-start mb-5'>
+          <Col md={3} className='mb-4 mb-md-0'>
+            <img src={logoOutline} alt='logo' className='mb-3 w-75' />
+            <p>The home and elements needed to create beautiful products.</p>
+            <div className='d-flex justify-content-center justify-content-md-start'>
+              <AiFillFacebook size={32} className='me-3' />
+              <AiOutlineTwitter size={32} className='me-3' />
+              <AiFillInstagram size={32} className='me-3' />
+              <AiFillYoutube size={32} className='me-3' />
+            </div>
+          </Col>
+          <Col md={3} className='mb-4 mb-md-0'>
+            <h5>Company</h5>
+            <ul className='list-unstyled'>
+              {footerCompanyLinks.map((link, index) => (
+                <li className='text-info' key={index}>
+                  {link.name}
+                </li>
+              ))}
+            </ul>
+          </Col>
+          <Col md={3} className='mb-4 mb-md-0'>
+            <h5>Shop</h5>
+            <ul className='list-unstyled'>
+              {footerProductLinks.map((link, index) => (
+                <li className='text-info' key={index}>
+                  {link.name}
+                </li>
+              ))}
+            </ul>
+          </Col>
+          <Col md={3}>
+            <h5>Support</h5>
+            <ul className='list-unstyled'>
+              {footerSupportLinks.map((link, index) => (
+                <li className='text-info' key={index}>
+                  {link.name}
+                </li>
+              ))}
+            </ul>
+          </Col>
+        </Row>
+        <Row className='pt-4 text-center'>
+          <Col md={4}>
+            <span>© 2024 MernMart. All rights reserved.</span>
+          </Col>
+          <Col md={4}>
+            <span>Terms · Privacy Policy</span>
+          </Col>
+          <Col md={4} className='d-flex justify-content-center'>
+            <img
+              src='https://hamart-shop.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Ffooter-payment.a37c49ac.png&w=640&q=75'
+              alt='Payment Methods'
+              className='img-fluid'
+            />
+          </Col>
+        </Row>
+      </Container>
     </footer>
   );
 };

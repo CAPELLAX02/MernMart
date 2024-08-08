@@ -47,7 +47,7 @@ const Product = ({ product }) => {
         </Card.Text>
 
         <Button
-          className='text-white btn-danger py-2'
+          className='text-white bg-primary py-2'
           onClick={(e) => addToCartHandler(product, 1)}
         >
           Add to Cart

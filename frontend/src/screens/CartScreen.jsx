@@ -46,7 +46,10 @@ const CartScreen = () => {
       handleCloseDialog();
       toast.info(`Item (${selectedItem.name}) removed from the cart.`, {
         theme: 'colored',
-        position: 'top-center',
+        position: 'bottom-left',
+        style: {
+          width: 500,
+        },
       });
     }
   };

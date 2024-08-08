@@ -1,18 +1,6 @@
 .slider {
-  /* background-color: rgb(240, 70, 92); */
-  color: rgb(255, 255, 255);
-  /* padding: 6px 0; */
-  overflow: hidden;
-  position: relative;
-  white-space: nowrap;
-  box-sizing: border-box;
-  /* font-size: 13px; */
-  font-weight: bold;
-  text-transform: uppercase;
-  text-align: center;
-
   /* option 2 */
-  height: 5px;
+  height: 10px;
   background: linear-gradient(
     to right,
     rgb(255, 75, 141),
@@ -30,6 +18,12 @@
 
 .slider:hover .slider-text {
   animation-play-state: paused;
+}
+
+@media screen and (max-width: 768px) {
+  .searchbox {
+    margin-bottom: 24px;
+  }
 }
 
 @keyframes slide {
