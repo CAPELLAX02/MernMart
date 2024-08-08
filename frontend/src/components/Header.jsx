@@ -127,8 +127,14 @@ const Header = () => {
 
               {userInfo && userInfo.isAdmin && (
                 <NavDropdown
-                  style={{ fontSize: 17 }}
-                  title='Yönetici Paneli'
+                  className='bg-white rounded-1 fw-semibold'
+                  style={{
+                    paddingLeft: 12,
+                    paddingRight: 12,
+                    fontSize: 17,
+                    marginLeft: 10,
+                  }}
+                  title='Admin Dashboard'
                   id='adminmenu'
                 >
                   <LinkContainer to='/admin/productlist'>

@@ -118,16 +118,16 @@ const CartScreen = () => {
                   Total ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
                   Products
                 </h2>
+                $
                 {cartItems
                   .reduce((acc, item) => acc + item.qty * item.price, 0)
                   .toFixed(2)}{' '}
-                TL
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Button
                   type='button'
-                  className='btn-block'
+                  className='bg-primary fw-medium px-3'
                   disabled={cartItems.length === 0}
                   onClick={checkoutHandler}
                 >

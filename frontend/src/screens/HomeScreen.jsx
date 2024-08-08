@@ -10,9 +10,11 @@ import Meta from '../components/Meta';
 
 const HomeScreen = () => {
   const { keyword, pageNumber } = useParams();
+  const page = pageNumber ? Number(pageNumber) : 1; // Varsayılan olarak 1. sayfayı al
+
   const { data, isLoading, error } = useGetProductsQuery({
     keyword,
-    pageNumber,
+    pageNumber: page,
   });
 
   return (

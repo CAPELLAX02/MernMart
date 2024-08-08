@@ -4,6 +4,11 @@
   /* font-family: Arial, Helvetica, sans-serif; */
 }
 
+*::selection {
+  background-color: #0a1f5c;
+  color: #fff;
+}
+
 main {
   min-height: 80vh;
 }
@@ -23,11 +28,19 @@ main {
   padding-top: 0.5rem;
 }
 
+.product-card img {
+  width: 100%;
+  height: 200px; /* Sabit yükseklik belirleyin */
+  object-fit: cover; /* Fotoğrafın oranlarını koruyarak kesmesini sağlayın */
+}
+
 .product-title {
-  height: auto; /* Dinamik yükseklik */
-  overflow: hidden; /* Taşan içeriği gizle */
-  display: -webkit-box; /* Flexbox benzeri kutu modeli */
-  white-space: normal; /* Normal beyaz alan işle */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
 }
 
 table td,
@@ -52,11 +65,22 @@ table th {
 
 .carousel-caption {
   position: absolute;
-  width: 100%;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(255, 0, 93, 0.6);
+}
+
+.caption {
+  font-size: 2.2rem;
+  font-weight: 500;
+}
+
+.carousel-container {
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.308) 0px 2px 20px -2px;
+  padding-top: 3rem;
+  padding-bottom: 1px;
 }
 
 /* for the search box in header */
