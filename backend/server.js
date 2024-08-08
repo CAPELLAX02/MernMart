@@ -24,10 +24,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
-app.get('/', (req, res) => {
-  res.send('API is running...');
-});
-
 app.use('/api/products', productRoutes); // origin API endpoint for product routers
 app.use('/api/users', userRoutes); // origin API endpoint for user routers
 app.use('/api/orders', orderRoutes); // origin API endpoint for order routers
@@ -36,6 +32,20 @@ app.use('/api/upload', uploadRoutes);
 
 const __dirname = path.resolve(); // set __dirname to current directory
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static(path.join(__dirname, '/frontend/build')));
+
+  // Any route that is not API will be redirected to index.html
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+  });
+} else {
+  app.get('/', (req, res) => {
+    res.send('API is running...');
+  });
+}
 
 app.use(notFound);
 
