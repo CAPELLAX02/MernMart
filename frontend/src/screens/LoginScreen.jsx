@@ -85,8 +85,8 @@ const LoginScreen = () => {
 
         <Button
           type='submit'
-          variant='primary'
-          className='mt-2'
+          className='mt-2 bg-primary fw-bold px-3 py-2'
+          style={{ fontSize: 18 }}
           disabled={isLoading}
         >
           Sign In
@@ -98,9 +98,15 @@ const LoginScreen = () => {
       <Row className='py-3'>
         <Col>
           Are you new customer? {'  '}
-          <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
-            Sign Up
-          </Link>
+          <span>
+            <b>
+              <Link
+                to={redirect ? `/register?redirect=${redirect}` : '/register'}
+              >
+                Sign Up
+              </Link>
+            </b>
+          </span>
         </Col>
       </Row>
 

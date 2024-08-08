@@ -85,7 +85,7 @@ const Footer = () => {
               >
                 Subscribe us
               </span>{' '}
-              to get news, events,
+              to get new events,
             </h2>
             <h2 className='mb-4 mb-md-0 text-primary fw-semibold pb-4'>
               and special{' '}

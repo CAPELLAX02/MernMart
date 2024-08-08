@@ -67,6 +67,8 @@ export const CheckoutForm = () => {
  *
  *  - Email onaylama süresi bittikten sonra kullanıncı kaydı (isEmailVerified: false hali) veritabanından kalıcı olarak silinecek.
  *
+ *  - Reset Password 6-digit kodu için de OTP input yap.
+ *
  *  + + + Düzenli her gün repositorylerini düzenle!
  *
  *  + + + Git/Github Eğitimi al.
@@ -135,9 +137,9 @@ export const Return = () => {
 
   if (status === 'complete') {
     return (
-      <section id='success' className='container mt-4 mb-5'>
-        <div className='card text-black'>
-          <div className='card-header bg-success text-white'>
+      <section id='success' className='container mt-2 mb-5'>
+        <div className='card text-black mt-0'>
+          <div className='card-header bg-success text-white w-100 my-2'>
             <h1 className='text-center my-auto'>Order Confirmation</h1>
           </div>
           <div className='card-body'>
@@ -194,7 +196,10 @@ export const Return = () => {
                   <p className='float-right'>${totalPrice}</p>
                 </div>
                 <div className='text-center'>
-                  <a href='/' className='btn btn-primary'>
+                  <a
+                    href='/'
+                    className='btn text-white bg-primary px-4 fw-semibold'
+                  >
                     Continue Shopping
                   </a>
                 </div>

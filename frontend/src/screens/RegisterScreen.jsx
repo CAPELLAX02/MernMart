@@ -120,8 +120,7 @@ const RegisterScreen = () => {
 
         <Button
           type='submit'
-          variant='primary'
-          className='mt-2'
+          className='mt-2 bg-primary fw-bold px-3 py-2'
           disabled={isLoading}
         >
           Sign Up
@@ -133,7 +132,11 @@ const RegisterScreen = () => {
       <Row className='py-3'>
         <Col>
           Already have an account? {'  '}
-          <Link to='/login'>Sign In</Link>
+          <span>
+            <b>
+              <Link to='/login'>Sign In</Link>
+            </b>
+          </span>
         </Col>
       </Row>
     </FormContainer>

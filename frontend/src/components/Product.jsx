@@ -23,14 +23,14 @@ const Product = ({ product }) => {
   };
 
   return (
-    <Card className='my-3 p-3 pb-2 rounded-3 shadow-lg'>
+    <Card className='my-3 p-3 pb-2 rounded-3 product-card'>
       <Link to={`/product/${product._id}`}>
         <Card.Img src={product.image} variant='top' />
       </Link>
 
       <Card.Body>
         <Link to={`/product/${product._id}`}>
-          <Card.Title as='div' className='product-title '>
+          <Card.Title as='div' className='product-title'>
             <strong>{product.name}</strong>
           </Card.Title>
         </Link>
@@ -42,16 +42,21 @@ const Product = ({ product }) => {
           />
         </Card.Text>
 
-        <Card.Text className='pt-2 text-primary fw-normal' as='h3'>
-          ${product.price}
-        </Card.Text>
+        <div className='card-price-button-container'>
+          <Card.Text
+            className='product-price pt-2 text-primary fw-normal'
+            as='h3'
+          >
+            ${product.price}
+          </Card.Text>
 
-        <Button
-          className='text-white bg-primary py-2'
-          onClick={(e) => addToCartHandler(product, 1)}
-        >
-          Add to Cart
-        </Button>
+          <Button
+            className='add-to-cart-button text-white bg-primary py-2 fw-medium'
+            onClick={(e) => addToCartHandler(product, 1)}
+          >
+            Add to Cart
+          </Button>
+        </div>
       </Card.Body>
     </Card>
   );
