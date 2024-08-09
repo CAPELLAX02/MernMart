@@ -26,14 +26,8 @@ const authUser = asyncHandler(async (req, res) => {
   const isPasswordMatch = await user.matchPassword(password);
 
   if (!isPasswordMatch) {
-    console.log('Şifre yanlış:', email);
     res.status(401);
     throw new Error('Invalid email or password.');
-  }
-
-  if (!user.isEmailVerified) {
-    res.status(401);
-    throw new Error('Email address not activated.');
   }
 
   generateToken(res, user._id);
