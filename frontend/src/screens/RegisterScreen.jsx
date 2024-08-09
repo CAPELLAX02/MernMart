@@ -44,8 +44,15 @@ const RegisterScreen = () => {
       });
     } else {
       try {
-        await register({ name, email, password }).unwrap();
-        navigate('/verify', { state: { name, email, password } });
+        const response = await register({ name, email, password }).unwrap();
+        navigate('/verify', {
+          state: {
+            name,
+            email,
+            password,
+            activationToken: response.activationToken,
+          },
+        });
         toast.success(`Verification code sent to ${email}.`, {
           theme: 'colored',
           position: 'top-center',

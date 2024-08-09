@@ -14,41 +14,13 @@ const EmailVerifyScreen = () => {
   const [otp, setOtp] = useState(Array(6).fill(''));
   const navigate = useNavigate();
   const location = useLocation();
-  const { name, email, password } = location.state || {};
+  const { name, email, password, activationToken } = location.state || {};
 
   const [resendAttempts, setResendAttempts] = useState(0);
 
-  const resendVerificationCode = async () => {
-    if (resendAttempts < 3) {
-      try {
-        await register({ name, email, password }).unwrap();
-        setResendAttempts((prev) => prev + 1);
-        setTimer(180); // Süreyi tekrar başlat
-        localStorage.setItem('timer', '180'); // LocalStorage'da süreyi sıfırla
-        toast.info('A new verification code has been sent to your email.', {
-          theme: 'colored',
-          position: 'top-center',
-        });
-      } catch (error) {
-        toast.error('Failed to resend verification code.', {
-          theme: 'colored',
-          position: 'top-center',
-        });
-      }
-    } else {
-      toast.error('No more attempts left to resend verification code.', {
-        theme: 'colored',
-        position: 'top-center',
-      });
-    }
-  };
-
   const [verifyUser, { isLoading: verifyLoading }] = useVerifyUserMutation();
-
   const [register, { isLoading: resendCodeLoading }] = useRegisterMutation();
 
-  // LocalStorage'dan süreyi al veya varsayılan değer olarak 180 saniye ata
-  // const initialTimer = parseInt(localStorage.getItem('timer')) || 180;
   const initialTimer = 180;
   const [timer, setTimer] = useState(initialTimer);
 
@@ -72,15 +44,46 @@ const EmailVerifyScreen = () => {
     }
   }, []);
 
+  const resendVerificationCode = async () => {
+    if (resendAttempts < 3) {
+      try {
+        const response = await register({ name, email, password }).unwrap();
+        setResendAttempts((prev) => prev + 1);
+        setTimer(180);
+        localStorage.setItem('timer', '180');
+        toast.info('A new verification code has been sent to your email.', {
+          theme: 'colored',
+          position: 'top-center',
+        });
+        navigate('/verify', {
+          state: {
+            name,
+            email,
+            password,
+            activationToken: response.activationToken,
+          },
+        }); // activationToken'ı güncelleyerek tekrar gönderiyoruz
+      } catch (error) {
+        toast.error('Failed to resend verification code.', {
+          theme: 'colored',
+          position: 'top-center',
+        });
+      }
+    } else {
+      toast.error('No more attempts left to resend verification code.', {
+        theme: 'colored',
+        position: 'top-center',
+      });
+    }
+  };
+
   const handleChange = (e, index) => {
     const value = e.target.value;
-    // Accept only numbers
     if (value.match(/^\d$/)) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
 
-      // Focus next input field
       if (index < otp.length - 1 && value) {
         document.getElementById(`otp-input-${index + 1}`).focus();
       }
@@ -90,15 +93,12 @@ const EmailVerifyScreen = () => {
   const handleKeyDown = (e, index) => {
     if (e.key === 'Backspace') {
       if (!otp[index] && index > 0) {
-        // Önceki inputa geç
         const prevInput = document.getElementById(`otp-input-${index - 1}`);
         prevInput.focus();
-        // Önceki inputun değerini temizle
         const newOtp = [...otp];
         newOtp[index - 1] = '';
         setOtp(newOtp);
       } else if (otp[index]) {
-        // Mevcut input değerini temizle
         const newOtp = [...otp];
         newOtp[index] = '';
         setOtp(newOtp);
@@ -110,7 +110,10 @@ const EmailVerifyScreen = () => {
     e.preventDefault();
     const otpCode = otp.join('');
     try {
-      await verifyUser({ email, verificationCode: otpCode }).unwrap();
+      await verifyUser({
+        activation_token: activationToken,
+        activation_code: otpCode,
+      }).unwrap();
       toast.success('Email verified successfully, you can sign in.', {
         theme: 'colored',
         position: 'top-center',

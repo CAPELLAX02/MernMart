@@ -80,9 +80,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   // Kullanıcı bilgileri ile bir activation token oluşturuyoruz
   const user = { name, email, password };
-
-  const activationToken = createActivationToken(user);
-  const activationCode = activationToken.activationCode;
+  const { token, activationCode } = createActivationToken(user);
 
   // E-posta içeriğini oluşturuyoruz
   const data = { user: { name: user.name }, activationCode };
@@ -101,10 +99,11 @@ const registerUser = asyncHandler(async (req, res) => {
       data,
     });
 
+    // Response ile activation_token'ı geri döndürüyoruz
     res.status(201).json({
       success: true,
       message: `Please check your email: ${user.email} to activate your account!`,
-      activationToken: activationToken.token,
+      activationToken: token, // activation_token'ı burada döndürüyoruz
     });
   } catch (error) {
     console.error('E-posta gönderilemedi:', error);
@@ -133,7 +132,7 @@ const verifyUser = asyncHandler(async (req, res) => {
     const existUser = await User.findOne({ email });
 
     if (existUser) {
-      throw new Error('Email already exist');
+      throw new Error('Email already exists');
     }
 
     const user = await User.create({
@@ -144,9 +143,12 @@ const verifyUser = asyncHandler(async (req, res) => {
 
     res.status(201).json({
       success: true,
+      message: 'User verified and registered successfully',
+      userId: user._id,
     });
   } catch (error) {
     console.log('verifyUser catch block: ', error);
+    res.status(400).json({ message: error.message });
   }
 });
 
