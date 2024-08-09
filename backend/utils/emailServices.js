@@ -1,51 +1,44 @@
 import nodemailer from 'nodemailer';
+import ejs from 'ejs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+// import fs from 'fs';
 
-/*
-  KULLANIM:
-  1) sendEmail(email, code, 'verification');
-  2) sendEmail(email, code, 'reset');
-*/
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const sendEmail = async (userEmail, code, type) => {
+const sendMail = async (options) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.SMTP_EMAIL_USER,
-      pass: process.env.SMTP_EMAIL_PASSWORD,
+      user: `${process.env.SMTP_EMAIL_USER}`,
+      pass: `${process.env.SMTP_EMAIL_PASSWORD}`,
     },
   });
 
-  let subject;
-  let htmlContent;
+  const { email, subject, template, data } = options;
 
-  if (type === 'verification') {
-    subject = 'E-posta Adresinizi Doğrulayın.';
-    htmlContent = `
-      <h3>E-comMERNce sitesinde üyeliğinizi tamamlamak için e-posta adresinizi doğrulayın.</h3>
-      <h4>E-posta adresinizi doğrulamak için onay kodunuz:</h4>
-      <h2>${code}</h2>
-      <p><i>Bu bağlantı 10 dakika içerisinde geçersiz olacaktır.</i></p>
-    `;
-  } else if (type === 'reset') {
-    subject = 'Şifrenizi Sıfırlayın.';
-    htmlContent = `
-      <h3>E-comMERNce hesabınız için şifrenizi sıfırlayın</h3>
-      <h4>Şifrenizi sıfırlamanız için gerekli onay kodu:</h4>
-      <h2>${code}</h2>
-      <p><i>Bu bağlantı 10 dakika içerisinde geçersiz olacaktır.</i></p>
-    `;
-  } else {
-    throw new Error('Geçersiz e-posta türü.');
-  }
+  // E-posta şablonunun dosya yolunu alın
+  const templatePath = path.join(__dirname, '../mails', template);
 
-  await transporter.sendMail({
-    from: '"e-comMERNce" <yourapp@example.com>',
-    to: userEmail,
-    subject: subject,
-    html: htmlContent,
-  });
+  // // check if the template is valid
+  // if (!fs.existsSync(templatePath)) {
+  //   console.error('Şablon dosyası bulunamadı:', templatePath);
+  //   throw new Error('Şablon dosyası bulunamadı');
+  // }
 
-  console.log(`E-posta ${userEmail} adresine gönderildi.`);
+  console.log('Şablon dosyası bulundu:', templatePath);
+
+  const html = await ejs.renderFile(templatePath, data);
+
+  const mailOptions = {
+    from: `${process.env.APP_NAME} <${process.env.SMTP_EMAIL}>`,
+    to: email,
+    subject,
+    html,
+  };
+
+  await transporter.sendMail(mailOptions);
 };
 
-export default sendEmail;
+export default sendMail;
