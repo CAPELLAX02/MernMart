@@ -16,17 +16,14 @@ import { protect, admin } from '../middleware/authMiddleware.js';
 router.post('/create-checkout-session', createCheckoutSession);
 router.get('/session-status', getStripeSessionStatus);
 
-router.route('/').post(addOrderItems).get(protect, admin, getAllOrders);
+router.route('/').post(addOrderItems).get(getAllOrders);
 
-router.route('/mine').get(protect, getMyOrders);
+router.route('/mine').get(getMyOrders);
 
-router
-  .route('/:id')
-  .get(protect, getOrderById)
-  .put(protect, admin, deleteOrder);
+router.route('/:id').get(getOrderById).put(deleteOrder);
 
 // router.route('/:id/pay').put(protect, updateOrderToPaid);
 
-router.route('/:id/deliver').put(protect, admin, updateOrderToDelivered);
+router.route('/:id/deliver').put(updateOrderToDelivered);
 
 export default router;
