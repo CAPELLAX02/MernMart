@@ -167,14 +167,6 @@ const createCheckoutSession = asyncHandler(async (req, res) => {
     payment_method_types: ['card'],
     line_items: lineItems,
     mode: 'payment',
-    // shipping_options: [
-    //   {
-    //     shipping_rate: shippingRate,
-    //   },
-    // ],
-    // success_url: `http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}`,
-    // success_url: `http://localhost:3000/success`,
-    // cancel_url: `http://localhost:3000/cancel`,
     return_url: `https://mernmart.onrender.com/return?session_id={CHECKOUT_SESSION_ID}`,
   });
 

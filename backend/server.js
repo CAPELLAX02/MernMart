@@ -23,6 +23,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, '../frontend/public')));
+
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);

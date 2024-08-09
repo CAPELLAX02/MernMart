@@ -1,7 +1,14 @@
+import jwt from 'jsonwebtoken';
 import asyncHandler from '../middleware/asyncHandler.js';
 import User from '../models/userModel.js';
-import generateToken from '../utils/generateToken.js';
-import sendEmail from '../utils/emailServices.js';
+import sendMail from '../utils/emailServices.js';
+import ejs from 'ejs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// __dirname ve __filename'i oluşturmak için gerekli
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // @desc     Auth user & get token
 // @route    POST /api/users/login
@@ -9,18 +16,14 @@ import sendEmail from '../utils/emailServices.js';
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  // Kullanıcıyı e-posta ile bul
   const user = await User.findOne({ email: email });
 
   if (!user) {
-    console.log('Kullanıcı bulunamadı:', email);
     res.status(401);
     throw new Error('Invalid email or password.');
   }
 
-  // Şifre eşleşmesini kontrol et
   const isPasswordMatch = await user.matchPassword(password);
-  console.log('Şifre karşılaştırması sonucu:', isPasswordMatch);
 
   if (!isPasswordMatch) {
     console.log('Şifre yanlış:', email);
@@ -28,14 +31,11 @@ const authUser = asyncHandler(async (req, res) => {
     throw new Error('Invalid email or password.');
   }
 
-  // E-posta doğrulamasını kontrol et
   if (!user.isEmailVerified) {
-    console.log('E-posta doğrulanmamış:', email);
     res.status(401);
-    throw new Error('E-posta adresiniz doğrulanmamış!');
+    throw new Error('Email address not activated.');
   }
 
-  // JWT oluştur ve HTTP-Only Cookie olarak ayarla
   generateToken(res, user._id);
 
   res.status(200).json({
@@ -46,62 +46,108 @@ const authUser = asyncHandler(async (req, res) => {
   });
 });
 
-// @desc     Register user
+// JWT oluşturma fonksiyonu
+const createActivationToken = (user) => {
+  const activationCode = Math.floor(100000 + Math.random() * 900000).toString(); // 6 haneli kod
+
+  console.log('Generated Activation Code:', activationCode); // Loglama ekleyin
+
+  const token = jwt.sign(
+    {
+      user,
+      activationCode,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: '5m',
+    }
+  );
+
+  return { token, activationCode };
+};
+
+// @desc     Kullanıcı Kaydı
 // @route    POST /api/users
 // @access   Public
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
-  let user = await User.findOne({ email });
-  if (user) {
+  const isEmailExist = await User.findOne({ email });
+  if (isEmailExist) {
     res.status(400);
     throw new Error('Bu e-posta adresi zaten kullanımda.');
   }
 
-  const emailVerificationCode = Math.random().toString().slice(2, 8);
-  const emailVerificationCodeExpires = new Date(Date.now() + 10 * 60 * 1000);
+  // Kullanıcı bilgileri ile bir activation token oluşturuyoruz
+  const user = { name, email, password };
 
-  user = new User({
-    name,
-    email,
-    password,
-    isEmailVerified: false,
-    emailVerificationCode,
-    emailVerificationCodeExpires,
-  });
+  const activationToken = createActivationToken(user);
+  const activationCode = activationToken.activationCode;
 
-  await user.save();
-  console.log('Kayıt edilen kullanıcı:', user);
-  await sendEmail(user.email, emailVerificationCode, 'verification');
+  // E-posta içeriğini oluşturuyoruz
+  const data = { user: { name: user.name }, activationCode };
 
-  res.status(201).json({
-    message: `Doğrulama kodu ${user.email} adresine gönderildi.`,
-  });
+  const htmlContent = await ejs.renderFile(
+    path.join(__dirname, '../mails', 'activation-mail.ejs'),
+    data
+  );
+
+  // E-posta gönderiyoruz
+  try {
+    await sendMail({
+      email: user.email,
+      subject: 'Activate your account',
+      template: 'activation-mail.ejs',
+      data,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: `Please check your email: ${user.email} to activate your account!`,
+      activationToken: activationToken.token,
+    });
+  } catch (error) {
+    console.error('E-posta gönderilemedi:', error);
+    console.log(error.stack);
+    res.status(400).json({
+      message: 'E-posta gönderilemedi, lütfen tekrar deneyin.',
+    });
+  }
 });
 
-// @desc     Verify user
+// @desc     Kullanıcıyı Doğrulama
 // @router   POST /api/users/verify-email
-// @access   Private
+// @access   Public
 const verifyUser = asyncHandler(async (req, res) => {
-  const { email, verificationCode } = req.body;
+  try {
+    const { activation_token, activation_code } = req.body;
 
-  const user = await User.findOne({
-    email,
-    emailVerificationCode: verificationCode,
-    emailVerificationCodeExpires: { $gt: Date.now() },
-  });
+    const newUser = jwt.verify(activation_token, process.env.JWT_SECRET);
 
-  if (!user) {
-    res.status(400);
-    throw new Error('Geçersiz veya süresi dolmuş doğrulama kodu.');
+    if (newUser.activationCode !== activation_code) {
+      throw new Error('Invalid activation code');
+    }
+
+    const { name, email, password } = newUser.user;
+
+    const existUser = await User.findOne({ email });
+
+    if (existUser) {
+      throw new Error('Email already exist');
+    }
+
+    const user = await User.create({
+      name,
+      email,
+      password,
+    });
+
+    res.status(201).json({
+      success: true,
+    });
+  } catch (error) {
+    console.log('verifyUser catch block: ', error);
   }
-
-  user.isEmailVerified = true;
-  user.emailVerificationCode = undefined;
-  user.emailVerificationCodeExpires = undefined;
-  await user.save();
-
-  res.json({ message: 'E-posta başarıyla doğrulandı!' });
 });
 
 // @desc     Log out user & clear cookie
