@@ -84,30 +84,38 @@ export const CheckoutForm = () => {
 
 export const Return = () => {
   const { userInfo } = useSelector((state) => state.auth);
-  const [order, setOrder] = useState(null);
-  const [status, setStatus] = useState(null);
-  const [customerEmail, setCustomerEmail] = useState('');
+  const cart = useSelector((state) => state.cart);
+  console.log(cart);
+  const {
+    cartItems,
+    shippingAddress, // shippingAddress'i buradan alıyoruz
+    itemsPrice,
+    shippingPrice,
+    taxPrice,
+    totalPrice,
+  } = cart;
 
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
   const dispatch = useDispatch();
-
   const placeOrderHandler = async () => {
     try {
-      // Use the fetched order from DB instead of cart items
       await createOrder({
-        orderItems: order.orderItems,
-        shippingAddress: order.shippingAddress,
+        orderItems: cartItems,
+        shippingAddress: shippingAddress || 'default shipping address', // Eğer shippingAddress eksikse default bir adres kullanın
         paymentMethod: 'Credit & Debit Card',
-        itemsPrice: order.itemsPrice,
-        shippingPrice: order.shippingPrice,
-        taxPrice: order.taxPrice,
-        totalPrice: order.totalPrice,
+        itemsPrice,
+        shippingPrice,
+        taxPrice,
+        totalPrice,
       }).unwrap();
-      dispatch(clearCartItems());
+      // dispatch(clearCartItems());
     } catch (err) {
       console.log('Placing order error: ', err);
     }
   };
+
+  const [status, setStatus] = useState(null);
+  const [customerEmail, setCustomerEmail] = useState('');
 
   useEffect(() => {
     const queryString = window.location.search;
@@ -119,16 +127,9 @@ export const Return = () => {
       .then((data) => {
         setStatus(data.status);
         setCustomerEmail(data.customer_email);
-
-        // Fetch the order from the server by sessionId (this requires you to implement an API to get the order by sessionId)
-        fetch(`/api/orders/order-by-session-id?session_id=${sessionId}`)
-          .then((res) => res.json())
-          .then((orderData) => {
-            setOrder(orderData);
-            if (data.status === 'complete') {
-              placeOrderHandler(); // Place the order only if the payment was successful
-            }
-          });
+        if (data.status === 'complete') {
+          placeOrderHandler(); // Place the order only if the payment was successful
+        }
       })
       .catch((error) => {
         console.error('Error fetching session status:', error);
@@ -139,7 +140,7 @@ export const Return = () => {
     return <Navigate to='/checkout' />;
   }
 
-  if (status === 'complete' && order) {
+  if (status === 'complete') {
     return (
       <section id='success' className='container mt-2 mb-5'>
         <div className='card text-black mt-0'>
@@ -160,7 +161,7 @@ export const Return = () => {
               <div className='col-md-8'>
                 <h5 className='ps-4 mb-1'>Order Details:</h5>
                 <ul className='list-group list-group-flush'>
-                  {order.orderItems.map((item, index) => (
+                  {cartItems.map((item, index) => (
                     <li key={index} className='list-group-item'>
                       <div className='row'>
                         <div className='col-6 col-md-4'>
@@ -185,19 +186,19 @@ export const Return = () => {
                 <h5>Order Summary:</h5>
                 <div className='mb-2'>
                   <span className='text-muted'>Items Total: </span>
-                  <p className='float-right'>${order.itemsPrice}</p>
+                  <p className='float-right'>${itemsPrice}</p>
                 </div>
                 <div className='mb-2'>
                   <span className='text-muted'>Shipping: </span>
-                  <p className='float-right'>${order.shippingPrice}</p>
+                  <p className='float-right'>${shippingPrice}</p>
                 </div>
                 <div className='mb-2'>
                   <span className='text-muted'>Tax: </span>
-                  <p className='float-right'>${order.taxPrice}</p>
+                  <p className='float-right'>${taxPrice}</p>
                 </div>
                 <div className='mb-4 border-top pt-2'>
                   <span className='text-muted'>Total: </span>
-                  <p className='float-right'>${order.totalPrice}</p>
+                  <p className='float-right'>${totalPrice}</p>
                 </div>
                 <div className='text-center'>
                   <a

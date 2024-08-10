@@ -172,75 +172,6 @@ const getStripeSessionStatus = asyncHandler(async (req, res) => {
   });
 });
 
-// Webhook Endpoint Secret Key
-const STRIPE_WEBHOOK_SECRET =
-  'whsec_ad4f985b9f5b5454898d6808a6d71b663123d72e2ecd058abf186013b76d10e7';
-
-// Stripe Webhook Handler
-const stripeWebhook = asyncHandler(async (req, res) => {
-  const sig = req.headers['stripe-signature'];
-  let event;
-
-  try {
-    event = stripe.webhooks.constructEvent(
-      req.rawBody,
-      sig,
-      STRIPE_WEBHOOK_SECRET
-    );
-  } catch (err) {
-    console.log(`⚠️ Webhook signature verification failed.`, err.message);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
-
-  // Handle the checkout.session.completed event
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-
-    // Extract metadata and save the order in the database
-    const orderItems = JSON.parse(session.metadata.cartItems);
-    const shippingAddress = JSON.parse(session.metadata.shippingAddress);
-
-    const order = new Order({
-      orderItems: orderItems.map((item) => ({
-        name: item.name,
-        qty: item.qty,
-        image: item.image,
-        price: item.price,
-        product: item._id,
-      })),
-      user: session.metadata.userId,
-      shippingAddress: {
-        address: shippingAddress.address,
-        city: shippingAddress.city,
-        postalCode: shippingAddress.postalCode,
-        country: shippingAddress.country,
-      },
-      paymentMethod: 'Credit & Debit Card',
-      itemsPrice: session.amount_total / 100,
-      totalPrice: session.amount_total / 100,
-      isPaid: true,
-      paidAt: Date.now(),
-    });
-
-    await order.save();
-  }
-
-  res.status(200).json({ received: true });
-});
-
-// @desc     Get order by session ID
-// @route    GET /api/orders/order-by-session-id
-// @access   Private
-const getOrderBySessionId = asyncHandler(async (req, res) => {
-  const order = await Order.findOne({ sessionId: req.query.session_id });
-
-  if (order) {
-    res.status(200).json(order);
-  } else {
-    res.status(404).json({ message: 'Order not found' });
-  }
-});
-
 export {
   addOrderItems,
   getMyOrders,
@@ -250,6 +181,4 @@ export {
   deleteOrder,
   createCheckoutSession,
   getStripeSessionStatus,
-  stripeWebhook,
-  getOrderBySessionId,
 };

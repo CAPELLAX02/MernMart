@@ -10,22 +10,12 @@ import {
   deleteOrder,
   createCheckoutSession,
   getStripeSessionStatus,
-  stripeWebhook,
-  getOrderBySessionId,
 } from '../controllers/orderController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
 router.post('/create-checkout-session', protect, createCheckoutSession);
 
 router.get('/session-status', getStripeSessionStatus);
-
-router.post(
-  '/webhook',
-  express.raw({ type: 'application/json' }),
-  stripeWebhook
-);
-
-router.route('/order-by-session-id').get(protect, getOrderBySessionId);
 
 router
   .route('/')
