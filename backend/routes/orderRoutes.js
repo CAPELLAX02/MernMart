@@ -4,18 +4,18 @@ import {
   addOrderItems,
   getMyOrders,
   getOrderById,
-  // updateOrderToPaid,
   updateOrderToDelivered,
   getAllOrders,
   deleteOrder,
   createCheckoutSession,
   getStripeSessionStatus,
+  getOrderBySessionId, // Buraya ekliyoruz
 } from '../controllers/orderController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
 router.post('/create-checkout-session', protect, createCheckoutSession);
-
 router.get('/session-status', getStripeSessionStatus);
+router.get('/order-by-session-id', protect, getOrderBySessionId); // Yeni eklenen route
 
 router
   .route('/')
@@ -28,8 +28,6 @@ router
   .route('/:id')
   .get(protect, getOrderById)
   .put(protect, admin, deleteOrder);
-
-// router.route('/:id/pay').put(protect, updateOrderToPaid);
 
 router.route('/:id/deliver').put(protect, admin, updateOrderToDelivered);
 

@@ -1,13 +1,14 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import Order from '../models/orderModel.js';
 import Product from '../models/productModel.js';
-import { calcPrices } from '../utils/calcPrices.js';
 import Stripe from 'stripe';
-// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const stripe = new Stripe(
   'sk_test_51PkqaLH9opOR77k1n9SVX2wpXcVoNy1ujaxKWIAGHHRvWeT9CXGo3TqXIkuVtL0UcjF9rnrBe37m18eI7LgHTZ6m00BTYSmt8s'
 );
 
+// @desc     Create new order
+// @route    POST /api/orders
+// @access   Private
 const addOrderItems = asyncHandler(async (req, res) => {
   const {
     orderItems,
@@ -24,29 +25,24 @@ const addOrderItems = asyncHandler(async (req, res) => {
     return;
   }
 
-  try {
-    const order = new Order({
-      orderItems: orderItems.map((item) => ({
-        ...item,
-        product: item._id,
-        _id: undefined,
-      })),
-      user: req.user._id,
-      shippingAddress,
-      paymentMethod,
-      itemsPrice,
-      taxPrice,
-      shippingPrice,
-      totalPrice,
-    });
+  const order = new Order({
+    orderItems: orderItems.map((item) => ({
+      ...item,
+      product: item._id,
+      _id: undefined,
+    })),
+    user: req.user._id,
+    shippingAddress,
+    paymentMethod,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+  });
 
-    const createdOrder = await order.save();
+  const createdOrder = await order.save();
 
-    res.status(200).json(createdOrder);
-  } catch (error) {
-    console.error('Error saving order:', error);
-    res.status(500).json({ message: 'Order could not be saved.' });
-  }
+  res.status(200).json(createdOrder);
 });
 
 // @desc     Get logged in user orders
@@ -69,7 +65,7 @@ const getOrderById = asyncHandler(async (req, res) => {
   if (order) {
     res.status(200).json(order);
   } else {
-    res.status(404).throw(new Error('Order not found'));
+    res.status(404).json({ message: 'Order not found' });
   }
 });
 
@@ -85,7 +81,7 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
     const updatedOrder = await order.save();
     res.status(200).json(updatedOrder);
   } else {
-    res.status(404).throw(new Error('Order not found'));
+    res.status(404).json({ message: 'Order not found' });
   }
 });
 
@@ -107,7 +103,7 @@ const deleteOrder = asyncHandler(async (req, res) => {
     await order.remove();
     res.status(200).json({ message: 'Order removed' });
   } else {
-    res.status(404).throw(new Error('Order not found'));
+    res.status(404).json({ message: 'Order not found' });
   }
 });
 
@@ -142,7 +138,7 @@ const createCheckoutSession = asyncHandler(async (req, res) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      return_url: returnUrl, // Only use this URL in embedded mode
+      return_url: returnUrl,
       metadata: {
         userId: req.user._id.toString(),
         productIds: cartItems.map((item) => item._id).join(','),
@@ -155,7 +151,7 @@ const createCheckoutSession = asyncHandler(async (req, res) => {
       },
     });
 
-    res.send({ clientSecret: session.client_secret });
+    res.send({ clientSecret: session.client_secret, sessionId: session.id });
   } catch (error) {
     console.error('Error in createCheckoutSession:', error);
     res.status(500).json({ message: 'Internal Server Error' });
@@ -172,6 +168,20 @@ const getStripeSessionStatus = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc     Get order by session_id
+// @route    GET /api/orders/order-by-session-id
+// @access   Private
+const getOrderBySessionId = asyncHandler(async (req, res) => {
+  const sessionId = req.query.session_id;
+  const order = await Order.findOne({ 'paymentResult.id': sessionId });
+
+  if (order) {
+    res.status(200).json(order);
+  } else {
+    res.status(404).json({ message: 'Order not found' });
+  }
+});
+
 export {
   addOrderItems,
   getMyOrders,
@@ -181,4 +191,5 @@ export {
   deleteOrder,
   createCheckoutSession,
   getStripeSessionStatus,
+  getOrderBySessionId, // Yeni eklenen fonksiyon
 };
