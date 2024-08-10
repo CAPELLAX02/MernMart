@@ -13,6 +13,13 @@ const stripePromise = loadStripe(
   `pk_test_51PkqaLH9opOR77k1BtGN1DVRUfujkaJ1DsF7IIbgVb9U3Tbfm2KK6wUqqZGbCFcCzyqT0N748tPEexaXdDsR1YQN00nL9T903d`
 );
 
+/**
+ *        SORUNLAR:
+ *
+ *    1. sipariş 2 kez db ye kaydediliyor.
+ *    2. return sayfasındaki sipariş verileri db den degil de cart statinden cekildigi için sipariş sonrası cart boşaldığından anına boşalıyor sipariş bilgileri de order confirmation kısmında return sayfasındaki.
+ */
+
 export const CheckoutForm = () => {
   const cart = useSelector((state) => state.cart);
   const { cartItems, shippingAddress } = cart;
