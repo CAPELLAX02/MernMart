@@ -5,6 +5,7 @@ import sendMail from '../utils/emailServices.js';
 import ejs from 'ejs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import generateToken from '../utils/generateToken.js';
 
 // __dirname ve __filename'i oluşturmak için gerekli
 const __filename = fileURLToPath(import.meta.url);
@@ -16,29 +17,24 @@ const __dirname = path.dirname(__filename);
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email: email });
+  const user = await User.findOne({ email });
 
-  if (!user) {
+  if (user && (await user.matchPassword(password))) {
+    generateToken(res, user._id);
+
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
+  } else {
     res.status(401);
-    throw new Error('Invalid email or password.');
+    throw new Error('Invalid email or password');
   }
-
-  const isPasswordMatch = await user.matchPassword(password);
-
-  if (!isPasswordMatch) {
-    res.status(401);
-    throw new Error('Invalid email or password.');
-  }
-
-  res.status(200).json({
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    isAdmin: user.isAdmin,
-  });
 });
 
-// JWT oluşturma fonksiyonu
+// JWT oluşturma fonksiyonu (kayıt için)
 const createActivationToken = (user) => {
   const activationCode = Math.floor(100000 + Math.random() * 900000).toString(); // 6 haneli kod
 

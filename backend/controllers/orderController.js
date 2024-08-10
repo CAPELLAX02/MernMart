@@ -9,54 +9,43 @@ const stripe = new Stripe(
 );
 
 const addOrderItems = asyncHandler(async (req, res) => {
-  const { orderItems, shippingAddress, paymentMethod } = req.body;
+  const {
+    orderItems,
+    shippingAddress,
+    paymentMethod,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+  } = req.body;
 
-  if (orderItems && orderItems.length === 0) {
-    res.status(400);
-    throw new Error('No order items');
-  } else {
-    // NOTE: here we must assume that the prices from our client are incorrect.
-    // We must only trust the price of the item as it exists in
-    // our DB. This prevents a user paying whatever they want by hacking our client
-    // side code - https://gist.github.com/bushblade/725780e6043eaf59415fbaf6ca7376ff
+  if (!orderItems || orderItems.length === 0) {
+    res.status(400).json({ message: 'No order items' });
+    return;
+  }
 
-    // get the ordered items from our database
-    const itemsFromDB = await Product.find({
-      _id: { $in: orderItems.map((x) => x._id) },
-    });
-
-    // map over the order items and use the price from our items from database
-    const dbOrderItems = orderItems.map((itemFromClient) => {
-      const matchingItemFromDB = itemsFromDB.find(
-        (itemFromDB) => itemFromDB._id.toString() === itemFromClient._id
-      );
-      return {
-        ...itemFromClient,
-        product: itemFromClient._id,
-        price: matchingItemFromDB.price,
-        _id: undefined,
-      };
-    });
-
-    // calculate prices
-    const { itemsPrice, shippingPrice, totalPrice } = calcPrices(dbOrderItems);
-
+  try {
     const order = new Order({
-      orderItems: dbOrderItems,
+      orderItems: orderItems.map((item) => ({
+        ...item,
+        product: item._id,
+        _id: undefined,
+      })),
       user: req.user._id,
       shippingAddress,
       paymentMethod,
       itemsPrice,
+      taxPrice,
       shippingPrice,
       totalPrice,
     });
 
-    order.isPaid = true;
-    order.paidAt = Date.now();
-
     const createdOrder = await order.save();
 
-    res.status(201).json(createdOrder);
+    res.status(200).json(createdOrder);
+  } catch (error) {
+    console.error('Error saving order:', error);
+    res.status(500).json({ message: 'Order could not be saved.' });
   }
 });
 
@@ -124,53 +113,53 @@ const deleteOrder = asyncHandler(async (req, res) => {
 
 // POST /api/orders/create-checkout-session
 const createCheckoutSession = asyncHandler(async (req, res) => {
-  if (!req.body.cartItems) {
-    res.status(400).json({ message: 'Cart items are required' });
-    console.log('Cart Items Error!');
-    return;
+  try {
+    const { cartItems, shippingAddress } = req.body;
+
+    if (!cartItems || cartItems.length === 0) {
+      res.status(400).json({ message: 'Cart items are required' });
+      return;
+    }
+
+    const lineItems = cartItems.map((item) => ({
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: item.name,
+        },
+        unit_amount: Math.round(item.price * 100),
+      },
+      quantity: item.qty,
+    }));
+
+    const returnUrl =
+      process.env.NODE_ENV === 'production'
+        ? `https://mernmart.onrender.com/return?session_id={CHECKOUT_SESSION_ID}`
+        : `http://localhost:3000/return?session_id={CHECKOUT_SESSION_ID}`;
+
+    const session = await stripe.checkout.sessions.create({
+      ui_mode: 'embedded',
+      payment_method_types: ['card'],
+      line_items: lineItems,
+      mode: 'payment',
+      return_url: returnUrl, // Only use this URL in embedded mode
+      metadata: {
+        userId: req.user._id.toString(),
+        productIds: cartItems.map((item) => item._id).join(','),
+        shippingAddress: JSON.stringify({
+          address: shippingAddress.address || 'No address provided',
+          city: shippingAddress.city || 'No city',
+          postalCode: shippingAddress.postalCode || '00000',
+          country: shippingAddress.country || 'No country',
+        }),
+      },
+    });
+
+    res.send({ clientSecret: session.client_secret });
+  } catch (error) {
+    console.error('Error in createCheckoutSession:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
-  const { cartItems } = req.body; // Frontend'den gelen sepet ürünleri
-
-  const lineItems = cartItems.map((item) => ({
-    price_data: {
-      currency: 'usd',
-      product_data: {
-        name: item.name,
-        // images: [item.image], // Ürün resmini de ekleyebilirsiniz.
-      },
-      unit_amount: Math.round(item.price * 100), // Fiyatı cent cinsinden.
-    },
-    quantity: item.qty,
-  }));
-
-  const shippingRate = await stripe.shippingRates.create({
-    display_name: 'Ground shipping',
-    type: 'fixed_amount',
-    fixed_amount: {
-      amount: 500,
-      currency: 'usd',
-    },
-    delivery_estimate: {
-      minimum: {
-        unit: 'business_day',
-        value: 5,
-      },
-      maximum: {
-        unit: 'business_day',
-        value: 7,
-      },
-    },
-  });
-
-  const session = await stripe.checkout.sessions.create({
-    ui_mode: 'embedded',
-    payment_method_types: ['card'],
-    line_items: lineItems,
-    mode: 'payment',
-    return_url: `https://mernmart.onrender.com/return?session_id={CHECKOUT_SESSION_ID}`,
-  });
-
-  res.send({ clientSecret: session.client_secret });
 });
 
 // GET /api/orders/session-status
@@ -183,6 +172,75 @@ const getStripeSessionStatus = asyncHandler(async (req, res) => {
   });
 });
 
+// Webhook Endpoint Secret Key
+const STRIPE_WEBHOOK_SECRET =
+  'whsec_ad4f985b9f5b5454898d6808a6d71b663123d72e2ecd058abf186013b76d10e7';
+
+// Stripe Webhook Handler
+const stripeWebhook = asyncHandler(async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.rawBody,
+      sig,
+      STRIPE_WEBHOOK_SECRET
+    );
+  } catch (err) {
+    console.log(`⚠️ Webhook signature verification failed.`, err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Handle the checkout.session.completed event
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+
+    // Extract metadata and save the order in the database
+    const orderItems = JSON.parse(session.metadata.cartItems);
+    const shippingAddress = JSON.parse(session.metadata.shippingAddress);
+
+    const order = new Order({
+      orderItems: orderItems.map((item) => ({
+        name: item.name,
+        qty: item.qty,
+        image: item.image,
+        price: item.price,
+        product: item._id,
+      })),
+      user: session.metadata.userId,
+      shippingAddress: {
+        address: shippingAddress.address,
+        city: shippingAddress.city,
+        postalCode: shippingAddress.postalCode,
+        country: shippingAddress.country,
+      },
+      paymentMethod: 'Credit & Debit Card',
+      itemsPrice: session.amount_total / 100,
+      totalPrice: session.amount_total / 100,
+      isPaid: true,
+      paidAt: Date.now(),
+    });
+
+    await order.save();
+  }
+
+  res.status(200).json({ received: true });
+});
+
+// @desc     Get order by session ID
+// @route    GET /api/orders/order-by-session-id
+// @access   Private
+const getOrderBySessionId = asyncHandler(async (req, res) => {
+  const order = await Order.findOne({ sessionId: req.query.session_id });
+
+  if (order) {
+    res.status(200).json(order);
+  } else {
+    res.status(404).json({ message: 'Order not found' });
+  }
+});
+
 export {
   addOrderItems,
   getMyOrders,
@@ -192,4 +250,6 @@ export {
   deleteOrder,
   createCheckoutSession,
   getStripeSessionStatus,
+  stripeWebhook,
+  getOrderBySessionId,
 };

@@ -16,16 +16,23 @@ const stripePromise = loadStripe(
 
 export const CheckoutForm = () => {
   const cart = useSelector((state) => state.cart);
-  const { cartItems } = cart;
+  const { cartItems, shippingAddress } = cart; // shippingAddress'i de buradan alıyoruz
 
   const fetchClientSecret = useCallback(async () => {
+    const shippingAddress = cart.shippingAddress || {
+      address: 'No address provided',
+      city: 'No city',
+      postalCode: '00000',
+      country: 'No country',
+    }; // Eğer boşsa varsayılan adres
+
     try {
       const response = await fetch('/api/orders/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ cartItems: cartItems }),
+        body: JSON.stringify({ cartItems, shippingAddress }),
       });
       const data = await response.json();
       console.log(data);
@@ -38,7 +45,7 @@ export const CheckoutForm = () => {
       console.error('Error fetching client secret:', error);
       throw error;
     }
-  }, [cartItems]);
+  }, [cartItems, cart.shippingAddress]);
 
   const options = { fetchClientSecret };
 
@@ -77,40 +84,30 @@ export const CheckoutForm = () => {
 
 export const Return = () => {
   const { userInfo } = useSelector((state) => state.auth);
-  const cart = useSelector((state) => state.cart);
-  console.log(cart);
-  const {
-    cartItems,
-    // shippingAddress,
-    // paymentMethod,
-    itemsPrice,
-    shippingPrice,
-    taxPrice,
-    totalPrice,
-  } = cart;
+  const [order, setOrder] = useState(null);
+  const [status, setStatus] = useState(null);
+  const [customerEmail, setCustomerEmail] = useState('');
 
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
   const dispatch = useDispatch();
+
   const placeOrderHandler = async () => {
     try {
+      // Use the fetched order from DB instead of cart items
       await createOrder({
-        orderItems: cartItems,
-        shippingAddress:
-          'example shipping address (address should be taken from the user before the payment actually.)',
+        orderItems: order.orderItems,
+        shippingAddress: order.shippingAddress,
         paymentMethod: 'Credit & Debit Card',
-        itemsPrice,
-        shippingPrice: 5,
-        taxPrice,
-        totalPrice,
+        itemsPrice: order.itemsPrice,
+        shippingPrice: order.shippingPrice,
+        taxPrice: order.taxPrice,
+        totalPrice: order.totalPrice,
       }).unwrap();
-      // dispatch(clearCartItems());
+      dispatch(clearCartItems());
     } catch (err) {
       console.log('Placing order error: ', err);
     }
   };
-
-  const [status, setStatus] = useState(null);
-  const [customerEmail, setCustomerEmail] = useState('');
 
   useEffect(() => {
     const queryString = window.location.search;
@@ -122,9 +119,16 @@ export const Return = () => {
       .then((data) => {
         setStatus(data.status);
         setCustomerEmail(data.customer_email);
-        if (data.status === 'complete') {
-          placeOrderHandler(); // Place the order only if the payment was successful
-        }
+
+        // Fetch the order from the server by sessionId (this requires you to implement an API to get the order by sessionId)
+        fetch(`/api/orders/order-by-session-id?session_id=${sessionId}`)
+          .then((res) => res.json())
+          .then((orderData) => {
+            setOrder(orderData);
+            if (data.status === 'complete') {
+              placeOrderHandler(); // Place the order only if the payment was successful
+            }
+          });
       })
       .catch((error) => {
         console.error('Error fetching session status:', error);
@@ -135,7 +139,7 @@ export const Return = () => {
     return <Navigate to='/checkout' />;
   }
 
-  if (status === 'complete') {
+  if (status === 'complete' && order) {
     return (
       <section id='success' className='container mt-2 mb-5'>
         <div className='card text-black mt-0'>
@@ -156,7 +160,7 @@ export const Return = () => {
               <div className='col-md-8'>
                 <h5 className='ps-4 mb-1'>Order Details:</h5>
                 <ul className='list-group list-group-flush'>
-                  {cartItems.map((item, index) => (
+                  {order.orderItems.map((item, index) => (
                     <li key={index} className='list-group-item'>
                       <div className='row'>
                         <div className='col-6 col-md-4'>
@@ -181,19 +185,19 @@ export const Return = () => {
                 <h5>Order Summary:</h5>
                 <div className='mb-2'>
                   <span className='text-muted'>Items Total: </span>
-                  <p className='float-right'>${itemsPrice}</p>
+                  <p className='float-right'>${order.itemsPrice}</p>
                 </div>
                 <div className='mb-2'>
                   <span className='text-muted'>Shipping: </span>
-                  <p className='float-right'>${shippingPrice}</p>
+                  <p className='float-right'>${order.shippingPrice}</p>
                 </div>
                 <div className='mb-2'>
                   <span className='text-muted'>Tax: </span>
-                  <p className='float-right'>${taxPrice}</p>
+                  <p className='float-right'>${order.taxPrice}</p>
                 </div>
                 <div className='mb-4 border-top pt-2'>
                   <span className='text-muted'>Total: </span>
-                  <p className='float-right'>${totalPrice}</p>
+                  <p className='float-right'>${order.totalPrice}</p>
                 </div>
                 <div className='text-center'>
                   <a
