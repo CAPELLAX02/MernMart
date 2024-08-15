@@ -41,7 +41,7 @@ export const CheckoutForm = () => {
         body: JSON.stringify({ cartItems, shippingAddress }),
       });
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       if (response.ok) {
         return data.clientSecret;
       } else {

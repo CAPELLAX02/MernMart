@@ -65,7 +65,7 @@ const RegisterScreen = () => {
             position: 'top-center',
           }
         );
-        console.log(error);
+        // console.log(error);
       }
     }
   };

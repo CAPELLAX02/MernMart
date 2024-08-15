@@ -44,12 +44,11 @@ const ResetPasswordScreen = () => {
       return;
     }
     try {
-      // Gönderilen verileri loglayın
-      console.log('Sending data:', {
-        email,
-        resetPasswordCode: resetCode,
-        newPassword,
-      });
+      // console.log('Sending data:', {
+      //   email,
+      //   resetPasswordCode: resetCode,
+      //   newPassword,
+      // });
       await resetPassword({
         email,
         resetPasswordCode: resetCode,

@@ -18,7 +18,6 @@ const sendMail = async (options) => {
 
   const { email, subject, template, data } = options;
 
-  // E-posta şablonunun dosya yolunu alın
   const templatePath = path.join(__dirname, '../mails', template);
 
   // // check if the template is valid
@@ -26,8 +25,6 @@ const sendMail = async (options) => {
   //   console.error('Şablon dosyası bulunamadı:', templatePath);
   //   throw new Error('Şablon dosyası bulunamadı');
   // }
-
-  console.log('Şablon dosyası bulundu:', templatePath);
 
   const html = await ejs.renderFile(templatePath, data);
 

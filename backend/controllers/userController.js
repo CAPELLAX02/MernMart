@@ -38,7 +38,7 @@ const authUser = asyncHandler(async (req, res) => {
 const createActivationToken = (user) => {
   const activationCode = Math.floor(100000 + Math.random() * 900000).toString(); // 6 haneli kod
 
-  console.log('Generated Activation Code:', activationCode); // Loglama ekleyin
+  // console.log('Generated Activation Code:', activationCode); // Loglama ekleyin
 
   const token = jwt.sign(
     {
@@ -94,8 +94,8 @@ const registerUser = asyncHandler(async (req, res) => {
       activationToken: token, // activation_token'ı burada döndürüyoruz
     });
   } catch (error) {
-    console.error('E-posta gönderilemedi:', error);
-    console.log(error.stack);
+    // console.error('E-posta gönderilemedi:', error);
+    // console.log(error.stack);
     res.status(400).json({
       message: 'E-posta gönderilemedi, lütfen tekrar deneyin.',
     });
@@ -135,7 +135,7 @@ const verifyUser = asyncHandler(async (req, res) => {
       userId: user._id,
     });
   } catch (error) {
-    console.log('verifyUser catch block: ', error);
+    // console.log('verifyUser catch block: ', error);
     res.status(400).json({ message: error.message });
   }
 });
@@ -280,7 +280,7 @@ const sendForgotPasswordEmail = asyncHandler(async (req, res) => {
     user.resetPasswordCodeExpires = Date.now() + 10 * 60 * 1000;
     await user.save();
 
-    console.log('Reset code saved for user:', user); // Loglama ekleyin
+    // console.log('Reset code saved for user:', user); // Loglama ekleyin
 
     await sendEmail(user.email, resetPasswordCode, 'reset');
     res.status(200).json({ message: 'Reset password code sent.' });
@@ -296,7 +296,7 @@ const sendForgotPasswordEmail = asyncHandler(async (req, res) => {
 const resetPassword = asyncHandler(async (req, res) => {
   const { email, resetPasswordCode, newPassword } = req.body;
 
-  console.log('Received data:', { email, resetPasswordCode, newPassword });
+  // console.log('Received data:', { email, resetPasswordCode, newPassword });
 
   if (!email || !resetPasswordCode || !newPassword) {
     res.status(400);
@@ -309,7 +309,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     resetPasswordCodeExpires: { $gt: Date.now() },
   });
 
-  console.log('Found user:', user); // Kullanıcıyı loglama
+  // console.log('Found user:', user); // Kullanıcıyı loglama
 
   if (!user) {
     res.status(404);

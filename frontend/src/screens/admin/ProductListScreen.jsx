@@ -45,7 +45,7 @@ const ProductListScreen = () => {
             position: 'top-center',
           }
         );
-        console.log(err);
+        // console.log(err);
       }
     }
   };

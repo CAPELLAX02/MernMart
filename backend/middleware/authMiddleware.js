@@ -8,15 +8,15 @@ const protect = asyncHandler(async (req, res, next) => {
 
   // JWT'yi cookie'den oku
   token = req.cookies.jwt;
-  console.log('JWT Token:', token);
+  // console.log('JWT Token:', token);
 
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log('Decoded Token:', decoded);
+      // console.log('Decoded Token:', decoded);
 
       req.user = await User.findById(decoded.userId).select('-password');
-      console.log('Authenticated User:', req.user);
+      // console.log('Authenticated User:', req.user);
 
       if (!req.user) {
         throw new Error('User not found');
@@ -24,12 +24,12 @@ const protect = asyncHandler(async (req, res, next) => {
 
       next();
     } catch (error) {
-      console.log('JWT Verification Error:', error);
+      // console.log('JWT Verification Error:', error);
       res.status(401);
       throw new Error('Not authorized, token failed.');
     }
   } else {
-    console.log('No JWT token found');
+    // console.log('No JWT token found');
     res.status(401);
     throw new Error('Not authorized, no token.');
   }
