@@ -44,7 +44,7 @@ const OrderScreen = () => {
     }
   };
 
-  const handlePayment = async () => {};
+  // const handlePayment = async () => {};
 
   return isLoading ? (
     <Loader />
@@ -52,7 +52,9 @@ const OrderScreen = () => {
     <Message variant='danger'>{error}</Message>
   ) : (
     <>
-      <h1 className='mt-2 py-3'>Order ({order._id})</h1>
+      <h1 className='m-2 p-4 bg-info-subtle rounded-2 text-center'>
+        Order ({order._id})
+      </h1>
 
       <div id='iyzipay-checkout-form' className='popup'></div>
 
@@ -123,39 +125,38 @@ const OrderScreen = () => {
           </ListGroup>
         </Col>
 
-        <Col md={4}>
-          <Card>
-            <ListGroup variant='flush'>
-              <ListGroup.Item>
-                <h2>Order Summary</h2>
-              </ListGroup.Item>
+        <Col md={4} className='p-3'>
+          <ListGroup variant='flush'>
+            <ListGroup.Item>
+              <h2>Order Summary</h2>
+            </ListGroup.Item>
 
-              <ListGroup.Item>
-                <Row className='py-2'>
-                  <Col>Items</Col>
-                  <Col>${order.itemsPrice}</Col>
-                </Row>
-                <Row className='py-2'>
-                  <Col>Shipping</Col>
-                  <Col>${order.shippingPrice}</Col>
-                </Row>
-                <Row className='py-2'>
-                  <Col>Tax</Col>
-                  <Col>${order.taxPrice}</Col>
-                </Row>
-                <Row className='py-2'>
-                  <Col>
-                    <strong>TOTAL</strong>
-                  </Col>
-                  <Col>
-                    <strong>${order.totalPrice}</strong>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
+            <ListGroup.Item>
+              <Row className='py-2'>
+                <Col>Items</Col>
+                <Col>${order.itemsPrice}</Col>
+              </Row>
+              <Row className='py-2'>
+                <Col>Shipping</Col>
+                <Col>${order.shippingPrice}</Col>
+              </Row>
+              <Row className='py-2'>
+                <Col>Tax</Col>
+                <Col>${order.taxPrice}</Col>
+              </Row>
+              <Row className='py-2'>
+                <Col>
+                  <strong>TOTAL</strong>
+                </Col>
+                <Col>
+                  <strong>${order.totalPrice}</strong>
+                </Col>
+              </Row>
+            </ListGroup.Item>
 
-              {userInfo && !userInfo.isAdmin && (
-                <ListGroup.Item>
-                  {/* {order.isPaid ? (
+            {userInfo && !userInfo.isAdmin && (
+              <ListGroup.Item>
+                {/* {order.isPaid ? (
                     <Message variant='success'>Payment Successful</Message>
                   ) : (
                     <Button
@@ -167,27 +168,26 @@ const OrderScreen = () => {
                       {isPaying ? 'İşleniyor...' : 'Ödemeye Geç'}
                     </Button>
                   )} */}
+              </ListGroup.Item>
+            )}
+
+            {loadingDeliver && <Loader />}
+
+            {userInfo &&
+              userInfo.isAdmin &&
+              // order.isPaid &&
+              !order.isDelivered && (
+                <ListGroup.Item>
+                  <Button
+                    type='button'
+                    className='btn btn-block'
+                    onClick={deliverOrderHandler}
+                  >
+                    Mark as "Delivered"
+                  </Button>
                 </ListGroup.Item>
               )}
-
-              {loadingDeliver && <Loader />}
-
-              {userInfo &&
-                userInfo.isAdmin &&
-                // order.isPaid &&
-                !order.isDelivered && (
-                  <ListGroup.Item>
-                    <Button
-                      type='button'
-                      className='btn btn-block'
-                      onClick={deliverOrderHandler}
-                    >
-                      Mark as "Delivered"
-                    </Button>
-                  </ListGroup.Item>
-                )}
-            </ListGroup>
-          </Card>
+          </ListGroup>
         </Col>
       </Row>
     </>

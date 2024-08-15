@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { clearCartItems } from '../slices/cartSlice';
 import { useCreateOrderMutation } from '../slices/ordersApiSlice';
 
+import { useGetOrderDetailsQuery } from '../slices/ordersApiSlice';
+
 const stripePromise = loadStripe(
   `pk_test_51PkqaLH9opOR77k1BtGN1DVRUfujkaJ1DsF7IIbgVb9U3Tbfm2KK6wUqqZGbCFcCzyqT0N748tPEexaXdDsR1YQN00nL9T903d`
 );
@@ -81,6 +83,11 @@ export const Return = () => {
   const [status, setStatus] = useState(null);
   const [customerEmail, setCustomerEmail] = useState('');
 
+  /**
+   * Get order details from the database after checkout is completed
+   */
+  const { data, refetch, isLoading, error } = useGetOrderDetailsQuery();
+
   const placeOrderHandler = useCallback(async () => {
     try {
       await createOrder({
@@ -151,6 +158,7 @@ export const Return = () => {
             <div className='row border-top pt-4'>
               <div className='col-md-8'>
                 <h5 className='ps-4 mb-1'>Order Details:</h5>
+
                 <ul className='list-group list-group-flush'>
                   {cartItems.map((item, index) => (
                     <li key={index} className='list-group-item'>
