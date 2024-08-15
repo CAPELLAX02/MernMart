@@ -68,9 +68,10 @@ const OrderScreen = () => {
                 <strong>Email: </strong> {order.user.email}
               </p>
               <p>
-                <strong>Address: </strong> {order.shippingAddress.address},{' '}
-                {order.shippingAddress.city}, {order.shippingAddress.postalCode}
-                , {order.shippingAddress.country}
+                <strong>Address: </strong> {order.shippingAddress?.address},{' '}
+                {order.shippingAddress?.city},{' '}
+                {order.shippingAddress?.postalCode},{' '}
+                {order.shippingAddress?.country}
               </p>
 
               {order.isDelivered ? (
@@ -88,19 +89,23 @@ const OrderScreen = () => {
                 <strong>Method: </strong> {order.paymentMethod}
               </p>
 
-              {order.isPaid ? (
+              <Message variant='info'>
+                Order placed on {formatDate(order.createdAt)}
+              </Message>
+
+              {/* {order.isPaid ? (
                 <Message variant='success'>
                   Paid at {formatDate(order.paidAt)}.
                 </Message>
               ) : (
                 <Message variant='danger'>Not paid yet.</Message>
-              )}
+              )} */}
             </ListGroup.Item>
 
             <ListGroup.Item>
               <h2>Order Items</h2>
               {order.orderItems.map((item, index) => (
-                <ListGroup.Item key={index}>
+                <ListGroup.Item key={index} className='border-1 rounded-2'>
                   <Row>
                     <Col md={2}>
                       <Image src={item.image} alt={item.name} fluid rounded />
@@ -135,7 +140,7 @@ const OrderScreen = () => {
                   <Col>${order.shippingPrice}</Col>
                 </Row>
                 <Row className='py-2'>
-                  <Col>Vergi</Col>
+                  <Col>Tax</Col>
                   <Col>${order.taxPrice}</Col>
                 </Row>
                 <Row className='py-2'>
@@ -150,18 +155,18 @@ const OrderScreen = () => {
 
               {userInfo && !userInfo.isAdmin && (
                 <ListGroup.Item>
-                  {order.isPaid ? (
+                  {/* {order.isPaid ? (
                     <Message variant='success'>Payment Successful</Message>
                   ) : (
                     <Button
                       type='button'
                       className='btn-block'
-                      // disabled={isPaying || order.isPaid}
+                      disabled={isPaying || order.isPaid}
                       onClick={handlePayment}
                     >
-                      {/* {isPaying ? 'İşleniyor...' : 'Ödemeye Geç'} */}
+                      {isPaying ? 'İşleniyor...' : 'Ödemeye Geç'}
                     </Button>
-                  )}
+                  )} */}
                 </ListGroup.Item>
               )}
 
@@ -169,7 +174,7 @@ const OrderScreen = () => {
 
               {userInfo &&
                 userInfo.isAdmin &&
-                order.isPaid &&
+                // order.isPaid &&
                 !order.isDelivered && (
                   <ListGroup.Item>
                     <Button

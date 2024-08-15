@@ -139,22 +139,20 @@ const ProfileScreen = () => {
               {orders.map((order) => (
                 <tr key={order._id}>
                   <td>{order._id}</td>
-                  <td>{order.createdAt}</td>
-                  {/* <td>{formatDate(order.createdAt.substring(0, 10))}</td> */}
+                  {/* <td>{order.createdAt}</td> */}
+                  <td>{formatDate(order.createdAt.substring(0, 10))}</td>
                   <td>{order.totalPrice} TL</td>
                   <td>
                     {order.isPaid ? (
-                      order.paidAt
+                      formatDate(order.paidAt.substring(0, 10))
                     ) : (
-                      // formatDate(order.paidAt.substring(0, 10))
                       <FaTimes style={{ color: 'red' }} />
                     )}
                   </td>
                   <td>
                     {order.isDelivered ? (
-                      order.deliveredAt
+                      formatDate(order.deliveredAt.substring(0, 10))
                     ) : (
-                      // formatDate(order.deliveredAt.substring(0, 10))
                       <FaTimes style={{ color: 'red' }} />
                     )}
                   </td>
