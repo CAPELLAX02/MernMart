@@ -2,7 +2,7 @@
 
 > eCommerce platform built with the MERN stack & Redux.
 
-### Click [here](https://proshopdemo.dev) to see live preview
+### Click [here](https://mernmart.onrender.com/) to see live preview
 
 # <img src="./frontend/public/images/screens.jpg">
 
@@ -30,7 +30,10 @@
 - **Axios**: A promise-based HTTP client for making API calls. It simplifies making requests to the backend and handling responses.
 - **Bootstrap**: A CSS framework for developing responsive and mobile-first websites. It provides pre-designed components and styles, speeding up development.
 - **React Icons**: A collection of popular icons for React applications. It allows for easy integration of icons into the user interface.
-<!-- - **React Credit Cards**: A library to display credit card previews. It enhances the user experience during payment processes by showing a visual representation of credit card inputs. (Iyzico Checkout Form ???) -->
+<!-- Stripe Frontend stuff goes here (
+  "@stripe/react-stripe-js": "^2.7.3",
+    "@stripe/stripe-js": "^4.1.0",
+) -->
 
 ### Backend:
 
@@ -41,10 +44,11 @@
 - **bcryptjs**: A library to hash passwords. It ensures that passwords are securely stored by hashing them before saving to the database.
 - **Cookie-parser**: A middleware to parse cookies. It simplifies cookie management in Express applications.
 - **CORS**: A package for providing a Connect/Express middleware that can be used to enable CORS with various options. It allows the server to indicate any other origins (domain, scheme, or port) from which a browser should permit loading resources.
-- **Iyzipay**: A library for integrating the Iyzipay payment gateway. It facilitates secure and easy payment processing.
+<!-- - **Iyzipay**: A library for integrating the Iyzipay payment gateway. It facilitates secure and easy payment processing.-->
 - **Multer**: A middleware for handling multipart/form-data, used for uploading files. It is essential for handling file uploads in web applications.
 - **Nodemailer**: A module for Node.js applications to send emails. It simplifies the process of sending emails from the server, which is useful for notifications and other email communications.
 - **EJS**: A templating language that lets you generate HTML markup with plain JavaScript. It is often used with Nodemailer to create HTML/CSS email templates, allowing for the creation of visually appealing and dynamic emails to be sent to users.
+<!-- - **Stripe**: description goes here -->
 
 ### Development Tools:
 
@@ -66,11 +70,12 @@ With this setup, the project leverages the MERN stack (MongoDB, Express.js, Reac
 - **Product Search Feature**: Users can search for products using keywords to quickly find what they need.
 - **User Profile with Orders**: Users can view and manage their profiles, including order history and personal details.
 - **Checkout Process**: A comprehensive checkout process that includes steps for shipping, payment methods, and order confirmation.
-- **Iyzico Payment Integration**: Secure payment via Iyzico payment APIs enhancing trust and convenience along with the Iyzico Checkout Form.
+- **Stripe Payment Integration**: Secure payment via Stripe payment APIs enhancing trust and convenience along with the Stripe Embedded Checkout Form.
 
 ### Admin Features
 
-- **Admin Product Management**: Admins can add, edit and delete products, ensuring the product catalog is up-to-date. Additionally, after adding and editing a product, product page preview functionality added for admin users.
+- **Admin Product Management**: Admins can add, edit and delete products, ensuring the product catalog is up-to-date.
+  <!-- Additionally, after adding and editing a product, product page preview functionality added for admin users. --> (not added yet)
 - **Admin User Management**: Admins can manage user accounts, including adding, editing, and deleting users.
 - **Admin Order Details Page**: Admins can view detailed information about each order, including user and product details.
 - **Mark Orders as Delivered Option**: Admins can update the status of orders to mark them as delivered, ensuring accurate order tracking.
