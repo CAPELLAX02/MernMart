@@ -2,7 +2,7 @@
 
 > eCommerce platform built with the MERN stack & Redux.
 
-### Click [here](https://mernmart.onrender.com/) to see live preview
+### Click [here](https://mernmart.onrender.com/){:target="_blank" rel="noopener"} to see live preview
 
 # <img src="./frontend/public/images/homepage-screenshot.png">
 
