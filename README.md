@@ -4,7 +4,7 @@
 
 ### Click [here](https://mernmart.onrender.com/) to see live preview
 
-# <img src="./frontend/public/images/screens.jpg">
+# <img src="./frontend/public/images/homepage-screenshot.png">
 
 - [Technology Stack](#technology-stack)
 - [Features](#features)
