@@ -97,7 +97,8 @@ These features collectively provide a comprehensive and robust e-commerce platfo
 ## Usage
 
 - Create a MongoDB database and obtain your `MongoDB URI` - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register)
-- Create a Iyzico account and obtain your `API Key` and `Secret Key` - [Iyzico Sandbox](https://docs.iyzico.com/v/en/getting-started/preliminaries/sandbox/)
+- Create a Stripe account and obtain your `STRIPE_PUBLISHABLE_KEY` and `STRIPE_SECRET_KEY` - [Stripe](https://dashboard.stripe.com/login)
+- You can get your SMTP user and password using several options, Google Gmail is one example. Click [here](https://nodemailer.com/usage/using-gmail/) to get more information about Nodemailer and Gmail SMTP.
 
 ### Env Variables
 
@@ -118,11 +119,9 @@ SMTP_EMAIL_PASSWORD=your smtp password
 
 STRIPE_PUBLISHABLE_KEY=your stripe key
 STRIPE_SECRET_KEY=your stripe secret
-
-PAGINATION_LIMIT = 8
 ```
 
-Change the JWT_SECRET and PAGINATION_LIMIT to what you want
+Change the JWT_SECRET and PAGINATION to what you want
 
 ### Install Dependencies (frontend & backend)
 
