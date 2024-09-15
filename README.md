@@ -2,6 +2,8 @@
 
 > eCommerce platform built with the MERN stack & Redux.
 
+# NOTE: This project is going to be refactored from scratch using microservice architecture with TypeScript, Go and maybe Java. New project will be named `MicroMart`. There will be more features compared to the current version.
+
 ### Click [here](https://mernmart.onrender.com/) to see live preview
 
 # <img src="./frontend/public/images/homepage-screenshot.png">
