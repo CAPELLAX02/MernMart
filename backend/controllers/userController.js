@@ -288,7 +288,7 @@ const updateUser = asyncHandler(async (req, res) => {
  */
 const sendForgotPasswordEmail = asyncHandler(async (req, res) => {
   const { email } = req.body;
-  const user = await User.findOne({ email: email });
+  const user = await User.findOne({ email });
 
   if (user) {
     const resetPasswordCode = Math.random().toString().slice(2, 8);
@@ -296,10 +296,27 @@ const sendForgotPasswordEmail = asyncHandler(async (req, res) => {
     user.resetPasswordCodeExpires = Date.now() + 10 * 60 * 1000;
     await user.save();
 
-    // console.log('Reset code saved for user:', user); // Loglama ekleyin
+    const data = { user: { name: user.name }, resetPasswordCode };
 
-    await sendEmail(user.email, resetPasswordCode, 'reset');
-    res.status(200).json({ message: 'Reset password code sent.' });
+    const htmlContent = await ejs.renderFile(
+      path.join(__dirname, '../mails', 'reset-password-mail.ejs'),
+      data
+    );
+
+    try {
+      await sendMail({
+        email: user.email,
+        subject: 'Reset Your Password',
+        template: 'reset-password-mail.ejs',
+        data,
+      });
+
+      res.status(200).json({ message: 'Reset password code sent.' });
+    } catch (error) {
+      res.status(400).json({
+        message: 'Email could not be sent, please try again.',
+      });
+    }
   } else {
     res.status(404);
     throw new Error('User not found');
