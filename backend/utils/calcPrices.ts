@@ -1,13 +1,21 @@
-function addDecimals(num) {
+// Helper function to add decimals
+function addDecimals(num: number): string {
   return (Math.round(num * 100) / 100).toFixed(2);
 }
 
-// NOTE: the code below has been changed from the course code to fix an issue
-// with type coercion of strings to numbers.
-// Our addDecimals function expects a number and returns a string, so it is not
-// correct to call it passing a string as the argument.
+// Define the type for an order item
+interface OrderItem {
+  price: number;
+  qty: number;
+}
 
-export function calcPrices(orderItems) {
+// Function to calculate prices
+export function calcPrices(orderItems: OrderItem[]): {
+  itemsPrice: string;
+  shippingPrice: string;
+  taxPrice: string;
+  totalPrice: string;
+} {
   // Calculate the items price in whole number (pennies) to avoid issues with
   // floating point number calculations
   const itemsPrice = orderItems.reduce(
