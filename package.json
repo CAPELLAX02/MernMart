@@ -1,4 +1,23 @@
 {
+  "name": "mernmart",
+  "description": "> eCommerce platform built with the MERN stack & Redux.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "server": "nodemon --watch src --exec ts-node src/server.ts",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "data:import": "ts-node src/seeder.ts",
+    "data:destroy": "ts-node src/seeder.ts -d"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CAPELLAX02/MernMart.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/bcrypt": "^5.0.2",
@@ -31,5 +50,9 @@
     "concurrently": "^9.0.1",
     "dotenv": "^16.4.5",
     "nodemon": "^3.1.7"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/CAPELLAX02/MernMart/issues"
+  },
+  "homepage": "https://github.com/CAPELLAX02/MernMart#readme"
 }
