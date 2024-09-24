@@ -6,7 +6,6 @@ import {
   AiFillYoutube,
   AiOutlineTwitter,
 } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
 import logoOutline from '../assets/logo-outline.png';
 import { toast } from 'react-toastify';
 

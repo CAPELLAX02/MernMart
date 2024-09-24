@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice';
 import logoOutline from '../assets/logo-outline.png';
-import './Header.css';
 import SearchBox from './SearchBox';
 import { toast } from 'react-toastify';
 
