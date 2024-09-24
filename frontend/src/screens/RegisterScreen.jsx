@@ -65,7 +65,6 @@ const RegisterScreen = () => {
             position: 'top-center',
           }
         );
-        // console.log(error);
       }
     }
   };
@@ -75,59 +74,59 @@ const RegisterScreen = () => {
       <h1>Sign Up</h1>
       <Form onSubmit={submitHandler}>
         <FloatingLabel
-          controlId='floatingInput'
-          label='Full Name'
-          className='mb-3 text-black'
+          controlId="floatingInput"
+          label="Full Name"
+          className="mb-3 text-black"
         >
           <Form.Control
-            type='text'
-            placeholder='your name'
+            type="text"
+            placeholder="your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className='mb-3'
+            className="mb-3"
           />
         </FloatingLabel>
         <FloatingLabel
-          controlId='floatingInput'
-          label='Email Address'
-          className='mb-3'
+          controlId="floatingInput"
+          label="Email Address"
+          className="mb-3"
         >
           <Form.Control
-            type='email'
-            placeholder='name@example.com'
+            type="email"
+            placeholder="name@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className='mb-3'
+            className="mb-3"
           />
         </FloatingLabel>
-        <FloatingLabel controlId='floatingPassword' label='Password'>
+        <FloatingLabel controlId="floatingPassword" label="Password">
           <Form.Control
-            type='password'
-            placeholder='Password'
+            type="password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className='mb-3'
+            className="mb-3"
             style={{ letterSpacing: 2 }}
           />
         </FloatingLabel>
         <FloatingLabel
-          controlId='floatingInput'
-          label='Confirm Password'
-          className='mb-3'
+          controlId="floatingInput"
+          label="Confirm Password"
+          className="mb-3"
         >
           <Form.Control
-            type='password'
-            placeholder='Confirm Password'
+            type="password"
+            placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className='mb-3'
+            className="mb-3"
             style={{ letterSpacing: 2 }}
           />
         </FloatingLabel>
 
         <Button
-          type='submit'
-          className='mt-2 bg-primary fw-bold px-3 py-2'
+          type="submit"
+          className="mt-2 bg-primary fw-bold px-3 py-2"
           disabled={isLoading}
         >
           Sign Up
@@ -136,12 +135,12 @@ const RegisterScreen = () => {
         {isLoading && <Loader />}
       </Form>
 
-      <Row className='py-3'>
+      <Row className="py-3">
         <Col>
           Already have an account? {'  '}
           <span>
             <b>
-              <Link to='/login'>Sign In</Link>
+              <Link to="/login">Sign In</Link>
             </b>
           </span>
         </Col>

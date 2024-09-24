@@ -45,7 +45,6 @@ const ProductListScreen = () => {
             position: 'top-center',
           }
         );
-        // console.log(err);
       }
     }
   };
@@ -76,12 +75,12 @@ const ProductListScreen = () => {
 
   return (
     <>
-      <Row className='align-items-center mt-2'>
+      <Row className="align-items-center mt-2">
         <Col>
           <h1>Products</h1>
         </Col>
-        <Col className='text-end'>
-          <Button className='my-3' onClick={createProductHandler}>
+        <Col className="text-end">
+          <Button className="my-3" onClick={createProductHandler}>
             <FaPlus /> New Product
           </Button>
         </Col>
@@ -93,12 +92,12 @@ const ProductListScreen = () => {
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>
+        <Message variant="danger">
           Something went wrong. [{error?.data?.message || error.error}]
         </Message>
       ) : (
         <>
-          <Table striped hover responsive className='table-sm'>
+          <Table striped hover responsive className="table-sm">
             <thead>
               <tr>
                 <th>PRODUCT ID</th>
@@ -121,14 +120,14 @@ const ProductListScreen = () => {
                     <Button
                       as={Link}
                       to={`/admin/product/${product._id}/edit`}
-                      variant='success'
-                      className='btn-sm mx-2'
+                      variant="success"
+                      className="btn-sm mx-2"
                     >
                       <FaEdit />
                     </Button>
                     <Button
-                      variant='danger'
-                      className='btn-sm mx-2'
+                      variant="danger"
+                      className="btn-sm mx-2"
                       onClick={() => deleteHandler(product._id)}
                     >
                       <FaTrash style={{ color: 'white' }} />

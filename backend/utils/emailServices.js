@@ -2,7 +2,6 @@ import nodemailer from 'nodemailer';
 import ejs from 'ejs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-// import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,12 +18,6 @@ const sendMail = async (options) => {
   const { email, subject, template, data } = options;
 
   const templatePath = path.join(__dirname, '../mails', template);
-
-  // // check if the template is valid
-  // if (!fs.existsSync(templatePath)) {
-  //   console.error('Şablon dosyası bulunamadı:', templatePath);
-  //   throw new Error('Şablon dosyası bulunamadı');
-  // }
 
   const html = await ejs.renderFile(templatePath, data);
 

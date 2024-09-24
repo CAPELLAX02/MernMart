@@ -44,11 +44,6 @@ const ResetPasswordScreen = () => {
       return;
     }
     try {
-      // console.log('Sending data:', {
-      //   email,
-      //   resetPasswordCode: resetCode,
-      //   newPassword,
-      // });
       await resetPassword({
         email,
         resetPasswordCode: resetCode,
@@ -74,38 +69,38 @@ const ResetPasswordScreen = () => {
     <FormContainer>
       <h1>Şifrenizi Sıfırlayın</h1>
       <Form onSubmit={submitHandler}>
-        <Form.Group controlId='resetCode' className='my-3'>
+        <Form.Group controlId="resetCode" className="my-3">
           <Form.Label>Şifre Sıfırlama Kodu</Form.Label>
           <Form.Control
-            type='text'
-            placeholder='6 Haneli Kodu Girin'
+            type="text"
+            placeholder="6 Haneli Kodu Girin"
             maxLength={6}
             value={resetCode}
             onChange={(e) => setResetCode(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Form.Group controlId='newPassword' className='my-3'>
+        <Form.Group controlId="newPassword" className="my-3">
           <Form.Label>Yeni Şifre</Form.Label>
           <Form.Control
-            type='password'
-            placeholder='Yeni Şifrenizi Girin'
+            type="password"
+            placeholder="Yeni Şifrenizi Girin"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Form.Group controlId='confirmNewPassword' className='my-3'>
+        <Form.Group controlId="confirmNewPassword" className="my-3">
           <Form.Label>Yeni Şifre (Tekrar)</Form.Label>
           <Form.Control
-            type='password'
-            placeholder='Yeni Şifrenizi Girin (Tekrar)'
+            type="password"
+            placeholder="Yeni Şifrenizi Girin (Tekrar)"
             value={confirmNewPassword}
             onChange={(e) => setConfirmNewPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Button
-          type='submit'
-          variant='primary'
-          className='mt-2'
+          type="submit"
+          variant="primary"
+          className="mt-2"
           disabled={isLoading}
         >
           Şifreyi Sıfırla

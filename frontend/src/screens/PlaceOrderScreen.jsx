@@ -52,7 +52,6 @@ const PlaceOrderScreen = () => {
         theme: 'colored',
         position: 'top-center',
       });
-      // console.log(error);
     }
   };
 
@@ -62,7 +61,7 @@ const PlaceOrderScreen = () => {
 
       <Row>
         <Col md={8}>
-          <ListGroup variant='flush'>
+          <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Address & Custome Information</h2>
               <p>
@@ -118,12 +117,6 @@ const PlaceOrderScreen = () => {
                             {item.qty} x ${item.price} = $
                             {(item.qty * (item.price * 100)) / 100}
                           </Col>
-
-                          {/* <Col md={1}>
-                            <Badge bg='primary' pill>
-                              25
-                            </Badge>
-                          </Col> */}
                         </Row>
                       </ListGroup.Item>
                     ))}
@@ -136,7 +129,7 @@ const PlaceOrderScreen = () => {
 
         <Col md={4}>
           <Card>
-            <ListGroup variant='flush'>
+            <ListGroup variant="flush">
               <ListGroup.Item>
                 <h2>Order Summary</h2>
               </ListGroup.Item>
@@ -175,14 +168,14 @@ const PlaceOrderScreen = () => {
 
               <ListGroup.Item>
                 {error && (
-                  <Message variant='danger'>{error.data.stack}</Message>
+                  <Message variant="danger">{error.data.stack}</Message>
                 )}
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Button
-                  type='button'
-                  className='btn-block'
+                  type="button"
+                  className="btn-block"
                   disabled={cart.cartItems.length === 0}
                   onClick={placeOrderHandler}
                 >

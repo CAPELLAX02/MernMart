@@ -62,7 +62,7 @@ const EmailVerifyScreen = () => {
             password,
             activationToken: response.activationToken,
           },
-        }); // activationToken'ı güncelleyerek tekrar gönderiyoruz
+        });
       } catch (error) {
         toast.error('Failed to resend verification code.', {
           theme: 'colored',
@@ -124,7 +124,6 @@ const EmailVerifyScreen = () => {
         theme: 'colored',
         position: 'top-center',
       });
-      // console.log(error);
     }
   };
 
@@ -136,10 +135,10 @@ const EmailVerifyScreen = () => {
 
   return (
     <FormContainer>
-      <h1 className='text-center mb-4'>Email Verification</h1>
-      <div className='container height-100 d-flex justify-content-center'>
-        <div className='position-relative'>
-          <div className='card text-center bg-info bg-opacity-10'>
+      <h1 className="text-center mb-4">Email Verification</h1>
+      <div className="container height-100 d-flex justify-content-center">
+        <div className="position-relative">
+          <div className="card text-center bg-info bg-opacity-10">
             <h6>
               Please enter the 6-digit code that you received to verify your
               account
@@ -147,38 +146,38 @@ const EmailVerifyScreen = () => {
             <div>
               <p>
                 The code has been sent to{' '}
-                <span className='text-white bg-primary py-1 px-2 rounded-5'>
+                <span className="text-white bg-primary py-1 px-2 rounded-5">
                   {email}
                 </span>
               </p>
-              <div className='timer'>{formatTime()}</div>
+              <div className="timer">{formatTime()}</div>
             </div>
             <Form onSubmit={submitHandler}>
               <div
-                id='otp'
-                className='inputs d-flex flex-row justify-content-center mt-2'
+                id="otp"
+                className="inputs d-flex flex-row justify-content-center mt-2"
               >
                 {otp.map((value, index) => (
                   <input
                     key={index}
                     id={`otp-input-${index}`}
-                    className='m-2 text-center form-control rounded'
-                    type='text'
-                    maxLength='1'
+                    className="m-2 text-center form-control rounded"
+                    type="text"
+                    maxLength="1"
                     value={value}
                     onChange={(e) => handleChange(e, index)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
                   />
                 ))}
               </div>
-              <div className='mt-4'>
+              <div className="mt-4">
                 {timer === 0 && <p></p>}
                 {verifyLoading ? (
                   <Loader />
                 ) : (
                   <Button
-                    type='submit'
-                    variant='primary'
+                    type="submit"
+                    variant="primary"
                     disabled={verifyLoading || timer === 0}
                   >
                     Verify Email
@@ -188,7 +187,7 @@ const EmailVerifyScreen = () => {
               {resendCodeLoading ? (
                 <Loader />
               ) : (
-                <div className='mt-3'>
+                <div className="mt-3">
                   <Link onClick={resendVerificationCode}>
                     Resend Verification Code
                   </Link>

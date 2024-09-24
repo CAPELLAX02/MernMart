@@ -93,11 +93,11 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(201).json({
       success: true,
       message: `Please check your email: ${user.email} to activate your account!`,
-      activationToken: token, // activation_token'ı burada döndürüyoruz
+      activationToken: token,
     });
   } catch (error) {
     res.status(400).json({
-      message: 'E-posta gönderilemedi, lütfen tekrar deneyin.',
+      message: 'Email could not send. Please try again.',
     });
   }
 });

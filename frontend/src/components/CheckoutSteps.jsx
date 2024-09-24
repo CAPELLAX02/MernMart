@@ -3,7 +3,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
   return (
-    <Nav className='justify-content-center mt-2 mb-5'>
+    <Nav className="justify-content-center mt-2 mb-5">
       <Nav.Item>
         {step1 ? (
           <LinkContainer
@@ -14,12 +14,12 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
               paddingLeft: '25px',
               margin: '0 2px',
             }}
-            to='/login'
+            to="/login"
           >
-            <Nav.Link>Kayıt Ol</Nav.Link>
+            <Nav.Link>Sign In</Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Kayıt Ol</Nav.Link>
+          <Nav.Link disabled>Sign In</Nav.Link>
         )}
       </Nav.Item>
 
@@ -31,12 +31,12 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
               backgroundColor: '#d4e9f7',
               margin: '0 2px',
             }}
-            to='/shipping'
+            to="/shipping"
           >
-            <Nav.Link>Adres Bilgileri</Nav.Link>
+            <Nav.Link>Address Information</Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Adres Bilgileri</Nav.Link>
+          <Nav.Link disabled>Address Information</Nav.Link>
         )}
       </Nav.Item>
 
@@ -48,12 +48,12 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
               backgroundColor: '#d4e9f7',
               margin: '0 2px',
             }}
-            to='/payment'
+            to="/payment"
           >
-            <Nav.Link>Ödeme Yöntemi</Nav.Link>
+            <Nav.Link>Payment Method</Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Ödeme Yöntemi</Nav.Link>
+          <Nav.Link disabled>Payment Method</Nav.Link>
         )}
       </Nav.Item>
 
@@ -67,12 +67,12 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
               paddingRight: '25px',
               margin: '0 2px',
             }}
-            to='/placeorder'
+            to="/placeorder"
           >
-            <Nav.Link>Siparişi Tamamla</Nav.Link>
+            <Nav.Link>Complete the Order</Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Siparişi Tamamla</Nav.Link>
+          <Nav.Link disabled>Complete the Order</Nav.Link>
         )}
       </Nav.Item>
     </Nav>

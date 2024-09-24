@@ -76,33 +76,33 @@ const ProductScreen = () => {
 
   return (
     <>
-      <Link className='btn btn-light my-3' to='/'>
+      <Link className="btn btn-light my-3" to="/">
         Go Back
       </Link>
 
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>
+        <Message variant="danger">
           {error?.data?.message || error.error}
         </Message>
       ) : (
         <>
           <Meta title={product.name} />
-          <Row className='border-bottom pb-5'>
+          <Row className="border-bottom pb-5">
             <Col md={5}>
               <Image src={product.image} alt={product.name} fluid />
             </Col>
 
             <Col md={4}>
-              <ListGroup variant='flush'>
+              <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h3>{product.name}</h3>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Rating value={product.rating} />
                   <span>{product.rating}</span>
-                  <p className='ms-1 mt-2'>
+                  <p className="ms-1 mt-2">
                     {product.numReviews} Değerlendirme
                   </p>
                 </ListGroup.Item>
@@ -115,7 +115,7 @@ const ProductScreen = () => {
 
             <Col md={3}>
               <Card>
-                <ListGroup variant='flush'>
+                <ListGroup variant="flush">
                   <ListGroup.Item>
                     <Row>
                       <Col>Price:</Col>
@@ -140,7 +140,7 @@ const ProductScreen = () => {
                         <Col>Qty</Col>
                         <Col>
                           <Form.Control
-                            as='select'
+                            as="select"
                             value={qty}
                             onChange={(e) => setQty(Number(e.target.value))}
                           >
@@ -159,8 +159,8 @@ const ProductScreen = () => {
 
                   <ListGroup.Item>
                     <Button
-                      className='btn-block'
-                      type='button'
+                      className="btn-block"
+                      type="button"
                       disabled={product.countInStock === 0}
                       onClick={addToCartHandler}
                     >
@@ -171,13 +171,13 @@ const ProductScreen = () => {
               </Card>
             </Col>
           </Row>
-          <Row className='review my-4'>
+          <Row className="review my-4">
             <Col md={6}>
-              <h2 className='fs-3 border-0 bg-white my-1'>Ürün Yorumları</h2>
+              <h2 className="fs-3 border-0 bg-white my-1">Product Reviews</h2>
               {product.reviews.length === 0 && (
-                <Message>Henüz bir kullanıcı yorumu yok.</Message>
+                <Message>No review yet.</Message>
               )}
-              <ListGroup variant='flush'>
+              <ListGroup variant="flush">
                 {product.reviews.map((review) => (
                   <ListGroup.Item key={review._id}>
                     <strong>{review.name}</strong>
@@ -187,34 +187,33 @@ const ProductScreen = () => {
                   </ListGroup.Item>
                 ))}
                 <ListGroup.Item>
-                  {/* daha önce hiç yorum yapılmamışsa 'İlk değerlendirmeyi sen yap! yazısı eklenebilir, <h2/> ternary si şeklinde. */}
-                  <h2 className='fs-3 border-0 bg-white mb-2 px-0'>
-                    Bu Ürünü Değerlendir
+                  <h2 className="fs-3 border-0 bg-white mb-2 px-0">
+                    Review This Product
                   </h2>
                   {loadingReview && <Loader />}
                   {userInfo ? (
                     <Form onSubmit={submitReviewHandler}>
-                      <Form.Group className='my-2' controlId='rating'>
-                        <Form.Label>Ürüne Puanınız</Form.Label>
+                      <Form.Group className="my-2" controlId="rating">
+                        <Form.Label>Your rating for the product</Form.Label>
                         <Form.Control
-                          as='select'
+                          as="select"
                           required
                           value={rating}
                           onChange={(e) => setRating(e.target.value)}
                         >
-                          <option value='0'>Seçin</option>
-                          <option value='1'>1 - Berbat</option>
-                          <option value='2'>2 - Kötü</option>
-                          <option value='3'>3 - Orta</option>
-                          <option value='4'>4 - İyi</option>
-                          <option value='5'>5 - Mükemmel</option>
+                          <option value="0">Select</option>
+                          <option value="1">1 - Terrible</option>
+                          <option value="2">2 - Bad</option>
+                          <option value="3">3 - Okay</option>
+                          <option value="4">4 - Good</option>
+                          <option value="5">5 - Perfect</option>
                         </Form.Control>
                       </Form.Group>
-                      <Form.Group className='my-2' controlId='comment'>
-                        <Form.Label>Ürün Yorumunuz</Form.Label>
+                      <Form.Group className="my-2" controlId="comment">
+                        <Form.Label>Your comment for the product</Form.Label>
                         <Form.Control
-                          as='textarea'
-                          row='4'
+                          as="textarea"
+                          row="4"
                           required
                           value={comment}
                           onChange={(e) => setComment(e.target.value)}
@@ -222,27 +221,27 @@ const ProductScreen = () => {
                       </Form.Group>
                       <Button
                         disabled={loadingReview}
-                        type='submit'
-                        variant='primary'
+                        type="submit"
+                        variant="primary"
                       >
-                        Değerlendir
+                        Review
                       </Button>
                     </Form>
                   ) : (
                     <Message>
-                      Ürünü değerlendirmek için{' '}
-                      <Link to='/login'>giriş yapmanız</Link> gerekmektedir.
+                      You need to <Link to="/login">sign in</Link> to review
+                      this product.
                     </Message>
                   )}
                 </ListGroup.Item>
               </ListGroup>
             </Col>
-            <Col md={6} className='ps-4'>
-              <ListGroup variant='flush'>
-                <h2 className='fs-3 border-0 bg-white mb-2 px-0'>
-                  Ürün Özellikleri
+            <Col md={6} className="ps-4">
+              <ListGroup variant="flush">
+                <h2 className="fs-3 border-0 bg-white mb-2 px-0">
+                  Product Details
                 </h2>
-                <ListGroup.Item className='ps-0'>
+                <ListGroup.Item className="ps-0">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Aliquid animi rem beatae! Doloremque eveniet, voluptates sed
                   consequatur, quibusdam facere minus vero aliquid cumque
@@ -250,20 +249,14 @@ const ProductScreen = () => {
                   adipisci quas asperiores, aperiam beatae doloribus iusto in
                   ea!
                 </ListGroup.Item>
-                <ListGroup.Item className='ps-0'>
+                <ListGroup.Item className="ps-0">
                   Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                   Nostrum perspiciatis pariatur soluta dolore, sed nihil veniam
                   sit adipisci. Incidunt, quae.
                 </ListGroup.Item>
-                <ListGroup.Item className='ps-0'>
+                <ListGroup.Item className="ps-0">
                   Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                   Similique a repellat unde voluptatibus nostrum? Est.
-                </ListGroup.Item>
-                <ListGroup.Item className='ps-0'>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Molestias at voluptatibus quasi quaerat cumque eius optio
-                  consequuntur atque enim, adipisci voluptate quidem tempore.
-                  Dolore, dolores soluta aliquid autem rem architecto?
                 </ListGroup.Item>
               </ListGroup>
             </Col>

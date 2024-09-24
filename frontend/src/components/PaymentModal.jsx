@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import Loader from './Loader';
 import CreditCardForm from './CreditCardForm';
+import { toast } from 'react-toastify';
 
 const PaymentModal = ({ show, handleClose, processPayment }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -12,7 +13,10 @@ const PaymentModal = ({ show, handleClose, processPayment }) => {
       await processPayment(paymentDetails);
       handleClose();
     } catch (error) {
-      console.error('Payment Error:', error);
+      toast.error(error?.data?.message || error.error, {
+        theme: 'colored',
+        position: 'top-center',
+      });
     } finally {
       setIsSubmitting(false);
     }

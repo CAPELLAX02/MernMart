@@ -1,7 +1,5 @@
 * {
-  /* font-family: 'Inter', sans-serif; */
   font-family: 'Poppins', sans-serif;
-  /* font-family: Arial, Helvetica, sans-serif; */
 }
 
 *::selection {
@@ -30,8 +28,8 @@ main {
 
 .product-card img {
   width: 100%;
-  height: 200px; /* Sabit yükseklik belirleyin */
-  object-fit: cover; /* Fotoğrafın oranlarını koruyarak kesmesini sağlayın */
+  height: 200px;
+  object-fit: cover;
 }
 
 .product-title {
@@ -90,7 +88,7 @@ table th {
 
 /* product card - custom styles */
 .product-card {
-  transition: all 5s ease-in-out; /* Apply the transition to the box-shadow */
+  transition: all 5s ease-in-out;
 }
 
 .product-card:hover {
@@ -105,7 +103,7 @@ table th {
 
 .card-price-button-container {
   position: relative;
-  padding: 24px 20px; /* Adjust based on your design */
+  padding: 24px 20px;
   margin-top: 20px;
 }
 
@@ -145,7 +143,7 @@ table th {
 /* Styles for mobile screens */
 @media (max-width: 768px) {
   .card-price-button-container {
-    margin: 0; /* Adjust based on your design */
+    margin: 0;
   }
 
   .product-price,

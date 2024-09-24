@@ -5,11 +5,11 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice';
-// import logo from '../assets/logo.png';
 import logo from '../assets/mernmart-bg.png';
 import logoOutline from '../assets/logo-outline.png';
 import './Header.css';
 import SearchBox from './SearchBox';
+import { toast } from 'react-toastify';
 
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
@@ -22,20 +22,23 @@ const Header = () => {
 
   const logoutHandler = async () => {
     try {
-      await logoutApiCall().unwrap(); // unwrap used because logoutApiCall gives a promise
+      await logoutApiCall().unwrap();
       dispatch(logout());
       navigate('/login');
     } catch (error) {
-      console.log(error);
+      toast.error(error?.data?.message || error.error, {
+        theme: 'colored',
+        position: 'top-center',
+      });
     }
   };
 
   return (
-    <header style={{ zoom: '85%' }} className='bg-primary'>
-      <Navbar expand='md' collapseOnSelect>
+    <header style={{ zoom: '85%' }} className="bg-primary">
+      <Navbar expand="md" collapseOnSelect>
         <Container>
           <LinkContainer
-            to='/'
+            to="/"
             style={{
               color: '#E0E5EB',
               letterSpacing: 1.4,
@@ -43,47 +46,20 @@ const Header = () => {
               fontSize: 23,
             }}
           >
-            <Navbar.Brand className='d-flex flex-row'>
-              {/* <img src={logo} alt='logo' style={{ width: 100 }} /> */}
-              <img src={logoOutline} alt='logo' style={{ width: 280 }} />
-              {/* <div className='my-auto'>
-                <span
-                  style={{
-                    fontFamily: 'Poppins',
-                    fontWeight: '700',
-                    color: '#EE2433',
-                    fontSize: 28,
-                  }}
-                >
-                  MERN
-                </span>
-                <span
-                  style={{
-                    fontFamily: 'Poppins',
-                    fontWeight: '400',
-                    color: '#EE2433',
-                    fontSize: 28,
-                  }}
-                >
-                  MART
-                </span>
-              </div> */}
-
-              {/* e-com */}
-              {/* <span style={{ fontWeight: 'bold', color: '#99ebff' }}>MERN</span> */}
-              {/* ce */}
+            <Navbar.Brand className="d-flex flex-row">
+              <img src={logoOutline} alt="logo" style={{ width: 280 }} />
             </Navbar.Brand>
           </LinkContainer>
-          <Navbar.Toggle aria-controls='basic-navbar-nav' />
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
-          <Navbar.Collapse id='basic-navbar-nav'>
+          <Navbar.Collapse id="basic-navbar-nav">
             <SearchBox />
-            <Nav className='ms-auto gap-3'>
+            <Nav className="ms-auto gap-3">
               <LinkContainer
-                to='/cart'
+                to="/cart"
                 style={{ paddingLeft: 24, fontSize: 17, marginRight: 12 }}
               >
-                <Nav.Link className='bg-success rounded-1 fw-semibold p-2 px-4'>
+                <Nav.Link className="bg-success rounded-1 fw-semibold p-2 px-4">
                   <FaShoppingCart size={22} style={{ paddingRight: 4 }} /> Cart
                   {cartItems.length > 0 && (
                     <Badge
@@ -101,12 +77,12 @@ const Header = () => {
 
               {userInfo ? (
                 <NavDropdown
-                  className='bg-warning rounded-1 fw-semibold'
+                  className="bg-warning rounded-1 fw-semibold"
                   style={{ paddingLeft: 12, paddingRight: 12, fontSize: 17 }}
                   title={userInfo.name}
-                  id='username'
+                  id="username"
                 >
-                  <LinkContainer to='/profile'>
+                  <LinkContainer to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>
 
@@ -116,8 +92,8 @@ const Header = () => {
                 </NavDropdown>
               ) : (
                 <LinkContainer
-                  to='/login'
-                  className='bg-warning rounded-1 fw-semibold p-2 px-4'
+                  to="/login"
+                  className="bg-warning rounded-1 fw-semibold p-2 px-4"
                 >
                   <Nav.Link>
                     <FaUser size={20} style={{ paddingRight: 5 }} /> Sign In
@@ -127,23 +103,23 @@ const Header = () => {
 
               {userInfo && userInfo.isAdmin && (
                 <NavDropdown
-                  className='bg-white rounded-1 fw-semibold'
+                  className="bg-white rounded-1 fw-semibold"
                   style={{
                     paddingLeft: 12,
                     paddingRight: 12,
                     fontSize: 17,
                     marginLeft: 10,
                   }}
-                  title='Admin Dashboard'
-                  id='adminmenu'
+                  title="Admin Dashboard"
+                  id="adminmenu"
                 >
-                  <LinkContainer to='/admin/productlist'>
+                  <LinkContainer to="/admin/productlist">
                     <NavDropdown.Item>Products</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to='/admin/userlist'>
+                  <LinkContainer to="/admin/userlist">
                     <NavDropdown.Item>Users</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to='/admin/orderlist'>
+                  <LinkContainer to="/admin/orderlist">
                     <NavDropdown.Item>Orders</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
@@ -153,14 +129,7 @@ const Header = () => {
         </Container>
       </Navbar>
 
-      <div className='slider'>
-        {/* <div className='slider-text'>
-          %50 Discount! | Lorem ipsum dolor sit amet consectetur, adipisicing
-          elit. Neque, nulla cumque. Aliquam est asperiores delectus ex dolorem!
-          Repellendus natus ad tenetur! Laudantium esse excepturi obcaecati
-          repellendus sit sapiente quam dicta?
-        </div> */}
-      </div>
+      <div className="slider"></div>
     </header>
   );
 };

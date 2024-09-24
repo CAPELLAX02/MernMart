@@ -168,7 +168,6 @@ const createCheckoutSession = asyncHandler(async (req, res) => {
 
     res.send({ clientSecret: session.client_secret, sessionId: session.id });
   } catch (error) {
-    console.error('Error in createCheckoutSession:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });

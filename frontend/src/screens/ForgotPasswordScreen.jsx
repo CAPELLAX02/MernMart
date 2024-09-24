@@ -20,7 +20,7 @@ const ForgotPasswordScreen = () => {
         theme: 'colored',
         position: 'top-center',
       });
-      navigate('/reset-password', { state: { email } }); // E-posta adresini burada taşıyoruz
+      navigate('/reset-password', { state: { email } });
     } catch (err) {
       toast.error(
         `Something went wrong. [${err?.data?.message || err.error}]`,
@@ -36,19 +36,19 @@ const ForgotPasswordScreen = () => {
     <FormContainer>
       <h1>Forgot Password</h1>
       <Form onSubmit={submitHandler}>
-        <Form.Group controlId='email' className='my-3'>
+        <Form.Group controlId="email" className="my-3">
           <Form.Label>Email Address</Form.Label>
           <Form.Control
-            type='email'
-            placeholder='Enter your email address.'
+            type="email"
+            placeholder="Enter your email address."
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Button
-          type='submit'
-          variant='primary'
-          className='mt-2'
+          type="submit"
+          variant="primary"
+          className="mt-2"
           disabled={isLoading}
         >
           Send Reset Code

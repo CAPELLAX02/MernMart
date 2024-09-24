@@ -7,7 +7,7 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import { savePaymentMethod } from '../slices/cartSlice';
 
 const PaymentScreen = () => {
-  const [paymentMethod, setPaymentMethod] = useState('PayPal');
+  const [paymentMethod, setPaymentMethod] = useState('credit-card');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,29 +32,29 @@ const PaymentScreen = () => {
       <CheckoutSteps step1 step2 step3 />
 
       <FormContainer>
-        <h1>Ödeme Yöntemi</h1>
+        <h1>Payment Method</h1>
 
         <Form onSubmit={submitHandler}>
           <Form.Group>
-            <Form.Label className='mb-4' as='legend'>
-              Ödeme Yönteminizi Seçin
+            <Form.Label className="mb-4" as="legend">
+              Select Payment Method
             </Form.Label>
             <Col>
               <Form.Check
-                type='radio'
-                className='mb-4'
-                label='Kredi & Banka Kartı'
-                id='PayPal'
-                name='paymentMethod'
-                value='PayPal'
+                type="radio"
+                className="mb-4"
+                label="Credit & Debit Card"
+                id="credit-card"
+                name="paymentMethod"
+                value="credit-card"
                 checked
                 onChange={(e) => setPaymentMethod(e.target.value)}
               ></Form.Check>
             </Col>
           </Form.Group>
 
-          <Button type='submit' variant='primary'>
-            Devam Et
+          <Button type="submit" variant="primary">
+            Proceed
           </Button>
         </Form>
       </FormContainer>
