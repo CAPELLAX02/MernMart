@@ -1,14 +1,15 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import Order from '../models/orderModel.js';
-import Product from '../models/productModel.js';
 import Stripe from 'stripe';
 const stripe = new Stripe(
   'sk_test_51PkqaLH9opOR77k1n9SVX2wpXcVoNy1ujaxKWIAGHHRvWeT9CXGo3TqXIkuVtL0UcjF9rnrBe37m18eI7LgHTZ6m00BTYSmt8s'
 );
 
-// @desc     Create new order
-// @route    POST /api/orders
-// @access   Private
+/**
+ * @desc    Create new order
+ * @route   POST /api/orders
+ * @access  Private
+ */
 const addOrderItems = asyncHandler(async (req, res) => {
   const {
     orderItems,
@@ -45,17 +46,21 @@ const addOrderItems = asyncHandler(async (req, res) => {
   res.status(200).json(createdOrder);
 });
 
-// @desc     Get logged in user orders
-// @route    GET /api/orders/myorders
-// @access   Private
+/**
+ * @desc    Get logged in user orders
+ * @route   GET /api/orders/myorders
+ * @access  Private
+ */
 const getMyOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({ user: req.user._id });
   res.status(200).json(orders);
 });
 
-// @desc     Get order by ID
-// @route    GET /api/orders/:id
-// @access   Private
+/**
+ * @desc    Get order by ID
+ * @route   GET /api/orders/:id
+ * @access  Private
+ */
 const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id).populate(
     'user',
@@ -69,9 +74,11 @@ const getOrderById = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc     Update order to delivered
-// @route    PUT /api/orders/:id/deliver
-// @access   Private/Admin
+/**
+ * @desc    Update order to delivered
+ * @route   PUT /api/orders/:id/deliver
+ * @access  Private/Admin
+ */
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
 
@@ -85,17 +92,21 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc     Get all orders
-// @route    GET /api/orders
-// @access   Private/Admin
+/**
+ * @desc    Get all orders
+ * @route   GET /api/orders
+ * @access  Private/Admin
+ */
 const getAllOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({}).populate('user', 'id name');
   res.status(200).json(orders);
 });
 
-// @desc     Delete order
-// @route    DELETE /api/orders/:id
-// @access   Private/Admin
+/**
+ * @desc    Delete order
+ * @route   DELETE /api/orders/:id
+ * @access  Private/Admin
+ */
 const deleteOrder = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
 
@@ -107,7 +118,11 @@ const deleteOrder = asyncHandler(async (req, res) => {
   }
 });
 
-// POST /api/orders/create-checkout-session
+/**
+ * @desc    Create a checkout session with Stripe
+ * @route   POST /api/orders/create-checkout-session
+ * @access  Private
+ */
 const createCheckoutSession = asyncHandler(async (req, res) => {
   try {
     const { cartItems, shippingAddress } = req.body;
@@ -158,7 +173,11 @@ const createCheckoutSession = asyncHandler(async (req, res) => {
   }
 });
 
-// GET /api/orders/session-status
+/**
+ * @desc    Get Stripe checkout session status
+ * @route   GET /api/orders/session-status
+ * @access  Private
+ */
 const getStripeSessionStatus = asyncHandler(async (req, res) => {
   const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
 
@@ -168,9 +187,11 @@ const getStripeSessionStatus = asyncHandler(async (req, res) => {
   });
 });
 
-// @desc     Get order by session_id
-// @route    GET /api/orders/order-by-session-id
-// @access   Private
+/**
+ * @desc    Get order by session ID
+ * @route   GET /api/orders/order-by-session-id
+ * @access  Private
+ */
 const getOrderBySessionId = asyncHandler(async (req, res) => {
   const sessionId = req.query.session_id;
   const order = await Order.findOne({ 'paymentResult.id': sessionId });
@@ -191,5 +212,5 @@ export {
   deleteOrder,
   createCheckoutSession,
   getStripeSessionStatus,
-  getOrderBySessionId, // Yeni eklenen fonksiyon
+  getOrderBySessionId,
 };
