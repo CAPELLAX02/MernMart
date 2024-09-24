@@ -63,14 +63,12 @@ const Header = () => {
           <Navbar.Collapse id="basic-navbar-nav">
             <SearchBox />
             <Nav className="ms-auto gap-3">
-              <LinkContainer
-                to="/cart"
-                style={{ paddingLeft: 24, fontSize: 17, marginRight: 12 }}
-              >
-                <Nav.Link className="bg-success rounded-1 fw-semibold p-2 px-4">
+              <LinkContainer to="/cart">
+                <Nav.Link className="text-white rounded-1 fw-semibold p-2 px-4">
                   <FaShoppingCart size={22} style={{ paddingRight: 4 }} /> Cart
                   {cartItems.length > 0 && (
                     <Badge
+                      className="bg-white text-primary"
                       style={{
                         zoom: '120%',
                         marginLeft: '7px',
@@ -101,24 +99,24 @@ const Header = () => {
               ) : (
                 <LinkContainer
                   to="/login"
-                  className="bg-warning rounded-1 fw-semibold p-2 px-4"
+                  className="text-white rounded-1 fw-semibold p-2 px-4"
                 >
                   <Nav.Link>
-                    <FaUser size={20} style={{ paddingRight: 5 }} /> Sign In
+                    <FaUser size={21} style={{ paddingRight: 5 }} /> Login
                   </Nav.Link>
                 </LinkContainer>
               )}
 
               {userInfo && userInfo.isAdmin && (
                 <NavDropdown
-                  className="bg-white rounded-1 fw-semibold"
+                  className="bg-info rounded-1 fw-semibold"
                   style={{
                     paddingLeft: 12,
                     paddingRight: 12,
                     fontSize: 17,
                     marginLeft: 10,
                   }}
-                  title="Admin Dashboard"
+                  title="Dashboard"
                   id="adminmenu"
                 >
                   <LinkContainer to="/admin/productlist">
