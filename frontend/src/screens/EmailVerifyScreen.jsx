@@ -10,6 +10,12 @@ import {
 } from '../slices/usersApiSlice';
 import './OTP.css';
 
+/**
+ * EmailVerifyScreen component handles the OTP verification for user email verification.
+ * It allows users to input the OTP, resend it if needed, and gives feedback on success or failure.
+ *
+ * @returns {JSX.Element} - A form for OTP input and email verification functionality.
+ */
 const EmailVerifyScreen = () => {
   const [otp, setOtp] = useState(Array(6).fill(''));
   const navigate = useNavigate();
@@ -24,6 +30,9 @@ const EmailVerifyScreen = () => {
   const initialTimer = 180;
   const [timer, setTimer] = useState(initialTimer);
 
+  /**
+   * Reset timer and resend attempts if email is not provided (user not found).
+   */
   useEffect(() => {
     if (!email) {
       localStorage.removeItem('timer');
@@ -31,6 +40,9 @@ const EmailVerifyScreen = () => {
     }
   }, [email]);
 
+  /**
+   * Start the countdown timer and store the remaining time in localStorage.
+   */
   useEffect(() => {
     if (timer > 0) {
       const interval = setInterval(() => {
@@ -41,9 +53,59 @@ const EmailVerifyScreen = () => {
         });
       }, 1000);
       return () => clearInterval(interval);
+    } else {
+      toast.warning('Time is up! Please request a new verification code.', {
+        theme: 'colored',
+        position: 'top-center',
+      });
     }
-  }, []);
+  }, [timer]);
 
+  /**
+   * Handle OTP input changes and auto-focus the next input box.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The change event.
+   * @param {number} index - The index of the OTP input being updated.
+   */
+  const handleChange = (e, index) => {
+    const value = e.target.value;
+    if (value.match(/^\d$/)) {
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+
+      if (index < otp.length - 1 && value) {
+        document.getElementById(`otp-input-${index + 1}`).focus();
+      }
+    }
+  };
+
+  /**
+   * Handle backspace functionality in OTP inputs and manage focus shifting.
+   *
+   * @param {React.KeyboardEvent<HTMLInputElement>} e - The keydown event.
+   * @param {number} index - The index of the OTP input being updated.
+   */
+  const handleKeyDown = (e, index) => {
+    if (e.key === 'Backspace') {
+      if (!otp[index] && index > 0) {
+        const prevInput = document.getElementById(`otp-input-${index - 1}`);
+        prevInput.focus();
+        const newOtp = [...otp];
+        newOtp[index - 1] = '';
+        setOtp(newOtp);
+      } else if (otp[index]) {
+        const newOtp = [...otp];
+        newOtp[index] = '';
+        setOtp(newOtp);
+      }
+    }
+  };
+
+  /**
+   * Resend verification code if resend attempts are within the limit.
+   * Provides feedback based on success or failure of the resend action.
+   */
   const resendVerificationCode = async () => {
     if (resendAttempts < 3) {
       try {
@@ -64,72 +126,75 @@ const EmailVerifyScreen = () => {
           },
         });
       } catch (error) {
-        toast.error('Failed to resend verification code.', {
+        toast.error('Failed to resend verification code. Please try again.', {
           theme: 'colored',
           position: 'top-center',
         });
       }
     } else {
-      toast.error('No more attempts left to resend verification code.', {
+      toast.error('Maximum resend attempts reached. Please try again later.', {
         theme: 'colored',
         position: 'top-center',
       });
     }
   };
 
-  const handleChange = (e, index) => {
-    const value = e.target.value;
-    if (value.match(/^\d$/)) {
-      const newOtp = [...otp];
-      newOtp[index] = value;
-      setOtp(newOtp);
-
-      if (index < otp.length - 1 && value) {
-        document.getElementById(`otp-input-${index + 1}`).focus();
-      }
-    }
-  };
-
-  const handleKeyDown = (e, index) => {
-    if (e.key === 'Backspace') {
-      if (!otp[index] && index > 0) {
-        const prevInput = document.getElementById(`otp-input-${index - 1}`);
-        prevInput.focus();
-        const newOtp = [...otp];
-        newOtp[index - 1] = '';
-        setOtp(newOtp);
-      } else if (otp[index]) {
-        const newOtp = [...otp];
-        newOtp[index] = '';
-        setOtp(newOtp);
-      }
-    }
-  };
-
+  /**
+   * Submit the OTP verification request and handle various outcomes.
+   * Feedback is provided for cases such as success, token expiration, or time running out.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} e - The form submission event.
+   */
   const submitHandler = async (e) => {
     e.preventDefault();
     const otpCode = otp.join('');
+
+    if (timer === 0) {
+      toast.warning('Time is up! Please request another verification code.', {
+        theme: 'colored',
+        position: 'top-center',
+      });
+      return;
+    }
+
     try {
       await verifyUser({
         activation_token: activationToken,
         activation_code: otpCode,
       }).unwrap();
-      toast.success('Email verified successfully, you can sign in.', {
+
+      toast.success('Email verified successfully, you can sign in now.', {
         theme: 'colored',
         position: 'top-center',
       });
       navigate('/login');
     } catch (error) {
-      toast.error(error?.data?.message || error.error, {
-        theme: 'colored',
-        position: 'top-center',
-      });
+      if (error?.data?.message === 'JWT expired') {
+        toast.error(
+          'Verification token has expired. Please request a new code.',
+          {
+            theme: 'colored',
+            position: 'top-center',
+          }
+        );
+        setTimer(0); // Disable further actions
+      } else {
+        toast.error(error?.data?.message || error.error, {
+          theme: 'colored',
+          position: 'top-center',
+        });
+      }
     }
   };
 
+  /**
+   * Formats the timer to display in MM:SS format and ensures that when time runs out, it stays at 00:00.
+   *
+   * @returns {string} - The formatted time string.
+   */
   const formatTime = () => {
-    const minutes = Math.floor(timer / 60);
-    const seconds = timer % 60;
+    const minutes = Math.floor(Math.max(timer, 0) / 60); // Ensure time doesn't go negative
+    const seconds = Math.max(timer, 0) % 60; // Ensure time doesn't go negative
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
@@ -177,7 +242,7 @@ const EmailVerifyScreen = () => {
                 ) : (
                   <Button
                     type="submit"
-                    variant="primary"
+                    className="bg-primary px-4 fw-semibold"
                     disabled={verifyLoading || timer === 0}
                   >
                     Verify Email
