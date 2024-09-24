@@ -20,9 +20,7 @@ const ShippingScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
     dispatch(saveShippingAddress({ address, city, postalCode, country }));
-
     navigate('/payment');
   };
 
@@ -31,14 +29,14 @@ const ShippingScreen = () => {
       <CheckoutSteps step1 step2 />
 
       <FormContainer>
-        <h1>Sipariş Adresi</h1>
+        <h1>Shipping Address</h1>
 
         <Form onSubmit={submitHandler}>
-          <Form.Group controlId='address' className='my-2'>
-            <Form.Label>Adres</Form.Label>
+          <Form.Group controlId="address" className="my-2">
+            <Form.Label>Address</Form.Label>
             <Form.Control
-              type='text'
-              placeholder='Enter the address'
+              type="text"
+              placeholder="Enter the address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             ></Form.Control>
@@ -46,11 +44,11 @@ const ShippingScreen = () => {
         </Form>
 
         <Form onSubmit={submitHandler}>
-          <Form.Group controlId='city' className='my-2'>
+          <Form.Group controlId="city" className="my-2">
             <Form.Label>City</Form.Label>
             <Form.Control
-              type='text'
-              placeholder='Enter the city'
+              type="text"
+              placeholder="Enter the city"
               value={city}
               onChange={(e) => setCity(e.target.value)}
             ></Form.Control>
@@ -58,11 +56,11 @@ const ShippingScreen = () => {
         </Form>
 
         <Form onSubmit={submitHandler}>
-          <Form.Group controlId='postalCode' className='my-2'>
-            <Form.Label>Posta Kodu</Form.Label>
+          <Form.Group controlId="postalCode" className="my-2">
+            <Form.Label>Postal Code</Form.Label>
             <Form.Control
-              type='text'
-              placeholder='Enter the postalCode'
+              type="text"
+              placeholder="Enter the postal code"
               value={postalCode}
               onChange={(e) => setPostalCode(e.target.value)}
             ></Form.Control>
@@ -70,18 +68,18 @@ const ShippingScreen = () => {
         </Form>
 
         <Form onSubmit={submitHandler}>
-          <Form.Group controlId='country' className='my-2'>
-            <Form.Label>Şehir</Form.Label>
+          <Form.Group controlId="country" className="my-2">
+            <Form.Label>City</Form.Label>
             <Form.Control
-              type='text'
-              placeholder='Enter the country'
+              type="text"
+              placeholder="Enter the country"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
             ></Form.Control>
           </Form.Group>
 
-          <Button type='submit' variant='primary' className='my-2'>
-            Devam Et
+          <Button type="submit" variant="primary" className="my-2">
+            Proceed
           </Button>
         </Form>
       </FormContainer>

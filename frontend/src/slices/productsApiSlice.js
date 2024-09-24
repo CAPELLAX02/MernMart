@@ -68,8 +68,6 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['Product'],
     }),
 
-    // adminler için delete review yapılabilir uygunsuz yorumlar için.
-
     // GET TOP PRODUCTS ENDPOINT
     getTopProducts: builder.query({
       query: () => `${PRODUCTS_URL}/top`,

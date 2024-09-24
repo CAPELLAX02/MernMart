@@ -67,32 +67,32 @@ const ResetPasswordScreen = () => {
 
   return (
     <FormContainer>
-      <h1>Şifrenizi Sıfırlayın</h1>
+      <h1>Reset Your Password</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="resetCode" className="my-3">
-          <Form.Label>Şifre Sıfırlama Kodu</Form.Label>
+          <Form.Label>Password Reset Code</Form.Label>
           <Form.Control
             type="text"
-            placeholder="6 Haneli Kodu Girin"
+            placeholder="Enter 6-digit Code"
             maxLength={6}
             value={resetCode}
             onChange={(e) => setResetCode(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="newPassword" className="my-3">
-          <Form.Label>Yeni Şifre</Form.Label>
+          <Form.Label>New Password</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Yeni Şifrenizi Girin"
+            placeholder="Enter your new password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="confirmNewPassword" className="my-3">
-          <Form.Label>Yeni Şifre (Tekrar)</Form.Label>
+          <Form.Label>New Password (Again)</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Yeni Şifrenizi Girin (Tekrar)"
+            placeholder="Enter your new password (Again)"
             value={confirmNewPassword}
             onChange={(e) => setConfirmNewPassword(e.target.value)}
           ></Form.Control>
@@ -103,7 +103,7 @@ const ResetPasswordScreen = () => {
           className="mt-2"
           disabled={isLoading}
         >
-          Şifreyi Sıfırla
+          Reset Password
         </Button>
         {isLoading && <Loader />}
       </Form>

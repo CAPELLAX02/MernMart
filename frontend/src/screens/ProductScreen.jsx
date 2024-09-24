@@ -103,12 +103,13 @@ const ProductScreen = () => {
                   <Rating value={product.rating} />
                   <span>{product.rating}</span>
                   <p className="ms-1 mt-2">
-                    {product.numReviews} Değerlendirme
+                    {product.numReviews}{' '}
+                    {product.numReviews === 1 ? 'Review' : 'Reviews'}
                   </p>
                 </ListGroup.Item>
-                <ListGroup.Item>Fiyat: {product.price} TL</ListGroup.Item>
+                <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
                 <ListGroup.Item>
-                  <b>Açıklama:</b> {product.description}
+                  <b>Description:</b> {product.description}
                 </ListGroup.Item>
               </ListGroup>
             </Col>
@@ -133,7 +134,6 @@ const ProductScreen = () => {
                     </Row>
                   </ListGroup.Item>
 
-                  {/* Qty Select */}
                   {product.countInStock > 0 && (
                     <ListGroup.Item>
                       <Row>

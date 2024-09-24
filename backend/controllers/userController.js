@@ -350,7 +350,7 @@ const resetPassword = asyncHandler(async (req, res) => {
   const isSamePassword = await user.matchPassword(newPassword);
   if (isSamePassword) {
     res.status(400);
-    throw new Error('Yeni şifreniz eski şifrenizle aynı olamaz.');
+    throw new Error('New password must be distinct from the previous one.');
   }
 
   user.password = newPassword;
