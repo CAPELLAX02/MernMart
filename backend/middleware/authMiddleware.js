@@ -2,21 +2,26 @@ import jwt from 'jsonwebtoken';
 import asyncHandler from './asyncHandler.js';
 import User from '../models/userModel.js';
 
-// Protect routes
+/**
+ * Middleware to protect routes and authenticate users
+ * @function protect
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @param {Function} next - The next middleware function
+ * @returns {Promise<void>}
+ * @throws {Error} If token is not valid or user is not found
+ */
 const protect = asyncHandler(async (req, res, next) => {
   let token;
 
-  // JWT'yi cookie'den oku
+  // Read JWT from cookies
   token = req.cookies.jwt;
-  // console.log('JWT Token:', token);
 
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      // console.log('Decoded Token:', decoded);
 
       req.user = await User.findById(decoded.userId).select('-password');
-      // console.log('Authenticated User:', req.user);
 
       if (!req.user) {
         throw new Error('User not found');
@@ -24,18 +29,24 @@ const protect = asyncHandler(async (req, res, next) => {
 
       next();
     } catch (error) {
-      // console.log('JWT Verification Error:', error);
       res.status(401);
       throw new Error('Not authorized, token failed.');
     }
   } else {
-    // console.log('No JWT token found');
     res.status(401);
     throw new Error('Not authorized, no token.');
   }
 });
 
-// Admin middleware
+/**
+ * Middleware to restrict access to admin users
+ * @function admin
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @param {Function} next - The next middleware function
+ * @returns {Promise<void>}
+ * @throws {Error} If user is not authorized as admin
+ */
 const admin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
