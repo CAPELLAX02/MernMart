@@ -10,7 +10,7 @@ import Meta from '../components/Meta';
 
 const HomeScreen = () => {
   const { keyword, pageNumber } = useParams();
-  const page = pageNumber ? Number(pageNumber) : 1; // Varsayılan olarak 1. sayfayı al
+  const page = pageNumber ? Number(pageNumber) : 1;
 
   const { data, isLoading, error } = useGetProductsQuery({
     keyword,
@@ -23,24 +23,24 @@ const HomeScreen = () => {
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>
+        <Message variant="danger">
           {error?.data?.message || error.error}
         </Message>
       ) : (
         <>
-          <Meta title='Mernmart | Your eCommerce Website' />
+          <Meta title="Mernmart | Your eCommerce Website" />
           {keyword ? (
             <>
-              <Link to='/' className='btn btn-light'>
+              <Link to="/" className="btn btn-light">
                 Go Back
               </Link>
-              <h1 className='mt-4'>Results related to "{keyword}"</h1>
+              <h1 className="mt-4">Results related to "{keyword}"</h1>
             </>
           ) : (
-            <h1 className='mt-4'>Featured Products</h1>
+            <h1 className="mt-4">Featured Products</h1>
           )}
 
-          <Row className='mb-5'>
+          <Row className="mb-5">
             {data.products.map((product) => (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                 <Product product={product} />

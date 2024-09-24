@@ -9,7 +9,6 @@ import {
 } from '../../slices/usersApiSlice';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-// import { formatDate } from '../../utils/formatDate';
 
 const UserListScreen = () => {
   const { data: users, refetch, isLoading, error } = useGetUsersQuery();
@@ -35,15 +34,15 @@ const UserListScreen = () => {
 
   return (
     <>
-      <h1 className='mt-3'>USERS</h1>
+      <h1 className="mt-3">USERS</h1>
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>
+        <Message variant="danger">
           {error?.data?.message || error.error}
         </Message>
       ) : (
-        <Table striped hover responsive className='table-sm mt-2'>
+        <Table striped hover responsive className="table-sm mt-2">
           <thead>
             <tr>
               <th>USER ID</th>
@@ -75,14 +74,14 @@ const UserListScreen = () => {
                         as={Link}
                         to={`/admin/users/${user._id}/edit`}
                         style={{ marginRight: '10px' }}
-                        variant='success'
-                        className='btn-sm'
+                        variant="success"
+                        className="btn-sm"
                       >
                         <FaEdit />
                       </Button>
                       <Button
-                        variant='danger'
-                        className='btn-sm'
+                        variant="danger"
+                        className="btn-sm"
                         onClick={() => deleteHandler(user._id)}
                       >
                         <FaTrash style={{ color: 'white' }} />

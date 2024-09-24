@@ -1,4 +1,4 @@
-import { useState } from 'react'; // useState'i import edin
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -60,15 +60,15 @@ const CartScreen = () => {
 
   return (
     <>
-      <Row className='my-4'>
+      <Row className="my-4">
         <Col md={8}>
           <h1>Shopping Cart</h1>
           {cartItems.length === 0 ? (
             <Message>
-              Your cart is empty for now. <Link to='/'> Go Back</Link>
+              Your cart is empty for now. <Link to="/"> Go Back</Link>
             </Message>
           ) : (
-            <ListGroup variant='flush'>
+            <ListGroup variant="flush">
               {cartItems.map((item) => (
                 <ListGroup.Item key={item._id}>
                   <Row>
@@ -81,7 +81,7 @@ const CartScreen = () => {
                     <Col md={2}>${item.price}</Col>
                     <Col md={2}>
                       <Form.Control
-                        as='select'
+                        as="select"
                         value={item.qty}
                         onChange={(e) =>
                           addToCartHandler(item, Number(e.target.value))
@@ -96,11 +96,11 @@ const CartScreen = () => {
                     </Col>
                     <Col md={2}>
                       <Button
-                        type='button'
-                        variant='danger'
+                        type="button"
+                        variant="danger"
                         onClick={() => handleShowDialog(item)}
                       >
-                        <FaTrash color='#fff' />
+                        <FaTrash color="#fff" />
                       </Button>
                     </Col>
                   </Row>
@@ -112,7 +112,7 @@ const CartScreen = () => {
 
         <Col md={4}>
           <Card>
-            <ListGroup variant='flush'>
+            <ListGroup variant="flush">
               <ListGroup.Item>
                 <h2>
                   Total ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
@@ -126,8 +126,8 @@ const CartScreen = () => {
 
               <ListGroup.Item>
                 <Button
-                  type='button'
-                  className='bg-primary fw-medium px-3'
+                  type="button"
+                  className="bg-primary fw-medium px-3"
                   disabled={cartItems.length === 0}
                   onClick={checkoutHandler}
                 >
@@ -141,10 +141,10 @@ const CartScreen = () => {
 
       {selectedItem && (
         <AlertDialog
-          title='Confirm Delete'
+          title="Confirm Delete"
           bodyText={`Are you sure you want to remove the item (${selectedItem.name}) from the cart?`}
-          closeBtnText='Cancel'
-          proceedBtnText='Delete'
+          closeBtnText="Cancel"
+          proceedBtnText="Delete"
           onClose={handleCloseDialog}
           onConfirm={handleConfirmDelete}
           show={showDialog}

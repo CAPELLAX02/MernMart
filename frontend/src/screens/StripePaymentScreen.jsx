@@ -11,9 +11,7 @@ import { clearCartItems } from '../slices/cartSlice';
 import { useCreateOrderMutation } from '../slices/ordersApiSlice';
 import { useGetOrderDetailsQuery } from '../slices/ordersApiSlice';
 
-const stripePromise = loadStripe(
-  `pk_test_51PkqaLH9opOR77k1BtGN1DVRUfujkaJ1DsF7IIbgVb9U3Tbfm2KK6wUqqZGbCFcCzyqT0N748tPEexaXdDsR1YQN00nL9T903d`
-);
+const stripePromise = loadStripe(`${process.env.STRIPE_TEST_PROMISE}`);
 
 export const CheckoutForm = () => {
   const cart = useSelector((state) => state.cart);

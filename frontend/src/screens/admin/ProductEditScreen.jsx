@@ -49,7 +49,7 @@ const ProductEditScreen = () => {
         category,
         description,
         countInStock,
-      }).unwrap(); // NOTE: here we need to unwrap the Promise to catch any rejection in our catch block
+      }).unwrap();
       toast.success('Product updated successfully.', {
         theme: 'colored',
         position: 'top-center',
@@ -102,7 +102,7 @@ const ProductEditScreen = () => {
 
   return (
     <>
-      <Link to='/admin/productlist' className='btn btn-light mt-1'>
+      <Link to="/admin/productlist" className="btn btn-light mt-1">
         Go Back
       </Link>
       <FormContainer>
@@ -111,90 +111,90 @@ const ProductEditScreen = () => {
         {isLoading ? (
           <Loader />
         ) : error ? (
-          <Message variant='danger'>
+          <Message variant="danger">
             Something went wrong. [{error?.data?.message || error.error}]
           </Message>
         ) : (
           <Form onSubmit={submitHandler}>
-            <Form.Group className='mt-1 fw-bold' controlId='name'>
+            <Form.Group className="mt-1 fw-bold" controlId="name">
               <Form.Label>Product Name</Form.Label>
               <Form.Control
-                type='name'
-                placeholder='Product Name'
+                type="name"
+                placeholder="Product Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group className='mt-1 fw-bold' controlId='price'>
+            <Form.Group className="mt-1 fw-bold" controlId="price">
               <Form.Label>Price</Form.Label>
               <Form.Control
-                type='number'
-                placeholder='Price'
+                type="number"
+                placeholder="Price"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group className='mt-1 fw-bold' controlId='image'>
+            <Form.Group className="mt-1 fw-bold" controlId="image">
               <Form.Label>Product Image</Form.Label>
               <Form.Control
-                type='text'
-                placeholder='Product Image'
+                type="text"
+                placeholder="Product Image"
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
               <Form.Control
-                label='Upload File'
+                label="Upload File"
                 onChange={uploadFileHandler}
-                type='file'
+                type="file"
               ></Form.Control>
             </Form.Group>
             {loadingProductImage && <Loader />}
 
-            <Form.Group className='mt-1 fw-bold' controlId='brand'>
+            <Form.Group className="mt-1 fw-bold" controlId="brand">
               <Form.Label>Brand</Form.Label>
               <Form.Control
-                type='text'
-                placeholder='Brand'
+                type="text"
+                placeholder="Brand"
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group className='mt-1 fw-bold' controlId='countInStock'>
+            <Form.Group className="mt-1 fw-bold" controlId="countInStock">
               <Form.Label>Stock</Form.Label>
               <Form.Control
-                type='number'
-                placeholder='Stock'
+                type="number"
+                placeholder="Stock"
                 value={countInStock}
                 onChange={(e) => setCountInStock(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group className='mt-1 fw-bold' controlId='category'>
+            <Form.Group className="mt-1 fw-bold" controlId="category">
               <Form.Label>Category</Form.Label>
               <Form.Control
-                type='text'
-                placeholder='Category'
+                type="text"
+                placeholder="Category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group className='mt-1 fw-bold' controlId='description'>
+            <Form.Group className="mt-1 fw-bold" controlId="description">
               <Form.Label>Product Description</Form.Label>
               <Form.Control
-                as='textarea'
+                as="textarea"
                 rows={5}
-                type='text'
-                placeholder='Product Description'
+                type="text"
+                placeholder="Product Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
-            <Button type='submit' variant='primary' className='mt-3'>
+            <Button type="submit" variant="primary" className="mt-3">
               Update
             </Button>
           </Form>

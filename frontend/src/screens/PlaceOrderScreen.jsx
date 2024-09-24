@@ -1,15 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Button,
-  Row,
-  Col,
-  ListGroup,
-  Image,
-  Card,
-  // Badge,
-} from 'react-bootstrap';
+import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import CheckoutSteps from '../components/CheckoutSteps';
 import Message from '../components/Message';
