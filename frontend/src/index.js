@@ -34,50 +34,49 @@ import ProductListScreen from './screens/admin/ProductListScreen';
 import ProductEditScreen from './screens/admin/ProductEditScreen';
 import UserListScreen from './screens/admin/UserListScreen';
 import UserEditScreen from './screens/admin/UserEditScreen';
-import CallBackIyzicoScreen from './screens/CallBackIyzicoScreen';
 import { CheckoutForm, Return } from './screens/StripePaymentScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<App />}>
-      <Route index={true} path='/' element={<HomeScreen />} />
-      <Route path='/search/:keyword' element={<HomeScreen />} />
-      <Route path='/page/:pageNumber' element={<HomeScreen />} />
+    <Route path="/" element={<App />}>
+      <Route index={true} path="/" element={<HomeScreen />} />
+      <Route path="/search/:keyword" element={<HomeScreen />} />
+      <Route path="/page/:pageNumber" element={<HomeScreen />} />
       <Route
-        path='/search/:keyword/page/:pageNumber'
+        path="/search/:keyword/page/:pageNumber"
         element={<HomeScreen />}
       />
 
-      <Route path='/product/:id' element={<ProductScreen />} />
-      <Route path='/cart' element={<CartScreen />} />
-      <Route path='/login' element={<LoginScreen />} />
-      <Route path='/register' element={<RegisterScreen />} />
-      <Route path='/verify' element={<EmailVerifyScreen />} />
-      <Route path='/forgot-password' element={<ForgotPasswordScreen />} />
-      <Route path='/reset-password' element={<ResetPasswordScreen />} />
+      <Route path="/product/:id" element={<ProductScreen />} />
+      <Route path="/cart" element={<CartScreen />} />
+      <Route path="/login" element={<LoginScreen />} />
+      <Route path="/register" element={<RegisterScreen />} />
+      <Route path="/verify" element={<EmailVerifyScreen />} />
+      <Route path="/forgot-password" element={<ForgotPasswordScreen />} />
+      <Route path="/reset-password" element={<ResetPasswordScreen />} />
 
       {/* Private Routes */}
-      <Route path='' element={<PrivateRoute />}>
-        <Route path='/shipping' element={<ShippingScreen />} />
-        <Route path='/payment' element={<PaymentScreen />} />
-        <Route path='/placeorder' element={<PlaceOrderScreen />} />
-        <Route path='/order/:id' element={<OrderScreen />} />
-        <Route path='/profile' element={<ProfileScreen />} />
-        <Route path='/checkout' element={<CheckoutForm />} />
-        <Route path='/return' element={<Return />} />
+      <Route path="" element={<PrivateRoute />}>
+        <Route path="/shipping" element={<ShippingScreen />} />
+        <Route path="/payment" element={<PaymentScreen />} />
+        <Route path="/placeorder" element={<PlaceOrderScreen />} />
+        <Route path="/order/:id" element={<OrderScreen />} />
+        <Route path="/profile" element={<ProfileScreen />} />
+        <Route path="/checkout" element={<CheckoutForm />} />
+        <Route path="/return" element={<Return />} />
       </Route>
 
       {/* Admin Routes */}
-      <Route path='' element={<AdminRoute />}>
-        <Route path='/admin/orderlist' element={<OrderListScreen />} />
-        <Route path='/admin/productlist' element={<ProductListScreen />} />
+      <Route path="" element={<AdminRoute />}>
+        <Route path="/admin/orderlist" element={<OrderListScreen />} />
+        <Route path="/admin/productlist" element={<ProductListScreen />} />
         <Route
-          path='/admin/productlist/page/:pageNumber'
+          path="/admin/productlist/page/:pageNumber"
           element={<ProductListScreen />}
         />
-        <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
-        <Route path='/admin/userlist' element={<UserListScreen />} />
-        <Route path='/admin/users/:id/edit' element={<UserEditScreen />} />
+        <Route path="/admin/product/:id/edit" element={<ProductEditScreen />} />
+        <Route path="/admin/userlist" element={<UserListScreen />} />
+        <Route path="/admin/users/:id/edit" element={<UserEditScreen />} />
       </Route>
     </Route>
   )

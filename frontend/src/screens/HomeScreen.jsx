@@ -13,7 +13,7 @@ const HomeScreen = () => {
   const page = pageNumber ? Number(pageNumber) : 1;
 
   const { data, isLoading, error } = useGetProductsQuery({
-    keyword,
+    keyword: keyword || '',
     pageNumber: page,
   });
 

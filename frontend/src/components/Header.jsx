@@ -5,12 +5,17 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice';
-import logo from '../assets/mernmart-bg.png';
 import logoOutline from '../assets/logo-outline.png';
 import './Header.css';
 import SearchBox from './SearchBox';
 import { toast } from 'react-toastify';
 
+/**
+ * Header component that displays the navigation bar, search box, cart information,
+ * and user/account options. It also provides admin links if the user is an admin.
+ *
+ * @returns {JSX.Element} - A header section with navigation and account controls.
+ */
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
@@ -20,6 +25,10 @@ const Header = () => {
 
   const [logoutApiCall] = useLogoutMutation();
 
+  /**
+   * Handles user logout by calling the API and dispatching the logout action.
+   * Navigates to the login page after logging out.
+   */
   const logoutHandler = async () => {
     try {
       await logoutApiCall().unwrap();

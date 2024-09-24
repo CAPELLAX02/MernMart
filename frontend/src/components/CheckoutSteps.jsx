@@ -1,6 +1,17 @@
 import { Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
+/**
+ * CheckoutSteps component to display the progress of the checkout process.
+ * Each step is either enabled (as a link) or disabled based on the provided step props.
+ *
+ * @param {boolean} step1 - Indicates if the "Sign In" step is active.
+ * @param {boolean} step2 - Indicates if the "Address Information" step is active.
+ * @param {boolean} step3 - Indicates if the "Payment Method" step is active.
+ * @param {boolean} step4 - Indicates if the "Complete the Order" step is active.
+ *
+ * @returns {JSX.Element} - A navigation component showing the checkout progress.
+ */
 const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
   return (
     <Nav className="justify-content-center mt-2 mb-5">
