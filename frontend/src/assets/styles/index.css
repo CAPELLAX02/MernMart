@@ -141,6 +141,71 @@ table th {
   transition: opacity 0.3s ease-in-out;
 }
 
+.social-icon {
+  margin: 5px;
+  padding: 12px;
+  transition: 0.25s;
+  border-radius: 50%;
+}
+
+.social-icon:hover {
+  color: #fff;
+  background-color: #45beff;
+  transition: 0.25s;
+}
+
+.slider {
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  box-sizing: border-box;
+  height: 5px;
+  background: linear-gradient(
+    to right,
+    rgb(255, 75, 141),
+    rgb(1, 179, 255),
+    rgb(255, 210, 28),
+    rgb(9, 182, 9)
+  );
+}
+
+.slider {
+  /* option 2 */
+  height: 10px;
+  background: linear-gradient(
+    to right,
+    rgb(255, 75, 141),
+    rgb(1, 179, 255),
+    rgb(255, 210, 28),
+    rgb(9, 182, 9)
+  );
+}
+
+.slider-text {
+  display: inline-block;
+  padding-left: 100%;
+  /* animation: slide 12s linear infinite; */
+}
+
+.slider:hover .slider-text {
+  animation-play-state: paused;
+}
+
+@media screen and (max-width: 768px) {
+  .searchbox {
+    margin-bottom: 24px;
+  }
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-65%);
+  }
+}
+
 /* Styles for mobile screens */
 @media (max-width: 768px) {
   .card-price-button-container {
