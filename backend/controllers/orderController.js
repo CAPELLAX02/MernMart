@@ -1,9 +1,7 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import Order from '../models/orderModel.js';
 import Stripe from 'stripe';
-const stripe = new Stripe(
-  'sk_test_51PkqaLH9opOR77k1n9SVX2wpXcVoNy1ujaxKWIAGHHRvWeT9CXGo3TqXIkuVtL0UcjF9rnrBe37m18eI7LgHTZ6m00BTYSmt8s'
-);
+const stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`);
 
 /**
  * @desc    Create new order

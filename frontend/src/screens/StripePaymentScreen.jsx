@@ -11,7 +11,7 @@ import { clearCartItems } from '../slices/cartSlice';
 import { useCreateOrderMutation } from '../slices/ordersApiSlice';
 import { useGetOrderDetailsQuery } from '../slices/ordersApiSlice';
 
-const stripePromise = loadStripe(`${process.env.STRIPE_TEST_PROMISE}`);
+const stripePromise = loadStripe(`${process.env.STRIPE_PUBLISHABLE_KEY}`);
 
 export const CheckoutForm = () => {
   const cart = useSelector((state) => state.cart);
